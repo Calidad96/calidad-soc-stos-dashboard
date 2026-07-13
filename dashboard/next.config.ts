@@ -1,7 +1,11 @@
-import type { NextConfig } from "next";
+import type { NextConfig } from 'next';
 
 const nextConfig: NextConfig = {
-  serverExternalPackages: ['child_process'],
+  outputFileTracingIncludes: {
+    '/api/sync': ['./sync/**/*'],
+    '/api/cron/sync': ['./sync/**/*'],
+    '/instrumentation': ['./sync/**/*'],
+  },
 };
 
 export default nextConfig;

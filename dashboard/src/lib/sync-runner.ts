@@ -1,6 +1,5 @@
-import { spawn } from 'child_process';
-import path from 'path';
-import { getProjectRoot, resolveSyncScript } from './project-root';
+import { executeSyncBundle } from './run-sync-bundle';
+
 export type SyncRunStatus = 'idle' | 'running' | 'success' | 'partial' | 'error';
 
 export interface SyncRunState {
@@ -22,6 +21,7 @@ let state: SyncRunState = {
 };
 
 let lastScheduledSlot: string | null = null;
+let activeRun: Promise<void> | null = null;
 
 export function getSyncRunState(): SyncRunState {
   return { ...state };
@@ -41,11 +41,16 @@ export function isSyncRunning(): boolean {
 
 export async function triggerSync(opts?: {
   scheduledSlot?: string;
+  wait?: boolean;
 }): Promise<{
   started: boolean;
   message?: string;
 }> {
   if (state.status === 'running') {
+    if (opts?.wait && activeRun) {
+      await activeRun;
+      return { started: true };
+    }
     return { started: false, message: 'Sync is already running' };
   }
 
@@ -58,7 +63,7 @@ export async function triggerSync(opts?: {
     scheduledSlot: opts?.scheduledSlot ?? null,
   };
 
-  runSyncProcess()
+  activeRun = runSyncProcess()
     .then(() => {
       if (state.scheduledSlot) {
         lastScheduledSlot = state.scheduledSlot;
@@ -68,47 +73,30 @@ export async function triggerSync(opts?: {
       state.status = 'error';
       state.finishedAt = new Date().toISOString();
       state.error = err instanceof Error ? err.message : 'Sync failed';
+    })
+    .finally(() => {
+      activeRun = null;
     });
+
+  if (opts?.wait) {
+    await activeRun;
+  }
 
   return { started: true };
 }
 
 async function runSyncProcess(): Promise<void> {
-  const root = getProjectRoot();
-  const scriptPath = resolveSyncScript(root);
-  const output: string[] = [];
-
-  await new Promise<void>((resolve, reject) => {
-    const child = spawn(process.execPath, [scriptPath], {
-      cwd: root,
-      env: {
-        ...process.env,
-        NODE_PATH: path.join(process.cwd(), 'node_modules'),
-      },
-      shell: false,
-    });
-
-    child.stdout?.on('data', (chunk: Buffer) => {
-      output.push(chunk.toString());
-    });
-    child.stderr?.on('data', (chunk: Buffer) => {
-      output.push(chunk.toString());
-    });
-
-    child.on('error', reject);
-    child.on('close', (code) => {
-      const text = output.join('').trim();
-      state.output = text.slice(-4000);
-      state.finishedAt = new Date().toISOString();
-
-      if (code === 0) {
-        state.status = /ERROR:|Partial/i.test(text) ? 'partial' : 'success';
-        resolve();
-      } else {
-        state.status = 'error';
-        state.error = text.slice(-500) || `Sync exited with code ${code}`;
-        reject(new Error(state.error));
-      }
-    });
-  });
+  try {
+    const text = await executeSyncBundle();
+    state.output = text.slice(-4000);
+    state.finishedAt = new Date().toISOString();
+    state.status = /ERROR:|Partial/i.test(text) ? 'partial' : 'success';
+  } catch (err) {
+    const message = err instanceof Error ? err.message : 'Sync failed';
+    state.finishedAt = new Date().toISOString();
+    state.status = 'error';
+    state.error = message.slice(-800);
+    state.output = state.output || message;
+    throw err;
+  }
 }

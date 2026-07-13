@@ -1,10 +1,8 @@
-import 'dotenv/config';
-
 const API_URL = 'https://api.monday.com/v2';
 
 export async function mondayQuery(query, variables = {}, retries = 3) {
   const token = process.env.MONDAY_API_TOKEN;
-  if (!token) throw new Error('MONDAY_API_TOKEN missing in .env');
+  if (!token) throw new Error('MONDAY_API_TOKEN not configured');
 
   let lastErr;
   for (let attempt = 1; attempt <= retries; attempt++) {

@@ -6,6 +6,7 @@ function isPublicPath(pathname: string): boolean {
   if (pathname === '/login') return true;
   if (pathname === '/api/auth/login') return true;
   if (pathname === '/api/auth/logout') return true;
+  if (pathname === '/api/cron/sync') return true;
   if (pathname.startsWith('/_next')) return true;
   if (/\.(png|jpg|jpeg|ico|svg|webp|woff2?)$/i.test(pathname)) return true;
   return false;

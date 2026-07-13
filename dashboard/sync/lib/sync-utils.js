@@ -1,11 +1,15 @@
 import fs from 'fs';
+import path from 'path';
+import { fileURLToPath } from 'url';
+
+const SYNC_ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
+const REGISTRY_PATH = path.join(SYNC_ROOT, 'data', 'hub-registry.json');
 
 export function loadHubRegistry() {
-  const path = 'data/hub-registry.json';
-  if (!fs.existsSync(path)) {
-    throw new Error('Hub registry not found. Run: npm run setup-hub');
+  if (!fs.existsSync(REGISTRY_PATH)) {
+    throw new Error(`Hub registry not found at ${REGISTRY_PATH}`);
   }
-  return JSON.parse(fs.readFileSync(path, 'utf8'));
+  return JSON.parse(fs.readFileSync(REGISTRY_PATH, 'utf8'));
 }
 
 /** Get column text value by title from a Monday item */

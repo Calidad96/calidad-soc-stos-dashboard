@@ -4,6 +4,7 @@ import { getSyncRunState, triggerSync } from '@/lib/sync-runner';
 import { readSyncSettings } from '@/lib/sync-settings';
 
 export const dynamic = 'force-dynamic';
+export const maxDuration = 300;
 
 export async function GET() {
   const run = getSyncRunState();
@@ -17,9 +18,9 @@ export async function GET() {
 }
 
 export async function POST() {
-  const result = await triggerSync();
+  const result = await triggerSync({ wait: true });
   if (!result.started) {
     return NextResponse.json({ error: result.message }, { status: 409 });
   }
-  return NextResponse.json({ started: true });
+  return NextResponse.json({ started: true, run: getSyncRunState() });
 }

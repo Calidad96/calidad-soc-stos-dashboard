@@ -14,6 +14,8 @@ import {
   todayDate,
 } from '../lib/sync-utils.js';
 import { SOURCE_BOARDS } from '../config/boards.js';
+import { fileURLToPath } from 'url';
+import path from 'path';
 
 const TODAY = todayDate();
 
@@ -270,7 +272,7 @@ async function logSync(registry, runId, started, status, boardsPulled, itemsWrit
   }));
 }
 
-async function main() {
+export async function runSync() {
   const runId = new Date().toISOString().replace(/[:.]/g, '-');
   const started = TODAY;
   const registry = loadHubRegistry();
@@ -315,9 +317,21 @@ async function main() {
   console.log(`Items written: ${totalWritten}`);
   console.log(`Errors: ${errors.length}`);
   if (errors.length) errors.forEach((e) => console.log(`  - ${e}`));
+
+  if (errors.length) {
+    throw new Error(errors.join('; '));
+  }
+
+  return { totalWritten, errors };
 }
 
-main().catch((err) => {
-  console.error('Fatal:', err.message);
-  process.exit(1);
-});
+const isDirectRun =
+  process.argv[1] &&
+  path.resolve(process.argv[1]) === fileURLToPath(import.meta.url);
+
+if (isDirectRun) {
+  runSync().catch((err) => {
+    console.error('Fatal:', err.message);
+    process.exit(1);
+  });
+}
