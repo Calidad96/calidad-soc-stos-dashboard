@@ -144,15 +144,64 @@ export function SettingsTab({
 
   const runSyncNow = async () => {
     setMessage(null);
+    setSyncing(true);
+
+    async function safeJson(res: Response) {
+      const text = await res.text();
+      try {
+        return JSON.parse(text) as Record<string, unknown>;
+      } catch {
+        throw new Error(
+          text.startsWith('An error')
+            ? 'Server timed out — try again in a moment.'
+            : text.slice(0, 120) || `Request failed (${res.status})`
+        );
+      }
+    }
+
+    async function post(body: Record<string, unknown>) {
+      const res = await fetch('/api/sync', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(body),
+      });
+      const json = await safeJson(res);
+      if (!res.ok) throw new Error(String(json.error ?? 'Sync step failed'));
+      return json;
+    }
+
     try {
-      const res = await fetch('/api/sync', { method: 'POST' });
-      const json = await res.json();
-      if (!res.ok) throw new Error(json.error ?? 'Sync could not start');
-      setSyncing(true);
-      setMessage('Update in progress…');
+      const start = await post({ action: 'start' });
+      const runId = String(start.runId);
+      const steps = (start.steps as { id: string; label: string; batched: boolean }[]) ?? [];
+
+      for (let i = 0; i < steps.length; i++) {
+        const step = steps[i];
+        setMessage(`Updating ${step.label} (${i + 1}/${steps.length})…`);
+
+        if (step.batched) {
+          await post({ runId, step: step.id });
+          let batch = 0;
+          let hasMore = true;
+          while (hasMore) {
+            setMessage(`Updating ${step.label} — batch ${batch + 1}…`);
+            const result = await post({ runId, step: step.id, batch });
+            hasMore = Boolean(result.hasMore);
+            batch++;
+          }
+        } else {
+          await post({ runId, step: step.id });
+        }
+      }
+
+      await post({ action: 'finish', runId });
+      setMessage('Update completed successfully.');
       await fetchStatus();
     } catch (e) {
-      setMessage(e instanceof Error ? e.message : 'Sync failed to start');
+      setMessage(e instanceof Error ? e.message : 'Sync failed');
+      await fetchStatus();
+    } finally {
+      setSyncing(false);
     }
   };
 

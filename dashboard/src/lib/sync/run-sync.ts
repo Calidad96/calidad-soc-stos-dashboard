@@ -9,44 +9,55 @@ import {
   hubColumnMap,
   todayDate,
 } from './sync-utils';
+import {
+  clearStagingRows,
+  loadSession,
+  loadStagingRows,
+  saveSession,
+  saveStagingRows,
+  type SyncRow,
+  type SyncSession,
+} from './sync-session';
+import type { SyncStepId } from './sync-steps';
+import { getSyncStep } from './sync-steps';
 
 const TODAY = todayDate();
 
-async function writeItems(
+async function writeRows(
   boardId: string,
   colMap: Record<string, string>,
-  rows: { itemName: string; values: Record<string, string | number | undefined> }[],
-  label: string
+  rows: SyncRow[],
+  label: string,
+  offset = 0,
+  limit = rows.length
 ): Promise<number> {
+  const slice = rows.slice(offset, offset + limit);
   let written = 0;
   let failed = 0;
-  for (const row of rows) {
-    const { itemName, values } = row;
-    const columnValues = buildColumnValues(colMap, values);
+
+  for (const row of slice) {
+    const columnValues = buildColumnValues(colMap, row.values);
     try {
-      await createItem(boardId, itemName, columnValues);
+      await createItem(boardId, row.itemName, columnValues);
       written++;
     } catch (err) {
       failed++;
       const msg = err instanceof Error ? err.message : String(err);
-      console.warn(`  ${label} skip: ${itemName.slice(0, 40)} — ${msg}`);
-      await new Promise((r) => setTimeout(r, 2000));
+      console.warn(`  ${label} skip: ${row.itemName.slice(0, 40)} — ${msg}`);
+      await new Promise((r) => setTimeout(r, 400));
     }
-    if (written % 5 === 0 && written > 0) {
-      console.log(`  ${label}: ${written}/${rows.length} (${failed} skipped)`);
-      await new Promise((r) => setTimeout(r, 300));
+    if (written % 10 === 0 && written > 0) {
+      await new Promise((r) => setTimeout(r, 80));
     }
   }
-  console.log(`  ${label}: wrote ${written} items (${failed} skipped)`);
+
+  console.log(`  ${label}: wrote ${written}/${slice.length} (${failed} skipped)`);
   return written;
 }
 
-async function syncActionItems(registry: ReturnType<typeof loadHubRegistry>) {
-  const boardKey = 'actionItems' as const;
-  const hubId = registry.boards[boardKey].id;
-  const colMap = hubColumnMap(registry, boardKey);
+async function buildActionItemRows(registry: ReturnType<typeof loadHubRegistry>) {
   const sources = [SOURCE_BOARDS.socActionItems, SOURCE_BOARDS.physecActionItems];
-  const rows: { itemName: string; values: Record<string, string | number | undefined> }[] = [];
+  const rows: SyncRow[] = [];
 
   for (const src of sources) {
     const items = await getAllBoardItems(src.id);
@@ -73,17 +84,16 @@ async function syncActionItems(registry: ReturnType<typeof loadHubRegistry>) {
     console.log(`  Pulled ${items.length} from ${src.name}`);
   }
 
-  console.log(`  Clearing hub board ${boardKey}...`);
+  const hubId = registry.boards.actionItems.id;
+  console.log('  Clearing hub board actionItems...');
   await deleteBoardItems(hubId);
-  return writeItems(hubId, colMap, rows, boardKey);
+  return rows;
 }
 
-async function syncCapa(registry: ReturnType<typeof loadHubRegistry>) {
-  const boardKey = 'capa' as const;
-  const hubId = registry.boards[boardKey].id;
-  const colMap = hubColumnMap(registry, boardKey);
+async function buildCapaRows() {
   const items = await getAllBoardItems(SOURCE_BOARDS.capa.id);
-  const rows = items.map((item) => ({
+  console.log(`  Pulled ${items.length} CAPA items`);
+  return items.map((item) => ({
     itemName: item.name.slice(0, 120),
     values: {
       'Source Item ID': item.id,
@@ -96,26 +106,18 @@ async function syncCapa(registry: ReturnType<typeof loadHubRegistry>) {
       'Snapshot At': TODAY,
     },
   }));
-
-  console.log(`  Pulled ${items.length} CAPA items`);
-  await deleteBoardItems(hubId);
-  return writeItems(hubId, colMap, rows, boardKey);
 }
 
-async function syncKpis(registry: ReturnType<typeof loadHubRegistry>) {
-  const boardKey = 'kpiHistory' as const;
-  const hubId = registry.boards[boardKey].id;
-  const colMap = hubColumnMap(registry, boardKey);
+async function buildKpiRows(registry: ReturnType<typeof loadHubRegistry>) {
   const items = await getAllBoardItems(SOURCE_BOARDS.departmentKpis.id);
-
+  const hubId = registry.boards.kpiHistory.id;
   const existing = await getAllBoardItems(hubId);
   const existingKeys = new Set(existing.map((e) => colText(e, 'KPI Key')));
+  const rows: SyncRow[] = [];
 
-  const rows: { itemName: string; values: Record<string, string | number | undefined> }[] = [];
   for (const item of items) {
     const year = parseInt(colText(item, 'Year'), 10) || new Date().getFullYear();
-    const monthly = extractKpiMonthlyRows(item, year);
-    for (const m of monthly) {
+    for (const m of extractKpiMonthlyRows(item, year)) {
       if (existingKeys.has(m.kpiKey)) continue;
       rows.push({
         itemName: `${m.kpiName} — ${m.month}`.slice(0, 120),
@@ -137,16 +139,14 @@ async function syncKpis(registry: ReturnType<typeof loadHubRegistry>) {
     }
   }
 
-  console.log(`  Pulled ${items.length} KPIs, ${rows.length} new monthly rows to append`);
-  return writeItems(hubId, colMap, rows, boardKey);
+  console.log(`  Pulled ${items.length} KPIs, ${rows.length} new monthly rows`);
+  return rows;
 }
 
-async function syncRgContracts(registry: ReturnType<typeof loadHubRegistry>) {
-  const boardKey = 'rgContracts' as const;
-  const hubId = registry.boards[boardKey].id;
-  const colMap = hubColumnMap(registry, boardKey);
+async function buildRgContractRows() {
   const items = await getAllBoardItems(SOURCE_BOARDS.rgContracts.id);
-  const rows = items.map((item) => ({
+  console.log(`  Pulled ${items.length} RG contracts`);
+  return items.map((item) => ({
     itemName: item.name.slice(0, 120),
     values: {
       'Source Item ID': item.id,
@@ -161,18 +161,12 @@ async function syncRgContracts(registry: ReturnType<typeof loadHubRegistry>) {
       'Snapshot At': TODAY,
     },
   }));
-
-  console.log(`  Pulled ${items.length} RG contracts`);
-  await deleteBoardItems(hubId);
-  return writeItems(hubId, colMap, rows, boardKey);
 }
 
-async function syncRgAreaScope(registry: ReturnType<typeof loadHubRegistry>) {
-  const boardKey = 'rgAreaScope' as const;
-  const hubId = registry.boards[boardKey].id;
-  const colMap = hubColumnMap(registry, boardKey);
+async function buildRgAreaRows() {
   const items = await getAllBoardItems(SOURCE_BOARDS.rgAreaScope.id);
-  const rows = items.map((item) => ({
+  console.log(`  Pulled ${items.length} RG area scope items`);
+  return items.map((item) => ({
     itemName: item.name.slice(0, 120),
     values: {
       'Source Item ID': item.id,
@@ -186,18 +180,12 @@ async function syncRgAreaScope(registry: ReturnType<typeof loadHubRegistry>) {
       'Snapshot At': TODAY,
     },
   }));
-
-  console.log(`  Pulled ${items.length} RG area scope items`);
-  await deleteBoardItems(hubId);
-  return writeItems(hubId, colMap, rows, boardKey);
 }
 
-async function syncPsContracts(registry: ReturnType<typeof loadHubRegistry>) {
-  const boardKey = 'psContracts' as const;
-  const hubId = registry.boards[boardKey].id;
-  const colMap = hubColumnMap(registry, boardKey);
+async function buildPsContractRows() {
   const items = await getAllBoardItems(SOURCE_BOARDS.psRmrContract.id);
-  const rows = items.map((item) => ({
+  console.log(`  Pulled ${items.length} PS contracts`);
+  return items.map((item) => ({
     itemName: item.name.slice(0, 120),
     values: {
       'Source Item ID': item.id,
@@ -210,18 +198,12 @@ async function syncPsContracts(registry: ReturnType<typeof loadHubRegistry>) {
       'Snapshot At': TODAY,
     },
   }));
-
-  console.log(`  Pulled ${items.length} PS contracts`);
-  await deleteBoardItems(hubId);
-  return writeItems(hubId, colMap, rows, boardKey);
 }
 
-async function syncPsGuardPosts(registry: ReturnType<typeof loadHubRegistry>) {
-  const boardKey = 'psGuardPosts' as const;
-  const hubId = registry.boards[boardKey].id;
-  const colMap = hubColumnMap(registry, boardKey);
+async function buildPsGuardRows() {
   const items = await getAllBoardItems(SOURCE_BOARDS.psGuardPosts.id);
-  const rows = items.map((item) => ({
+  console.log(`  Pulled ${items.length} PS guard posts`);
+  return items.map((item) => ({
     itemName: item.name.slice(0, 120),
     values: {
       'Source Item ID': item.id,
@@ -235,88 +217,188 @@ async function syncPsGuardPosts(registry: ReturnType<typeof loadHubRegistry>) {
       'Snapshot At': TODAY,
     },
   }));
-
-  console.log(`  Pulled ${items.length} PS guard posts`);
-  await deleteBoardItems(hubId);
-  return writeItems(hubId, colMap, rows, boardKey);
 }
 
-async function logSync(
-  registry: ReturnType<typeof loadHubRegistry>,
+async function prepareRows(stepId: SyncStepId, registry: ReturnType<typeof loadHubRegistry>) {
+  switch (stepId) {
+    case 'actionItems':
+      return buildActionItemRows(registry);
+    case 'capa': {
+      const rows = await buildCapaRows();
+      await deleteBoardItems(registry.boards.capa.id);
+      return rows;
+    }
+    case 'kpiHistory':
+      return buildKpiRows(registry);
+    case 'rgContracts': {
+      const rows = await buildRgContractRows();
+      await deleteBoardItems(registry.boards.rgContracts.id);
+      return rows;
+    }
+    case 'rgAreaScope': {
+      const rows = await buildRgAreaRows();
+      await deleteBoardItems(registry.boards.rgAreaScope.id);
+      return rows;
+    }
+    case 'psContracts': {
+      const rows = await buildPsContractRows();
+      await deleteBoardItems(registry.boards.psContracts.id);
+      return rows;
+    }
+    case 'psGuardPosts': {
+      const rows = await buildPsGuardRows();
+      await deleteBoardItems(registry.boards.psGuardPosts.id);
+      return rows;
+    }
+    default:
+      throw new Error(`Unknown step: ${stepId}`);
+  }
+}
+
+export async function prepareSyncStep(runId: string, stepId: SyncStepId) {
+  const session = loadSession(runId);
+  if (!session) throw new Error('Sync session not found');
+
+  const registry = loadHubRegistry();
+  const meta = getSyncStep(stepId);
+  if (!meta) throw new Error(`Unknown step: ${stepId}`);
+
+  console.log(`\n[${meta.label}] prepare`);
+  const rows = await prepareRows(stepId, registry);
+  saveStagingRows(runId, stepId, rows);
+
+  return { rowCount: rows.length, batched: meta.batched, batchSize: meta.batchSize };
+}
+
+export async function writeSyncStepBatch(
   runId: string,
-  started: string,
-  status: string,
-  boardsPulled: string[],
-  itemsWritten: number,
-  errors: string[]
+  stepId: SyncStepId,
+  batchIndex: number
 ) {
+  const session = loadSession(runId);
+  if (!session) throw new Error('Sync session not found');
+
+  const registry = loadHubRegistry();
+  const meta = getSyncStep(stepId);
+  if (!meta) throw new Error(`Unknown step: ${stepId}`);
+
+  const rows = loadStagingRows(runId, stepId);
+  const colMap = hubColumnMap(registry, stepId);
+  const hubId = registry.boards[stepId].id;
+  const offset = batchIndex * meta.batchSize;
+  const limit = meta.batched ? meta.batchSize : rows.length;
+
+  if (offset >= rows.length) {
+    return { written: 0, hasMore: false, total: rows.length };
+  }
+
+  console.log(`\n[${meta.label}] batch ${batchIndex + 1}`);
+  const written = await writeRows(hubId, colMap, rows, stepId, offset, limit);
+  session.totalWritten += written;
+  saveSession(session);
+
+  const nextOffset = offset + limit;
+  const hasMore = nextOffset < rows.length;
+  if (!hasMore) {
+    session.completedSteps.push(stepId);
+    saveSession(session);
+    clearStagingRows(runId, stepId);
+  }
+
+  return { written, hasMore, total: rows.length, completed: !hasMore };
+}
+
+export async function runSyncStepWhole(runId: string, stepId: SyncStepId) {
+  const prep = await prepareSyncStep(runId, stepId);
+  if (prep.rowCount === 0) {
+    const session = loadSession(runId);
+    if (session) {
+      session.completedSteps.push(stepId);
+      saveSession(session);
+    }
+    return { written: 0, hasMore: false, total: 0, completed: true };
+  }
+
+  if (prep.batched) {
+    let batchIndex = 0;
+    let hasMore = true;
+    let totalWritten = 0;
+    while (hasMore) {
+      const result = await writeSyncStepBatch(runId, stepId, batchIndex);
+      totalWritten += result.written;
+      hasMore = result.hasMore;
+      batchIndex++;
+    }
+    return { written: totalWritten, hasMore: false, total: prep.rowCount, completed: true };
+  }
+
+  const registry = loadHubRegistry();
+  const rows = loadStagingRows(runId, stepId);
+  const colMap = hubColumnMap(registry, stepId);
+  const hubId = registry.boards[stepId].id;
+  const written = await writeRows(hubId, colMap, rows, stepId);
+  const session = loadSession(runId);
+  if (session) {
+    session.totalWritten += written;
+    session.completedSteps.push(stepId);
+    saveSession(session);
+  }
+  clearStagingRows(runId, stepId);
+  return { written, hasMore: false, total: rows.length, completed: true };
+}
+
+async function logSync(session: SyncSession) {
+  const registry = loadHubRegistry();
   const boardKey = 'syncLog' as const;
   const hubId = registry.boards[boardKey].id;
   const colMap = hubColumnMap(registry, boardKey);
   await createItem(
     hubId,
-    `Sync ${runId}`,
+    `Sync ${session.runId}`,
     buildColumnValues(colMap, {
-      'Run ID': runId,
-      Started: started,
+      'Run ID': session.runId,
+      Started: session.started,
       Finished: TODAY,
-      Status: status,
-      'Boards Pulled': boardsPulled.join(', '),
-      'Items Written': itemsWritten,
-      Errors: errors.length ? errors.join('\n') : '',
+      Status: session.errors.length ? 'Partial' : 'Success',
+      'Boards Pulled': Object.values(SOURCE_BOARDS).map((b) => b.name).join(', '),
+      'Items Written': session.totalWritten,
+      Errors: session.errors.length ? session.errors.join('\n') : '',
     })
   );
 }
 
+export async function finishSyncRun(runId: string) {
+  const session = loadSession(runId);
+  if (!session) throw new Error('Sync session not found');
+  await logSync(session);
+  console.log(`\n=== Sync complete ===`);
+  console.log(`Items written: ${session.totalWritten}`);
+  return session;
+}
+
 export async function runSync(): Promise<{ totalWritten: number; errors: string[] }> {
   const runId = new Date().toISOString().replace(/[:.]/g, '-');
-  const started = TODAY;
-  const registry = loadHubRegistry();
+  const { createSession } = await import('./sync-session');
+  createSession(runId, TODAY);
+
   const errors: string[] = [];
-  let totalWritten = 0;
+  const { SYNC_STEPS } = await import('./sync-steps');
 
-  const steps: [string, () => Promise<number>][] = [
-    ['Action Items', () => syncActionItems(registry)],
-    ['CAPA', () => syncCapa(registry)],
-    ['KPI History', () => syncKpis(registry)],
-    ['RG Contracts', () => syncRgContracts(registry)],
-    ['RG Area Scope', () => syncRgAreaScope(registry)],
-    ['PS Contracts', () => syncPsContracts(registry)],
-    ['PS Guard Posts', () => syncPsGuardPosts(registry)],
-  ];
-
-  console.log(`\n=== Calidad Dashboard Sync — ${runId} ===\n`);
-  console.log('READ ONLY on source boards. WRITE only to hub workspace.\n');
-
-  for (const [name, fn] of steps) {
+  for (const step of SYNC_STEPS) {
     try {
-      console.log(`\n[${name}]`);
-      totalWritten += await fn();
+      await runSyncStepWhole(runId, step.id);
     } catch (err) {
-      const msg = `${name}: ${err instanceof Error ? err.message : String(err)}`;
-      console.error(`  ERROR: ${msg}`);
+      const msg = `${step.label}: ${err instanceof Error ? err.message : String(err)}`;
       errors.push(msg);
+      const session = loadSession(runId);
+      if (session) {
+        session.errors.push(msg);
+        saveSession(session);
+      }
     }
   }
 
-  await logSync(
-    registry,
-    runId,
-    started,
-    errors.length ? 'Partial' : 'Success',
-    Object.values(SOURCE_BOARDS).map((b) => b.name),
-    totalWritten,
-    errors
-  );
-
-  console.log(`\n=== Sync complete ===`);
-  console.log(`Items written: ${totalWritten}`);
-  console.log(`Errors: ${errors.length}`);
-  if (errors.length) errors.forEach((e) => console.log(`  - ${e}`));
-
-  if (errors.length) {
-    throw new Error(errors.join('; '));
-  }
-
-  return { totalWritten, errors };
+  const session = await finishSyncRun(runId);
+  if (errors.length) throw new Error(errors.join('; '));
+  return { totalWritten: session.totalWritten, errors };
 }
