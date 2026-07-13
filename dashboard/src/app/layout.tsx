@@ -30,6 +30,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="en" className={`${geist.variable} ${display.variable} h-full`} suppressHydrationWarning>
       <head>
+        <link rel="icon" href="/calidad-logo.png" type="image/png" sizes="any" />
+        <link rel="shortcut icon" href="/calidad-logo.png" type="image/png" />
+        <link rel="apple-touch-icon" href="/calidad-logo.png" />
         <script dangerouslySetInnerHTML={{ __html: themeScript }} />
       </head>
       <body className="min-h-full font-sans antialiased" suppressHydrationWarning>

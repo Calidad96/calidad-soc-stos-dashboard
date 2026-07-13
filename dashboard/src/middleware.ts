@@ -4,6 +4,9 @@ import { SESSION_COOKIE, verifySessionToken } from '@/lib/auth-session';
 
 function isPublicPath(pathname: string): boolean {
   if (pathname === '/login') return true;
+  if (pathname === '/favicon.ico') return true;
+  if (pathname === '/icon' || pathname.startsWith('/icon.')) return true;
+  if (pathname === '/apple-icon' || pathname.startsWith('/apple-icon.')) return true;
   if (pathname === '/api/auth/login') return true;
   if (pathname === '/api/auth/logout') return true;
   if (pathname === '/api/cron/sync') return true;
@@ -41,5 +44,5 @@ export async function middleware(request: NextRequest) {
 }
 
 export const config = {
-  matcher: ['/((?!_next/static|_next/image).*)'],
+  matcher: ['/((?!_next/static|_next/image|favicon.ico|icon|apple-icon|calidad-logo\\.png).*)'],
 };
