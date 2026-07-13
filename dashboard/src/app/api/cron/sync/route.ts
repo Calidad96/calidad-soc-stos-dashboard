@@ -1,8 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { getSyncWindow } from '@/lib/sync-schedule';
 import { readSyncSettings } from '@/lib/sync-settings';
 import {
-  getLastScheduledSlot,
   getSyncRunState,
   isSyncRunning,
   triggerSync,
@@ -18,6 +16,7 @@ function isAuthorizedCron(request: NextRequest): boolean {
   return auth === `Bearer ${secret}`;
 }
 
+/** Vercel Cron — once daily (Hobby plan). Schedule: 13:00 UTC ≈ 6:00 AM US Pacific (PDT). */
 export async function GET(request: NextRequest) {
   if (!isAuthorizedCron(request)) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
@@ -32,15 +31,7 @@ export async function GET(request: NextRequest) {
     return NextResponse.json({ skipped: true, reason: 'Auto sync disabled' });
   }
 
-  const { inWindow, slot } = getSyncWindow(settings);
-  if (!inWindow || !slot) {
-    return NextResponse.json({ skipped: true, reason: 'Outside sync window' });
-  }
-
-  if (getLastScheduledSlot() === slot) {
-    return NextResponse.json({ skipped: true, reason: 'Already ran for this slot' });
-  }
-
+  const slot = new Date().toISOString().slice(0, 10);
   const result = await triggerSync({ scheduledSlot: slot, wait: true });
   return NextResponse.json({
     started: result.started,
