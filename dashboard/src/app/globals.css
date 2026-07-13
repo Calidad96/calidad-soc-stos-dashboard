@@ -936,13 +936,11 @@ code {
 }
 
 [data-theme='dark'] .brand-logo-img {
-  filter: brightness(1.45) contrast(1.12) saturate(1.12)
-    drop-shadow(0 0 2px rgba(255, 255, 255, 0.4))
-    drop-shadow(0 2px 20px rgba(255, 255, 255, 0.12));
+  filter: brightness(1.06) contrast(1.03);
 }
 
 [data-theme='light'] .brand-logo-img {
-  filter: contrast(1.05) saturate(1.03);
+  filter: none;
 }
 
 /* Period picker — inline bar */
@@ -1129,14 +1127,6 @@ code {
 
 .login-card-header .brand-logo-img {
   max-width: 100%;
-}
-
-[data-theme='dark'] .login-card-header .brand-logo-img {
-  filter: brightness(1.06) contrast(1.03);
-}
-
-[data-theme='light'] .login-card-header .brand-logo-img {
-  filter: none;
 }
 
 .login-eyebrow {
