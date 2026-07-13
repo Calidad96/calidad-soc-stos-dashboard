@@ -159,6 +159,17 @@ export function SettingsTab({
   const runStatus = run?.status ?? 'idle';
   const isRunning = runStatus === 'running';
 
+  useEffect(() => {
+    if (!syncing) return;
+    if (runStatus === 'success' || runStatus === 'partial') {
+      setMessage('Update completed successfully.');
+      setSyncing(false);
+    } else if (runStatus === 'error') {
+      setMessage(null);
+      setSyncing(false);
+    }
+  }, [syncing, runStatus]);
+
   return (
     <div className="animate-fade-in mx-auto max-w-4xl space-y-5">
       <p className="text-[13px] leading-relaxed text-[var(--muted)]">
