@@ -1,7 +1,7 @@
 'use client';
 
 import { BrandLogo } from './BrandLogo';
-import { ChevronDown, LayoutGrid } from 'lucide-react';
+import { ChevronDown, LayoutGrid, LogOut } from 'lucide-react';
 import {
   LayoutDashboard,
   Target,
@@ -157,11 +157,18 @@ export function Sidebar({
         })}
       </nav>
 
-      <div className="border-t border-[var(--border)] px-4 py-3">
-        <p className="text-[10px] font-semibold uppercase tracking-[0.12em] text-[var(--muted)] opacity-70">
-          Calidad Services
-        </p>
-        <p className="mt-0.5 text-[11px] text-[var(--muted)]">Executive Dashboard</p>
+      <div className="border-t border-[var(--border)] p-3">
+        <button
+          type="button"
+          onClick={async () => {
+            await fetch('/api/auth/logout', { method: 'POST' });
+            window.location.href = '/login';
+          }}
+          className="sidebar-sign-out flex w-full items-center justify-center gap-2 rounded-xl border border-[var(--border)] bg-[var(--card)] px-3 py-2.5 text-[12px] font-semibold text-[var(--muted)] transition hover:border-[var(--border-light)] hover:bg-[var(--hover-row)] hover:text-[var(--ink)]"
+        >
+          <LogOut size={14} />
+          Sign out
+        </button>
       </div>
     </aside>
   );

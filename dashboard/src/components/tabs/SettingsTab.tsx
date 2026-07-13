@@ -10,7 +10,6 @@ import {
   Loader2,
   ArrowRight,
   Save,
-  LogOut,
 } from 'lucide-react';
 import { INSIGHT_TIPS } from '@/lib/dashboard-views';
 import {
@@ -411,28 +410,6 @@ export function SettingsTab({
           The dashboard loads the latest numbers when you open it. Scheduled
           updates keep everything current for the US workday.
         </p>
-      </div>
-
-      <div className="card-surface flex flex-wrap items-center justify-between gap-4 px-6 py-5">
-        <div>
-          <p className="text-[10px] font-bold uppercase tracking-wider text-[var(--muted)]">
-            Session
-          </p>
-          <p className="mt-1 text-[13px] text-[var(--muted)]">
-            Sign out when you are done on a shared device.
-          </p>
-        </div>
-        <button
-          type="button"
-          onClick={async () => {
-            await fetch('/api/auth/logout', { method: 'POST' });
-            window.location.href = '/login';
-          }}
-          className="inline-flex items-center gap-2 rounded-lg border border-[var(--border-light)] bg-[var(--bg-elevated)] px-4 py-2.5 text-[13px] font-semibold text-[var(--ink)] transition hover:border-[var(--royal)] hover:bg-[var(--hover-row)]"
-        >
-          <LogOut size={15} />
-          Sign out
-        </button>
       </div>
     </div>
   );
