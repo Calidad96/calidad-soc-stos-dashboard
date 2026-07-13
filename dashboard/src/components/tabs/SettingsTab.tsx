@@ -147,9 +147,16 @@ export function SettingsTab({
     setSyncing(true);
 
     const MAX_RETRIES = 3;
-    const RETRY_BASE_MS = 5000;
+    const RETRY_WAIT_MINUTES = [5, 10, 15];
 
     const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));
+
+    const retryWaitMs = (attempt: number) => RETRY_WAIT_MINUTES[attempt - 1] * 60 * 1000;
+
+    const retryMessage = (label: string, attempt: number) => {
+      const minutes = RETRY_WAIT_MINUTES[attempt - 1];
+      return `${label} — retrying in ${minutes} min (${attempt}/${MAX_RETRIES})…`;
+    };
 
     const isRetryable = (status: number, message: string) =>
       [408, 502, 503, 504].includes(status) ||
@@ -179,8 +186,8 @@ export function SettingsTab({
                   : text.slice(0, 120) || `Request failed (${res.status})`;
             if (isRetryable(res.status, parseError) && attempt < MAX_RETRIES) {
               lastError = parseError;
-              const wait = RETRY_BASE_MS * attempt;
-              setMessage(`${label} — retrying in ${wait / 1000}s (${attempt}/${MAX_RETRIES})…`);
+              const wait = retryWaitMs(attempt);
+              setMessage(retryMessage(label, attempt));
               await sleep(wait);
               continue;
             }
@@ -191,8 +198,8 @@ export function SettingsTab({
             const errText = String(json.error ?? 'Sync step failed');
             if (isRetryable(res.status, errText) && attempt < MAX_RETRIES) {
               lastError = errText;
-              const wait = RETRY_BASE_MS * attempt;
-              setMessage(`${label} — retrying in ${wait / 1000}s (${attempt}/${MAX_RETRIES})…`);
+              const wait = retryWaitMs(attempt);
+              setMessage(retryMessage(label, attempt));
               await sleep(wait);
               continue;
             }
@@ -204,8 +211,8 @@ export function SettingsTab({
           const message = err instanceof Error ? err.message : String(err);
           if (isRetryable(0, message) && attempt < MAX_RETRIES) {
             lastError = message;
-            const wait = RETRY_BASE_MS * attempt;
-            setMessage(`${label} — retrying in ${wait / 1000}s (${attempt}/${MAX_RETRIES})…`);
+            const wait = retryWaitMs(attempt);
+            setMessage(retryMessage(label, attempt));
             await sleep(wait);
             continue;
           }
