@@ -1,7 +1,6 @@
 import { spawn } from 'child_process';
 import path from 'path';
-import { getProjectRoot } from './project-root';
-
+import { getProjectRoot, resolveSyncScript } from './project-root';
 export type SyncRunStatus = 'idle' | 'running' | 'success' | 'partial' | 'error';
 
 export interface SyncRunState {
@@ -76,13 +75,16 @@ export async function triggerSync(opts?: {
 
 async function runSyncProcess(): Promise<void> {
   const root = getProjectRoot();
-  const scriptPath = path.join(root, 'src', 'scripts', 'sync-all.js');
+  const scriptPath = resolveSyncScript(root);
   const output: string[] = [];
 
   await new Promise<void>((resolve, reject) => {
     const child = spawn(process.execPath, [scriptPath], {
       cwd: root,
-      env: { ...process.env },
+      env: {
+        ...process.env,
+        NODE_PATH: path.join(process.cwd(), 'node_modules'),
+      },
       shell: false,
     });
 

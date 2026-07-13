@@ -1,0 +1,129 @@
+{
+  "boards": {
+    "actionItems": {
+      "id": "18421237656",
+      "name": "[SYNC] Action Items Snapshot"
+    },
+    "capa": {
+      "id": "18421237790",
+      "name": "[SYNC] CAPA Snapshot"
+    },
+    "kpiHistory": {
+      "id": "18421237837",
+      "name": "[SYNC] KPI History"
+    },
+    "rgContracts": {
+      "id": "18421237888",
+      "name": "[SYNC] RG Contracts Snapshot"
+    },
+    "rgAreaScope": {
+      "id": "18421237943",
+      "name": "[SYNC] RG Area Scope Snapshot"
+    },
+    "psContracts": {
+      "id": "18421237989",
+      "name": "[SYNC] PS Contracts Snapshot"
+    },
+    "psGuardPosts": {
+      "id": "18421238055",
+      "name": "[SYNC] PS Guard Posts Snapshot"
+    },
+    "syncLog": {
+      "id": "18421238098",
+      "name": "[SYNC] Sync Log"
+    }
+  },
+  "columnIds": {
+    "actionItems": {
+      "Source Item ID": "text_mm53t575",
+      "Source Board ID": "text_mm53cf8x",
+      "Department": "text_mm53bwmj",
+      "Accountable": "text_mm53893r",
+      "Priority": "text_mm538691",
+      "Status": "text_mm53e9ac",
+      "Due Date": "date_mm53acfd",
+      "Next Action Date": "date_mm53bkcc",
+      "Due Bucket": "text_mm53p4bw",
+      "Client": "text_mm53rb91",
+      "Task Description": "long_text_mm53dcss",
+      "Snapshot At": "date_mm53z3ch"
+    },
+    "capa": {
+      "Source Item ID": "text_mm53x0r4",
+      "Criticality": "text_mm53znpp",
+      "Status": "text_mm539zak",
+      "Departments": "text_mm5382d4",
+      "Requester": "text_mm53jb9z",
+      "Issue Description": "long_text_mm53901z",
+      "Date Requested": "date_mm53aesz",
+      "Snapshot At": "date_mm53ws4j"
+    },
+    "kpiHistory": {
+      "KPI Key": "text_mm536j3p",
+      "KPI Name": "text_mm53tfp7",
+      "Department": "text_mm538667",
+      "Category": "text_mm53vvkd",
+      "Month": "text_mm53wcp6",
+      "Actual Value": "numeric_mm53pmeh",
+      "Target": "numeric_mm534kcw",
+      "KPI Score": "numeric_mm538aak",
+      "Year": "text_mm53tcyn",
+      "Exceed Level": "text_mm535ew",
+      "Source Item ID": "text_mm53r636",
+      "Synced At": "date_mm534fvf"
+    },
+    "rgContracts": {
+      "Source Item ID": "text_mm53nsxg",
+      "Status": "text_mm53s909",
+      "Project ID": "text_mm53b50d",
+      "Standard SLA": "text_mm53j6s3",
+      "MSU": "text_mm53rbbw",
+      "Contract Start": "date_mm53q1ff",
+      "Contract End": "date_mm53wd74",
+      "Monthly Bill": "numeric_mm53ngeb",
+      "Setup Fee": "numeric_mm53kerg",
+      "Snapshot At": "date_mm537edy"
+    },
+    "rgAreaScope": {
+      "Source Item ID": "text_mm53ankm",
+      "Status": "text_mm539hgb",
+      "Service Type": "text_mm53e6qw",
+      "Volume of Alarms": "text_mm53y1eh",
+      "CCTV": "text_mm5383na",
+      "VMS Platform": "text_mm5373sc",
+      "AI Platform": "text_mm53rwqs",
+      "Virtual Patrols": "text_mm53bty6",
+      "Snapshot At": "date_mm53y0qh"
+    },
+    "psContracts": {
+      "Source Item ID": "text_mm53f25f",
+      "Status": "text_mm53v3tr",
+      "Lead": "text_mm53akn1",
+      "Start Date": "date_mm53432c",
+      "End Date": "date_mm53gwm7",
+      "Renewal Date": "date_mm53sfm1",
+      "Project ID": "text_mm53v87c",
+      "Snapshot At": "date_mm5318kz"
+    },
+    "psGuardPosts": {
+      "Source Item ID": "text_mm53e24d",
+      "Post Type": "text_mm537xd3",
+      "Armed Status": "text_mm53xt8t",
+      "Status": "text_mm53ftxy",
+      "Hours Per Shift": "numeric_mm53cy4k",
+      "Shifts Per Week": "numeric_mm53kddc",
+      "Pay Rate": "numeric_mm53azqe",
+      "Bill Rate": "numeric_mm5386an",
+      "Snapshot At": "date_mm53408q"
+    },
+    "syncLog": {
+      "Run ID": "text_mm53sp0q",
+      "Started": "date_mm53117y",
+      "Finished": "date_mm53rgg4",
+      "Status": "text_mm53xdfb",
+      "Boards Pulled": "long_text_mm53c22w",
+      "Items Written": "numeric_mm53ts50",
+      "Errors": "long_text_mm53ssrj"
+    }
+  }
+}
