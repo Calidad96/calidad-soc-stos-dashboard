@@ -1,0 +1,12 @@
+node_modules/
+.env
+.env.local
+.env*.local
+dist/
+.output/
+*.log
+.DS_Store
+
+# Next.js
+dashboard/.next/
+dashboard/out/

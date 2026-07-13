@@ -1,0 +1,6241 @@
+{
+  "inspectedAt": "2026-07-09T14:09:20.950Z",
+  "boards": {
+    "socActionItems": {
+      "id": "18415782190",
+      "name": "SOC / Remote Guarding — Action Items",
+      "domain": "action_items",
+      "department": "SOC",
+      "structure": {
+        "id": "18415782190",
+        "name": "🚨 SOC / Remote Guarding — Action Items",
+        "workspace_id": "12744039",
+        "columns": [
+          {
+            "id": "name",
+            "title": "Name",
+            "type": "name"
+          },
+          {
+            "id": "multiple_person_mm3w4f29",
+            "title": "Accountable",
+            "type": "people"
+          },
+          {
+            "id": "multiple_person_mm3x2xjz",
+            "title": "Dependency",
+            "type": "people"
+          },
+          {
+            "id": "color_mm3wdae3",
+            "title": "Priority",
+            "type": "status"
+          },
+          {
+            "id": "color_mm3w3b8j",
+            "title": "Status",
+            "type": "status"
+          },
+          {
+            "id": "date_mm3wgpk3",
+            "title": "Next Action Date",
+            "type": "date"
+          },
+          {
+            "id": "date_mm3w4xg6",
+            "title": "Due Date",
+            "type": "date"
+          },
+          {
+            "id": "long_text_mm3wmrk6",
+            "title": "Task Description",
+            "type": "long_text"
+          },
+          {
+            "id": "board_relation_mm3w2jx6",
+            "title": "CAPA/SOP",
+            "type": "board_relation"
+          },
+          {
+            "id": "lookup_mm3wt03c",
+            "title": "Status",
+            "type": "mirror"
+          },
+          {
+            "id": "subtasks_mm3xna84",
+            "title": "Subitems",
+            "type": "subtasks"
+          },
+          {
+            "id": "direct_doc_mm3x3t7v",
+            "title": "monday Doc v2",
+            "type": "direct_doc"
+          },
+          {
+            "id": "numeric_mm3xa04k",
+            "title": "Time Est. (Hrs.)",
+            "type": "numbers"
+          },
+          {
+            "id": "long_text_mm3xrxa1",
+            "title": "Resolution Notes",
+            "type": "long_text"
+          },
+          {
+            "id": "pulse_log_mm3x7ebq",
+            "title": "Creation Log",
+            "type": "creation_log"
+          },
+          {
+            "id": "pulse_updated_mm3x8998",
+            "title": "Last Updated",
+            "type": "last_updated"
+          },
+          {
+            "id": "link_mm40cd4g",
+            "title": "Link",
+            "type": "link"
+          },
+          {
+            "id": "text_mm40qv01",
+            "title": "Client",
+            "type": "text"
+          },
+          {
+            "id": "dropdown_mm40wxcv",
+            "title": "Department",
+            "type": "dropdown"
+          },
+          {
+            "id": "long_text_mm46qwgb",
+            "title": "Definition of Done",
+            "type": "long_text"
+          }
+        ],
+        "groups": [
+          {
+            "id": "topics",
+            "title": "All Items"
+          }
+        ]
+      },
+      "sampleItemCount": 5,
+      "sampleItems": [
+        {
+          "id": "18385406214",
+          "name": "Review all Client SOP's with Customer",
+          "group": "All Items",
+          "columns": [
+            {
+              "title": "Accountable",
+              "type": "people",
+              "text": "Rob Young, Tina  Sharkey"
+            },
+            {
+              "title": "Dependency",
+              "type": "people",
+              "text": "Timothy J. Leach"
+            },
+            {
+              "title": "Priority",
+              "type": "status",
+              "text": "Critical ⚠️️"
+            },
+            {
+              "title": "Status",
+              "type": "status",
+              "text": "Not Started"
+            },
+            {
+              "title": "Next Action Date",
+              "type": "date",
+              "text": ""
+            },
+            {
+              "title": "Due Date",
+              "type": "date",
+              "text": "2026-07-16"
+            },
+            {
+              "title": "Task Description",
+              "type": "long_text",
+              "text": ""
+            },
+            {
+              "title": "CAPA/SOP",
+              "type": "board_relation",
+              "text": null
+            },
+            {
+              "title": "Status",
+              "type": "mirror",
+              "text": null
+            },
+            {
+              "title": "Subitems",
+              "type": "subtasks",
+              "text": null
+            },
+            {
+              "title": "monday Doc v2",
+              "type": "direct_doc",
+              "text": ""
+            },
+            {
+              "title": "Time Est. (Hrs.)",
+              "type": "numbers",
+              "text": ""
+            },
+            {
+              "title": "Resolution Notes",
+              "type": "long_text",
+              "text": ""
+            },
+            {
+              "title": "Creation Log",
+              "type": "creation_log",
+              "text": "2025-11-19 22:24:37 UTC"
+            },
+            {
+              "title": "Last Updated",
+              "type": "last_updated",
+              "text": "2026-06-18 17:17:55 UTC"
+            },
+            {
+              "title": "Link",
+              "type": "link",
+              "text": ""
+            },
+            {
+              "title": "Client",
+              "type": "text",
+              "text": ""
+            },
+            {
+              "title": "Department",
+              "type": "dropdown",
+              "text": null
+            },
+            {
+              "title": "Definition of Done",
+              "type": "long_text",
+              "text": ""
+            }
+          ]
+        },
+        {
+          "id": "9790435146",
+          "name": "Create multiple Loom training videos for SOC team (incident handling, PD calls, system tips, escalation steps)",
+          "group": "All Items",
+          "columns": [
+            {
+              "title": "Accountable",
+              "type": "people",
+              "text": "Rob Young"
+            },
+            {
+              "title": "Dependency",
+              "type": "people",
+              "text": ""
+            },
+            {
+              "title": "Priority",
+              "type": "status",
+              "text": "Undefined"
+            },
+            {
+              "title": "Status",
+              "type": "status",
+              "text": "Not Started"
+            },
+            {
+              "title": "Next Action Date",
+              "type": "date",
+              "text": ""
+            },
+            {
+              "title": "Due Date",
+              "type": "date",
+              "text": "2026-05-31"
+            },
+            {
+              "title": "Task Description",
+              "type": "long_text",
+              "text": ""
+            },
+            {
+              "title": "CAPA/SOP",
+              "type": "board_relation",
+              "text": null
+            },
+            {
+              "title": "Status",
+              "type": "mirror",
+              "text": null
+            },
+            {
+              "title": "Subitems",
+              "type": "subtasks",
+              "text": null
+            },
+            {
+              "title": "monday Doc v2",
+              "type": "direct_doc",
+              "text": ""
+            },
+            {
+              "title": "Time Est. (Hrs.)",
+              "type": "numbers",
+              "text": ""
+            },
+            {
+              "title": "Resolution Notes",
+              "type": "long_text",
+              "text": ""
+            },
+            {
+              "title": "Creation Log",
+              "type": "creation_log",
+              "text": "2025-08-11 15:54:47 UTC"
+            },
+            {
+              "title": "Last Updated",
+              "type": "last_updated",
+              "text": "2026-06-01 17:43:57 UTC"
+            },
+            {
+              "title": "Link",
+              "type": "link",
+              "text": ""
+            },
+            {
+              "title": "Client",
+              "type": "text",
+              "text": ""
+            },
+            {
+              "title": "Department",
+              "type": "dropdown",
+              "text": null
+            },
+            {
+              "title": "Definition of Done",
+              "type": "long_text",
+              "text": ""
+            }
+          ]
+        },
+        {
+          "id": "9790436238",
+          "name": "Create Loom video training: 'How to Identify and Report a Level 1 Incident'",
+          "group": "All Items",
+          "columns": [
+            {
+              "title": "Accountable",
+              "type": "people",
+              "text": "Timothy J. Leach"
+            },
+            {
+              "title": "Dependency",
+              "type": "people",
+              "text": ""
+            },
+            {
+              "title": "Priority",
+              "type": "status",
+              "text": "Undefined"
+            },
+            {
+              "title": "Status",
+              "type": "status",
+              "text": "Not Started"
+            },
+            {
+              "title": "Next Action Date",
+              "type": "date",
+              "text": ""
+            },
+            {
+              "title": "Due Date",
+              "type": "date",
+              "text": "2026-05-15"
+            },
+            {
+              "title": "Task Description",
+              "type": "long_text",
+              "text": ""
+            },
+            {
+              "title": "CAPA/SOP",
+              "type": "board_relation",
+              "text": null
+            },
+            {
+              "title": "Status",
+              "type": "mirror",
+              "text": null
+            },
+            {
+              "title": "Subitems",
+              "type": "subtasks",
+              "text": null
+            },
+            {
+              "title": "monday Doc v2",
+              "type": "direct_doc",
+              "text": ""
+            },
+            {
+              "title": "Time Est. (Hrs.)",
+              "type": "numbers",
+              "text": ""
+            },
+            {
+              "title": "Resolution Notes",
+              "type": "long_text",
+              "text": ""
+            },
+            {
+              "title": "Creation Log",
+              "type": "creation_log",
+              "text": "2025-08-11 15:54:50 UTC"
+            },
+            {
+              "title": "Last Updated",
+              "type": "last_updated",
+              "text": "2026-06-18 17:14:49 UTC"
+            },
+            {
+              "title": "Link",
+              "type": "link",
+              "text": ""
+            },
+            {
+              "title": "Client",
+              "type": "text",
+              "text": ""
+            },
+            {
+              "title": "Department",
+              "type": "dropdown",
+              "text": null
+            },
+            {
+              "title": "Definition of Done",
+              "type": "long_text",
+              "text": ""
+            }
+          ]
+        },
+        {
+          "id": "11243948507",
+          "name": "SOC EMERGENCY PROTOCOLS",
+          "group": "All Items",
+          "columns": [
+            {
+              "title": "Accountable",
+              "type": "people",
+              "text": "Rob Young"
+            },
+            {
+              "title": "Dependency",
+              "type": "people",
+              "text": ""
+            },
+            {
+              "title": "Priority",
+              "type": "status",
+              "text": "Critical ⚠️️"
+            },
+            {
+              "title": "Status",
+              "type": "status",
+              "text": "Cancelled"
+            },
+            {
+              "title": "Next Action Date",
+              "type": "date",
+              "text": ""
+            },
+            {
+              "title": "Due Date",
+              "type": "date",
+              "text": "2026-04-10"
+            },
+            {
+              "title": "Task Description",
+              "type": "long_text",
+              "text": ""
+            },
+            {
+              "title": "CAPA/SOP",
+              "type": "board_relation",
+              "text": null
+            },
+            {
+              "title": "Status",
+              "type": "mirror",
+              "text": null
+            },
+            {
+              "title": "Subitems",
+              "type": "subtasks",
+              "text": null
+            },
+            {
+              "title": "monday Doc v2",
+              "type": "direct_doc",
+              "text": ""
+            },
+            {
+              "title": "Time Est. (Hrs.)",
+              "type": "numbers",
+              "text": ""
+            },
+            {
+              "title": "Resolution Notes",
+              "type": "long_text",
+              "text": ""
+            },
+            {
+              "title": "Creation Log",
+              "type": "creation_log",
+              "text": "2026-02-10 23:57:18 UTC"
+            },
+            {
+              "title": "Last Updated",
+              "type": "last_updated",
+              "text": "2026-04-23 16:54:11 UTC"
+            },
+            {
+              "title": "Link",
+              "type": "link",
+              "text": ""
+            },
+            {
+              "title": "Client",
+              "type": "text",
+              "text": ""
+            },
+            {
+              "title": "Department",
+              "type": "dropdown",
+              "text": null
+            },
+            {
+              "title": "Definition of Done",
+              "type": "long_text",
+              "text": ""
+            }
+          ]
+        },
+        {
+          "id": "9790435178",
+          "name": "Implement SOC KPI dashboard in Monday.com for incidents/month & operator performance",
+          "group": "All Items",
+          "columns": [
+            {
+              "title": "Accountable",
+              "type": "people",
+              "text": "Timothy J. Leach"
+            },
+            {
+              "title": "Dependency",
+              "type": "people",
+              "text": ""
+            },
+            {
+              "title": "Priority",
+              "type": "status",
+              "text": "Undefined"
+            },
+            {
+              "title": "Status",
+              "type": "status",
+              "text": "Not Started"
+            },
+            {
+              "title": "Next Action Date",
+              "type": "date",
+              "text": ""
+            },
+            {
+              "title": "Due Date",
+              "type": "date",
+              "text": ""
+            },
+            {
+              "title": "Task Description",
+              "type": "long_text",
+              "text": ""
+            },
+            {
+              "title": "CAPA/SOP",
+              "type": "board_relation",
+              "text": null
+            },
+            {
+              "title": "Status",
+              "type": "mirror",
+              "text": null
+            },
+            {
+              "title": "Subitems",
+              "type": "subtasks",
+              "text": null
+            },
+            {
+              "title": "monday Doc v2",
+              "type": "direct_doc",
+              "text": ""
+            },
+            {
+              "title": "Time Est. (Hrs.)",
+              "type": "numbers",
+              "text": ""
+            },
+            {
+              "title": "Resolution Notes",
+              "type": "long_text",
+              "text": ""
+            },
+            {
+              "title": "Creation Log",
+              "type": "creation_log",
+              "text": "2025-08-11 15:54:47 UTC"
+            },
+            {
+              "title": "Last Updated",
+              "type": "last_updated",
+              "text": "2026-06-18 17:16:05 UTC"
+            },
+            {
+              "title": "Link",
+              "type": "link",
+              "text": ""
+            },
+            {
+              "title": "Client",
+              "type": "text",
+              "text": ""
+            },
+            {
+              "title": "Department",
+              "type": "dropdown",
+              "text": null
+            },
+            {
+              "title": "Definition of Done",
+              "type": "long_text",
+              "text": ""
+            }
+          ]
+        }
+      ]
+    },
+    "physecActionItems": {
+      "id": "18415782211",
+      "name": "Physical Security / Patrol — Action Items",
+      "domain": "action_items",
+      "department": "Physical Security",
+      "structure": {
+        "id": "18415782211",
+        "name": "👮 Physical Security / Patrol — Action Items",
+        "workspace_id": "12744039",
+        "columns": [
+          {
+            "id": "name",
+            "title": "Name",
+            "type": "name"
+          },
+          {
+            "id": "multiple_person_mm3w4f29",
+            "title": "Accountable",
+            "type": "people"
+          },
+          {
+            "id": "multiple_person_mm3xav3f",
+            "title": "Dependency",
+            "type": "people"
+          },
+          {
+            "id": "color_mm3wdae3",
+            "title": "Priority",
+            "type": "status"
+          },
+          {
+            "id": "color_mm3w3b8j",
+            "title": "Status",
+            "type": "status"
+          },
+          {
+            "id": "date_mm3wgpk3",
+            "title": "Next Action Date",
+            "type": "date"
+          },
+          {
+            "id": "date_mm3w4xg6",
+            "title": "Due Date",
+            "type": "date"
+          },
+          {
+            "id": "long_text_mm3wmrk6",
+            "title": "Task Description",
+            "type": "long_text"
+          },
+          {
+            "id": "board_relation_mm3w2jx6",
+            "title": "CAPA/SOP",
+            "type": "board_relation"
+          },
+          {
+            "id": "lookup_mm3wt03c",
+            "title": "Status",
+            "type": "mirror"
+          },
+          {
+            "id": "numeric_mm3xsrt4",
+            "title": "Time Est. (Hrs.)",
+            "type": "numbers"
+          },
+          {
+            "id": "long_text_mm3x6g0n",
+            "title": "Resolution Notes",
+            "type": "long_text"
+          },
+          {
+            "id": "pulse_log_mm3x2gbw",
+            "title": "Creation Log",
+            "type": "creation_log"
+          },
+          {
+            "id": "pulse_updated_mm3x5v1z",
+            "title": "Last Updated",
+            "type": "last_updated"
+          },
+          {
+            "id": "subtasks_mm40gy60",
+            "title": "Subitems",
+            "type": "subtasks"
+          },
+          {
+            "id": "long_text_mm46bpra",
+            "title": "Definition of Done",
+            "type": "long_text"
+          }
+        ],
+        "groups": [
+          {
+            "id": "topics",
+            "title": "All Items"
+          }
+        ]
+      },
+      "sampleItemCount": 5,
+      "sampleItems": [
+        {
+          "id": "12484486667",
+          "name": "New item",
+          "group": "All Items",
+          "columns": [
+            {
+              "title": "Accountable",
+              "type": "people",
+              "text": ""
+            },
+            {
+              "title": "Dependency",
+              "type": "people",
+              "text": ""
+            },
+            {
+              "title": "Priority",
+              "type": "status",
+              "text": "Undefined"
+            },
+            {
+              "title": "Status",
+              "type": "status",
+              "text": "Not Started"
+            },
+            {
+              "title": "Next Action Date",
+              "type": "date",
+              "text": ""
+            },
+            {
+              "title": "Due Date",
+              "type": "date",
+              "text": ""
+            },
+            {
+              "title": "Task Description",
+              "type": "long_text",
+              "text": ""
+            },
+            {
+              "title": "CAPA/SOP",
+              "type": "board_relation",
+              "text": null
+            },
+            {
+              "title": "Status",
+              "type": "mirror",
+              "text": null
+            },
+            {
+              "title": "Time Est. (Hrs.)",
+              "type": "numbers",
+              "text": ""
+            },
+            {
+              "title": "Resolution Notes",
+              "type": "long_text",
+              "text": ""
+            },
+            {
+              "title": "Creation Log",
+              "type": "creation_log",
+              "text": "2026-07-08 22:24:17 UTC"
+            },
+            {
+              "title": "Last Updated",
+              "type": "last_updated",
+              "text": "2026-07-08 22:24:17 UTC"
+            },
+            {
+              "title": "Subitems",
+              "type": "subtasks",
+              "text": null
+            },
+            {
+              "title": "Definition of Done",
+              "type": "long_text",
+              "text": ""
+            }
+          ]
+        },
+        {
+          "id": "12342592352",
+          "name": "Upgrade PA for White Trailblazer ?",
+          "group": "All Items",
+          "columns": [
+            {
+              "title": "Accountable",
+              "type": "people",
+              "text": "ernest garcia, Rob Young"
+            },
+            {
+              "title": "Dependency",
+              "type": "people",
+              "text": ""
+            },
+            {
+              "title": "Priority",
+              "type": "status",
+              "text": "Undefined"
+            },
+            {
+              "title": "Status",
+              "type": "status",
+              "text": "Not Started"
+            },
+            {
+              "title": "Next Action Date",
+              "type": "date",
+              "text": ""
+            },
+            {
+              "title": "Due Date",
+              "type": "date",
+              "text": ""
+            },
+            {
+              "title": "Task Description",
+              "type": "long_text",
+              "text": ""
+            },
+            {
+              "title": "CAPA/SOP",
+              "type": "board_relation",
+              "text": null
+            },
+            {
+              "title": "Status",
+              "type": "mirror",
+              "text": null
+            },
+            {
+              "title": "Time Est. (Hrs.)",
+              "type": "numbers",
+              "text": ""
+            },
+            {
+              "title": "Resolution Notes",
+              "type": "long_text",
+              "text": ""
+            },
+            {
+              "title": "Creation Log",
+              "type": "creation_log",
+              "text": "2026-06-22 23:14:46 UTC"
+            },
+            {
+              "title": "Last Updated",
+              "type": "last_updated",
+              "text": "2026-06-22 23:17:35 UTC"
+            },
+            {
+              "title": "Subitems",
+              "type": "subtasks",
+              "text": null
+            },
+            {
+              "title": "Definition of Done",
+              "type": "long_text",
+              "text": ""
+            }
+          ]
+        },
+        {
+          "id": "12285363810",
+          "name": "Use of Force Training thru Defencify",
+          "group": "All Items",
+          "columns": [
+            {
+              "title": "Accountable",
+              "type": "people",
+              "text": "ernest garcia"
+            },
+            {
+              "title": "Dependency",
+              "type": "people",
+              "text": ""
+            },
+            {
+              "title": "Priority",
+              "type": "status",
+              "text": "Undefined"
+            },
+            {
+              "title": "Status",
+              "type": "status",
+              "text": "Not Started"
+            },
+            {
+              "title": "Next Action Date",
+              "type": "date",
+              "text": ""
+            },
+            {
+              "title": "Due Date",
+              "type": "date",
+              "text": "2026-06-29"
+            },
+            {
+              "title": "Task Description",
+              "type": "long_text",
+              "text": "Take the course, evaluate it, let Rob and Dennis know your takeaways from the training"
+            },
+            {
+              "title": "CAPA/SOP",
+              "type": "board_relation",
+              "text": null
+            },
+            {
+              "title": "Status",
+              "type": "mirror",
+              "text": null
+            },
+            {
+              "title": "Time Est. (Hrs.)",
+              "type": "numbers",
+              "text": ""
+            },
+            {
+              "title": "Resolution Notes",
+              "type": "long_text",
+              "text": ""
+            },
+            {
+              "title": "Creation Log",
+              "type": "creation_log",
+              "text": "2026-06-15 22:46:53 UTC"
+            },
+            {
+              "title": "Last Updated",
+              "type": "last_updated",
+              "text": "2026-06-15 22:48:30 UTC"
+            },
+            {
+              "title": "Subitems",
+              "type": "subtasks",
+              "text": null
+            },
+            {
+              "title": "Definition of Done",
+              "type": "long_text",
+              "text": ""
+            }
+          ]
+        },
+        {
+          "id": "12458480985",
+          "name": "St Mary’s Training Plan",
+          "group": "All Items",
+          "columns": [
+            {
+              "title": "Accountable",
+              "type": "people",
+              "text": "Rob Young, Dennis Smallie"
+            },
+            {
+              "title": "Dependency",
+              "type": "people",
+              "text": ""
+            },
+            {
+              "title": "Priority",
+              "type": "status",
+              "text": "Undefined"
+            },
+            {
+              "title": "Status",
+              "type": "status",
+              "text": "Not Started"
+            },
+            {
+              "title": "Next Action Date",
+              "type": "date",
+              "text": ""
+            },
+            {
+              "title": "Due Date",
+              "type": "date",
+              "text": "2026-07-11 00:59"
+            },
+            {
+              "title": "Task Description",
+              "type": "long_text",
+              "text": "Defencify Vs in person refer to St Mary’s plan previously recommended"
+            },
+            {
+              "title": "CAPA/SOP",
+              "type": "board_relation",
+              "text": null
+            },
+            {
+              "title": "Status",
+              "type": "mirror",
+              "text": null
+            },
+            {
+              "title": "Time Est. (Hrs.)",
+              "type": "numbers",
+              "text": ""
+            },
+            {
+              "title": "Resolution Notes",
+              "type": "long_text",
+              "text": ""
+            },
+            {
+              "title": "Creation Log",
+              "type": "creation_log",
+              "text": "2026-07-06 17:56:51 UTC"
+            },
+            {
+              "title": "Last Updated",
+              "type": "last_updated",
+              "text": "2026-07-06 17:59:39 UTC"
+            },
+            {
+              "title": "Subitems",
+              "type": "subtasks",
+              "text": null
+            },
+            {
+              "title": "Definition of Done",
+              "type": "long_text",
+              "text": ""
+            }
+          ]
+        },
+        {
+          "id": "12163801034",
+          "name": "Watch Action Item Board training Loom + comment to confirm",
+          "group": "All Items",
+          "columns": [
+            {
+              "title": "Accountable",
+              "type": "people",
+              "text": "Rob Young"
+            },
+            {
+              "title": "Dependency",
+              "type": "people",
+              "text": ""
+            },
+            {
+              "title": "Priority",
+              "type": "status",
+              "text": "Critical ⚠️️"
+            },
+            {
+              "title": "Status",
+              "type": "status",
+              "text": "Not Started"
+            },
+            {
+              "title": "Next Action Date",
+              "type": "date",
+              "text": ""
+            },
+            {
+              "title": "Due Date",
+              "type": "date",
+              "text": "2026-06-02 15:00"
+            },
+            {
+              "title": "Task Description",
+              "type": "long_text",
+              "text": "Watch Blake's Loom walkthrough on how to use the Action Item Board. Then comment directly on the Loom confirming you watched it. Due 6/2 by 10 AM. Loom: https://www.loom.com/share/7315d75a9608479ebce2f5d6a535737d"
+            },
+            {
+              "title": "CAPA/SOP",
+              "type": "board_relation",
+              "text": null
+            },
+            {
+              "title": "Status",
+              "type": "mirror",
+              "text": null
+            },
+            {
+              "title": "Time Est. (Hrs.)",
+              "type": "numbers",
+              "text": ""
+            },
+            {
+              "title": "Resolution Notes",
+              "type": "long_text",
+              "text": ""
+            },
+            {
+              "title": "Creation Log",
+              "type": "creation_log",
+              "text": "2026-06-01 22:51:54 UTC"
+            },
+            {
+              "title": "Last Updated",
+              "type": "last_updated",
+              "text": "2026-06-01 22:51:54 UTC"
+            },
+            {
+              "title": "Subitems",
+              "type": "subtasks",
+              "text": null
+            },
+            {
+              "title": "Definition of Done",
+              "type": "long_text",
+              "text": ""
+            }
+          ]
+        }
+      ]
+    },
+    "capa": {
+      "id": "18077202351",
+      "name": "CAPA (Corrective/Preventive Action)",
+      "domain": "capa",
+      "structure": {
+        "id": "18077202351",
+        "name": "CAPA (Corrective/Preventive Action)",
+        "workspace_id": "12744039",
+        "columns": [
+          {
+            "id": "name",
+            "title": "Name",
+            "type": "name"
+          },
+          {
+            "id": "subtasks_mkxfnmga",
+            "title": "Subitems",
+            "type": "subtasks"
+          },
+          {
+            "id": "status",
+            "title": "Criticality",
+            "type": "status"
+          },
+          {
+            "id": "color_mkw9ae6e",
+            "title": "Status",
+            "type": "status"
+          },
+          {
+            "id": "board_relation_mm0da2rk",
+            "title": "Departments",
+            "type": "board_relation"
+          },
+          {
+            "id": "lookup_mm0d2xvz",
+            "title": "Assigned Manager",
+            "type": "mirror"
+          },
+          {
+            "id": "text_mkw91g8c",
+            "title": "Requester Name",
+            "type": "text"
+          },
+          {
+            "id": "long_text_mkw9tj5v",
+            "title": "Issue Description",
+            "type": "long_text"
+          },
+          {
+            "id": "long_text_mkw95jjg",
+            "title": "ROOT CAUSE",
+            "type": "long_text"
+          },
+          {
+            "id": "long_text_mkw9pm2r",
+            "title": "Solution Proposal",
+            "type": "long_text"
+          },
+          {
+            "id": "date4",
+            "title": "Date Requested",
+            "type": "date"
+          },
+          {
+            "id": "pulse_log_mm00txnn",
+            "title": "Creation log",
+            "type": "creation_log"
+          }
+        ],
+        "groups": [
+          {
+            "id": "topics",
+            "title": "NEW"
+          },
+          {
+            "id": "group_mkwpsc1e",
+            "title": "Closed"
+          }
+        ]
+      },
+      "sampleItemCount": 5,
+      "sampleItems": [
+        {
+          "id": "11981410570",
+          "name": "New Site phone for Westlake.",
+          "group": "NEW",
+          "columns": [
+            {
+              "title": "Subitems",
+              "type": "subtasks",
+              "text": null
+            },
+            {
+              "title": "Criticality",
+              "type": "status",
+              "text": "Super Critical"
+            },
+            {
+              "title": "Status",
+              "type": "status",
+              "text": "NEW"
+            },
+            {
+              "title": "Departments",
+              "type": "board_relation",
+              "text": null
+            },
+            {
+              "title": "Assigned Manager",
+              "type": "mirror",
+              "text": null
+            },
+            {
+              "title": "Requester Name",
+              "type": "text",
+              "text": "Rob Young"
+            },
+            {
+              "title": "Issue Description",
+              "type": "long_text",
+              "text": "Current site phone screen is cracked and Tracktik is burned into the background.  It is the original cell phone for the site."
+            },
+            {
+              "title": "ROOT CAUSE",
+              "type": "long_text",
+              "text": ""
+            },
+            {
+              "title": "Solution Proposal",
+              "type": "long_text",
+              "text": "Purchase new site phone."
+            },
+            {
+              "title": "Date Requested",
+              "type": "date",
+              "text": "2026-05-11"
+            },
+            {
+              "title": "Creation log",
+              "type": "creation_log",
+              "text": "2026-05-11 18:04:12 UTC"
+            }
+          ]
+        },
+        {
+          "id": "11981219505",
+          "name": "Westlake Patrol need new site phone ASAP.",
+          "group": "NEW",
+          "columns": [
+            {
+              "title": "Subitems",
+              "type": "subtasks",
+              "text": null
+            },
+            {
+              "title": "Criticality",
+              "type": "status",
+              "text": "Super Critical"
+            },
+            {
+              "title": "Status",
+              "type": "status",
+              "text": "NEW"
+            },
+            {
+              "title": "Departments",
+              "type": "board_relation",
+              "text": null
+            },
+            {
+              "title": "Assigned Manager",
+              "type": "mirror",
+              "text": null
+            },
+            {
+              "title": "Requester Name",
+              "type": "text",
+              "text": ""
+            },
+            {
+              "title": "Issue Description",
+              "type": "long_text",
+              "text": ""
+            },
+            {
+              "title": "ROOT CAUSE",
+              "type": "long_text",
+              "text": ""
+            },
+            {
+              "title": "Solution Proposal",
+              "type": "long_text",
+              "text": ""
+            },
+            {
+              "title": "Date Requested",
+              "type": "date",
+              "text": "2026-05-11"
+            },
+            {
+              "title": "Creation log",
+              "type": "creation_log",
+              "text": "2026-05-11 17:54:07 UTC"
+            }
+          ]
+        },
+        {
+          "id": "11685036089",
+          "name": "On-Call schedule for field techs",
+          "group": "NEW",
+          "columns": [
+            {
+              "title": "Subitems",
+              "type": "subtasks",
+              "text": null
+            },
+            {
+              "title": "Criticality",
+              "type": "status",
+              "text": "High"
+            },
+            {
+              "title": "Status",
+              "type": "status",
+              "text": "Started - Inprocess"
+            },
+            {
+              "title": "Departments",
+              "type": "board_relation",
+              "text": null
+            },
+            {
+              "title": "Assigned Manager",
+              "type": "mirror",
+              "text": null
+            },
+            {
+              "title": "Requester Name",
+              "type": "text",
+              "text": "Rob Young"
+            },
+            {
+              "title": "Issue Description",
+              "type": "long_text",
+              "text": "We need to create an after-hours on call list that shows who to call when a MSU goes offline.  This would be beneficial for the SOC, so they can call the appropriate tech"
+            },
+            {
+              "title": "ROOT CAUSE",
+              "type": "long_text",
+              "text": ""
+            },
+            {
+              "title": "Solution Proposal",
+              "type": "long_text",
+              "text": ""
+            },
+            {
+              "title": "Date Requested",
+              "type": "date",
+              "text": "2026-04-06"
+            },
+            {
+              "title": "Creation log",
+              "type": "creation_log",
+              "text": "2026-04-06 22:09:24 UTC"
+            }
+          ]
+        },
+        {
+          "id": "11448061372",
+          "name": "Fleet need",
+          "group": "NEW",
+          "columns": [
+            {
+              "title": "Subitems",
+              "type": "subtasks",
+              "text": null
+            },
+            {
+              "title": "Criticality",
+              "type": "status",
+              "text": "Super Critical"
+            },
+            {
+              "title": "Status",
+              "type": "status",
+              "text": "Closed"
+            },
+            {
+              "title": "Departments",
+              "type": "board_relation",
+              "text": null
+            },
+            {
+              "title": "Assigned Manager",
+              "type": "mirror",
+              "text": null
+            },
+            {
+              "title": "Requester Name",
+              "type": "text",
+              "text": ""
+            },
+            {
+              "title": "Issue Description",
+              "type": "long_text",
+              "text": ""
+            },
+            {
+              "title": "ROOT CAUSE",
+              "type": "long_text",
+              "text": ""
+            },
+            {
+              "title": "Solution Proposal",
+              "type": "long_text",
+              "text": ""
+            },
+            {
+              "title": "Date Requested",
+              "type": "date",
+              "text": "2026-03-06"
+            },
+            {
+              "title": "Creation log",
+              "type": "creation_log",
+              "text": "2026-03-06 19:41:19 UTC"
+            }
+          ]
+        },
+        {
+          "id": "11387124729",
+          "name": "IFAK availability at HQ and in the field.",
+          "group": "NEW",
+          "columns": [
+            {
+              "title": "Subitems",
+              "type": "subtasks",
+              "text": null
+            },
+            {
+              "title": "Criticality",
+              "type": "status",
+              "text": "High"
+            },
+            {
+              "title": "Status",
+              "type": "status",
+              "text": "NEW"
+            },
+            {
+              "title": "Departments",
+              "type": "board_relation",
+              "text": null
+            },
+            {
+              "title": "Assigned Manager",
+              "type": "mirror",
+              "text": null
+            },
+            {
+              "title": "Requester Name",
+              "type": "text",
+              "text": "Rob Young"
+            },
+            {
+              "title": "Issue Description",
+              "type": "long_text",
+              "text": "There is a need to have more than just a \"boo boo kit\" (i.e. band aides, etc) IMMEDIATELY available for our crews, especially install teams and staff that are working with power tools and on job sites.  \"STOP THE BLEED\" training is crucial and something I can provide a certified instructor.  IFAKs should be in all of our work trucks, and on job sites.  In addition, a bleeding control kit (tourniquets, etc) at a station at in our install dept."
+            },
+            {
+              "title": "ROOT CAUSE",
+              "type": "long_text",
+              "text": "No available equipment or training with staff as of yet."
+            },
+            {
+              "title": "Solution Proposal",
+              "type": "long_text",
+              "text": "Implement training on TQ's and IFAK equipment, AED, trauma first aide, bleeding control and purchase several IFAKS including TQ's."
+            },
+            {
+              "title": "Date Requested",
+              "type": "date",
+              "text": "2026-02-27"
+            },
+            {
+              "title": "Creation log",
+              "type": "creation_log",
+              "text": "2026-02-27 17:49:21 UTC"
+            }
+          ]
+        }
+      ]
+    },
+    "departmentKpis": {
+      "id": "18387162217",
+      "name": "Department KPIs",
+      "domain": "kpis",
+      "structure": {
+        "id": "18387162217",
+        "name": "Department KPIs",
+        "workspace_id": "12744039",
+        "columns": [
+          {
+            "id": "name",
+            "title": "Name",
+            "type": "name"
+          },
+          {
+            "id": "subtasks_mkz33nxa",
+            "title": "Subitems",
+            "type": "subtasks"
+          },
+          {
+            "id": "board_relation_mkxx9ne9",
+            "title": "Departments",
+            "type": "board_relation"
+          },
+          {
+            "id": "dropdown_mkyhs6er",
+            "title": "Category",
+            "type": "dropdown"
+          },
+          {
+            "id": "person",
+            "title": "Accountable",
+            "type": "people"
+          },
+          {
+            "id": "multiple_person_mkxxwsmp",
+            "title": "Who Updates",
+            "type": "people"
+          },
+          {
+            "id": "text_mkxxd0ak",
+            "title": "Year",
+            "type": "text"
+          },
+          {
+            "id": "dropdown_mkyhg0hg",
+            "title": "Type",
+            "type": "dropdown"
+          },
+          {
+            "id": "numeric_mkxxccvg",
+            "title": "Target",
+            "type": "numbers"
+          },
+          {
+            "id": "dropdown_mkxx1bgh",
+            "title": "Exceed Level",
+            "type": "dropdown"
+          },
+          {
+            "id": "formula_mkxxt6zj",
+            "title": "Year to Date",
+            "type": "formula"
+          },
+          {
+            "id": "formula_mkxxae08",
+            "title": "KPI Score (Out of 5)",
+            "type": "formula"
+          },
+          {
+            "id": "formula_mkxxhx0g",
+            "title": "Q1",
+            "type": "formula"
+          },
+          {
+            "id": "numeric_mkxxhb6b",
+            "title": "Jan",
+            "type": "numbers"
+          },
+          {
+            "id": "numeric_mkxx1w5p",
+            "title": "Feb",
+            "type": "numbers"
+          },
+          {
+            "id": "numeric_mkxx8y5x",
+            "title": "Mar",
+            "type": "numbers"
+          },
+          {
+            "id": "formula_mkxx9fzg",
+            "title": "Q2",
+            "type": "formula"
+          },
+          {
+            "id": "numeric_mkxxyyne",
+            "title": "Apr",
+            "type": "numbers"
+          },
+          {
+            "id": "numeric_mkxx4dxk",
+            "title": "May",
+            "type": "numbers"
+          },
+          {
+            "id": "numeric_mkxxhp75",
+            "title": "Jun",
+            "type": "numbers"
+          },
+          {
+            "id": "formula_mkxxxxx1",
+            "title": "Q3",
+            "type": "formula"
+          },
+          {
+            "id": "numeric_mkxxvt2w",
+            "title": "Jul",
+            "type": "numbers"
+          },
+          {
+            "id": "numeric_mkxx3qj0",
+            "title": "Aug",
+            "type": "numbers"
+          },
+          {
+            "id": "numeric_mkxxm58b",
+            "title": "Sep",
+            "type": "numbers"
+          },
+          {
+            "id": "formula_mkxxg6gf",
+            "title": "Q4",
+            "type": "formula"
+          },
+          {
+            "id": "numeric_mkxx5agn",
+            "title": "Oct",
+            "type": "numbers"
+          },
+          {
+            "id": "numeric_mkxxh8dz",
+            "title": "Nov",
+            "type": "numbers"
+          },
+          {
+            "id": "numeric_mkxxzbyz",
+            "title": "Dec",
+            "type": "numbers"
+          },
+          {
+            "id": "text_mkyhc2c0",
+            "title": "How to Calculate",
+            "type": "text"
+          }
+        ],
+        "groups": [
+          {
+            "id": "group_mkyhjwzw",
+            "title": "Department_KPIs_1765411829.xlsx"
+          },
+          {
+            "id": "group_mkyh1bp",
+            "title": "Department_KPIs_1765411829.xlsx"
+          },
+          {
+            "id": "topics",
+            "title": "Group Title"
+          }
+        ]
+      },
+      "sampleItemCount": 5,
+      "sampleItems": [
+        {
+          "id": "10751642992",
+          "name": "Gross Margin % – Profit after labor & materials.",
+          "group": "Department_KPIs_1765411829.xlsx",
+          "columns": [
+            {
+              "title": "Subitems",
+              "type": "subtasks",
+              "text": null
+            },
+            {
+              "title": "Departments",
+              "type": "board_relation",
+              "text": null
+            },
+            {
+              "title": "Category",
+              "type": "dropdown",
+              "text": "Cost"
+            },
+            {
+              "title": "Accountable",
+              "type": "people",
+              "text": "Luis Gutierrez"
+            },
+            {
+              "title": "Who Updates",
+              "type": "people",
+              "text": "Brendan Cornell"
+            },
+            {
+              "title": "Year",
+              "type": "text",
+              "text": "2025"
+            },
+            {
+              "title": "Type",
+              "type": "dropdown",
+              "text": "Percentage"
+            },
+            {
+              "title": "Target",
+              "type": "numbers",
+              "text": "42"
+            },
+            {
+              "title": "Exceed Level",
+              "type": "dropdown",
+              "text": "High"
+            },
+            {
+              "title": "Year to Date",
+              "type": "formula",
+              "text": ""
+            },
+            {
+              "title": "KPI Score (Out of 5)",
+              "type": "formula",
+              "text": ""
+            },
+            {
+              "title": "Q1",
+              "type": "formula",
+              "text": ""
+            },
+            {
+              "title": "Jan",
+              "type": "numbers",
+              "text": ""
+            },
+            {
+              "title": "Feb",
+              "type": "numbers",
+              "text": ""
+            },
+            {
+              "title": "Mar",
+              "type": "numbers",
+              "text": ""
+            },
+            {
+              "title": "Q2",
+              "type": "formula",
+              "text": ""
+            },
+            {
+              "title": "Apr",
+              "type": "numbers",
+              "text": "0"
+            },
+            {
+              "title": "May",
+              "type": "numbers",
+              "text": "0"
+            },
+            {
+              "title": "Jun",
+              "type": "numbers",
+              "text": ""
+            },
+            {
+              "title": "Q3",
+              "type": "formula",
+              "text": ""
+            },
+            {
+              "title": "Jul",
+              "type": "numbers",
+              "text": "0"
+            },
+            {
+              "title": "Aug",
+              "type": "numbers",
+              "text": "0"
+            },
+            {
+              "title": "Sep",
+              "type": "numbers",
+              "text": "0"
+            },
+            {
+              "title": "Q4",
+              "type": "formula",
+              "text": ""
+            },
+            {
+              "title": "Oct",
+              "type": "numbers",
+              "text": "0"
+            },
+            {
+              "title": "Nov",
+              "type": "numbers",
+              "text": "0"
+            },
+            {
+              "title": "Dec",
+              "type": "numbers",
+              "text": "0"
+            },
+            {
+              "title": "How to Calculate",
+              "type": "text",
+              "text": "(Revenue – Direct Costs) ÷ Revenue"
+            }
+          ]
+        },
+        {
+          "id": "10971752588",
+          "name": "AR percentage Past due 60days over",
+          "group": "Department_KPIs_1765411829.xlsx",
+          "columns": [
+            {
+              "title": "Subitems",
+              "type": "subtasks",
+              "text": null
+            },
+            {
+              "title": "Departments",
+              "type": "board_relation",
+              "text": null
+            },
+            {
+              "title": "Category",
+              "type": "dropdown",
+              "text": "Efficiency"
+            },
+            {
+              "title": "Accountable",
+              "type": "people",
+              "text": "Michele Berry"
+            },
+            {
+              "title": "Who Updates",
+              "type": "people",
+              "text": "Michele Berry"
+            },
+            {
+              "title": "Year",
+              "type": "text",
+              "text": "2025"
+            },
+            {
+              "title": "Type",
+              "type": "dropdown",
+              "text": "Percentage"
+            },
+            {
+              "title": "Target",
+              "type": "numbers",
+              "text": ""
+            },
+            {
+              "title": "Exceed Level",
+              "type": "dropdown",
+              "text": null
+            },
+            {
+              "title": "Year to Date",
+              "type": "formula",
+              "text": ""
+            },
+            {
+              "title": "KPI Score (Out of 5)",
+              "type": "formula",
+              "text": ""
+            },
+            {
+              "title": "Q1",
+              "type": "formula",
+              "text": ""
+            },
+            {
+              "title": "Jan",
+              "type": "numbers",
+              "text": ""
+            },
+            {
+              "title": "Feb",
+              "type": "numbers",
+              "text": ""
+            },
+            {
+              "title": "Mar",
+              "type": "numbers",
+              "text": ""
+            },
+            {
+              "title": "Q2",
+              "type": "formula",
+              "text": ""
+            },
+            {
+              "title": "Apr",
+              "type": "numbers",
+              "text": "0"
+            },
+            {
+              "title": "May",
+              "type": "numbers",
+              "text": "0"
+            },
+            {
+              "title": "Jun",
+              "type": "numbers",
+              "text": ""
+            },
+            {
+              "title": "Q3",
+              "type": "formula",
+              "text": ""
+            },
+            {
+              "title": "Jul",
+              "type": "numbers",
+              "text": "0"
+            },
+            {
+              "title": "Aug",
+              "type": "numbers",
+              "text": "0"
+            },
+            {
+              "title": "Sep",
+              "type": "numbers",
+              "text": "0"
+            },
+            {
+              "title": "Q4",
+              "type": "formula",
+              "text": ""
+            },
+            {
+              "title": "Oct",
+              "type": "numbers",
+              "text": "0"
+            },
+            {
+              "title": "Nov",
+              "type": "numbers",
+              "text": "0"
+            },
+            {
+              "title": "Dec",
+              "type": "numbers",
+              "text": "0"
+            },
+            {
+              "title": "How to Calculate",
+              "type": "text",
+              "text": ""
+            }
+          ]
+        },
+        {
+          "id": "10971772825",
+          "name": "AR percentage Past due over 30days",
+          "group": "Department_KPIs_1765411829.xlsx",
+          "columns": [
+            {
+              "title": "Subitems",
+              "type": "subtasks",
+              "text": null
+            },
+            {
+              "title": "Departments",
+              "type": "board_relation",
+              "text": null
+            },
+            {
+              "title": "Category",
+              "type": "dropdown",
+              "text": "Efficiency"
+            },
+            {
+              "title": "Accountable",
+              "type": "people",
+              "text": "Michele Berry"
+            },
+            {
+              "title": "Who Updates",
+              "type": "people",
+              "text": "Michele Berry"
+            },
+            {
+              "title": "Year",
+              "type": "text",
+              "text": "2025"
+            },
+            {
+              "title": "Type",
+              "type": "dropdown",
+              "text": "Percentage"
+            },
+            {
+              "title": "Target",
+              "type": "numbers",
+              "text": ""
+            },
+            {
+              "title": "Exceed Level",
+              "type": "dropdown",
+              "text": null
+            },
+            {
+              "title": "Year to Date",
+              "type": "formula",
+              "text": ""
+            },
+            {
+              "title": "KPI Score (Out of 5)",
+              "type": "formula",
+              "text": ""
+            },
+            {
+              "title": "Q1",
+              "type": "formula",
+              "text": ""
+            },
+            {
+              "title": "Jan",
+              "type": "numbers",
+              "text": ""
+            },
+            {
+              "title": "Feb",
+              "type": "numbers",
+              "text": ""
+            },
+            {
+              "title": "Mar",
+              "type": "numbers",
+              "text": ""
+            },
+            {
+              "title": "Q2",
+              "type": "formula",
+              "text": ""
+            },
+            {
+              "title": "Apr",
+              "type": "numbers",
+              "text": "0"
+            },
+            {
+              "title": "May",
+              "type": "numbers",
+              "text": "0"
+            },
+            {
+              "title": "Jun",
+              "type": "numbers",
+              "text": ""
+            },
+            {
+              "title": "Q3",
+              "type": "formula",
+              "text": ""
+            },
+            {
+              "title": "Jul",
+              "type": "numbers",
+              "text": "0"
+            },
+            {
+              "title": "Aug",
+              "type": "numbers",
+              "text": "0"
+            },
+            {
+              "title": "Sep",
+              "type": "numbers",
+              "text": "0"
+            },
+            {
+              "title": "Q4",
+              "type": "formula",
+              "text": ""
+            },
+            {
+              "title": "Oct",
+              "type": "numbers",
+              "text": "0"
+            },
+            {
+              "title": "Nov",
+              "type": "numbers",
+              "text": "0"
+            },
+            {
+              "title": "Dec",
+              "type": "numbers",
+              "text": "0"
+            },
+            {
+              "title": "How to Calculate",
+              "type": "text",
+              "text": ""
+            }
+          ]
+        },
+        {
+          "id": "10751642994",
+          "name": "SLA Success Rate – % of Tickets Ack within 30 mins",
+          "group": "Department_KPIs_1765411829.xlsx",
+          "columns": [
+            {
+              "title": "Subitems",
+              "type": "subtasks",
+              "text": null
+            },
+            {
+              "title": "Departments",
+              "type": "board_relation",
+              "text": null
+            },
+            {
+              "title": "Category",
+              "type": "dropdown",
+              "text": "Quality"
+            },
+            {
+              "title": "Accountable",
+              "type": "people",
+              "text": "Jay Kahlon"
+            },
+            {
+              "title": "Who Updates",
+              "type": "people",
+              "text": "Jay Kahlon"
+            },
+            {
+              "title": "Year",
+              "type": "text",
+              "text": "2025"
+            },
+            {
+              "title": "Type",
+              "type": "dropdown",
+              "text": "Percentage"
+            },
+            {
+              "title": "Target",
+              "type": "numbers",
+              "text": "95"
+            },
+            {
+              "title": "Exceed Level",
+              "type": "dropdown",
+              "text": "High"
+            },
+            {
+              "title": "Year to Date",
+              "type": "formula",
+              "text": ""
+            },
+            {
+              "title": "KPI Score (Out of 5)",
+              "type": "formula",
+              "text": ""
+            },
+            {
+              "title": "Q1",
+              "type": "formula",
+              "text": ""
+            },
+            {
+              "title": "Jan",
+              "type": "numbers",
+              "text": ""
+            },
+            {
+              "title": "Feb",
+              "type": "numbers",
+              "text": ""
+            },
+            {
+              "title": "Mar",
+              "type": "numbers",
+              "text": ""
+            },
+            {
+              "title": "Q2",
+              "type": "formula",
+              "text": ""
+            },
+            {
+              "title": "Apr",
+              "type": "numbers",
+              "text": "0"
+            },
+            {
+              "title": "May",
+              "type": "numbers",
+              "text": "0"
+            },
+            {
+              "title": "Jun",
+              "type": "numbers",
+              "text": ""
+            },
+            {
+              "title": "Q3",
+              "type": "formula",
+              "text": ""
+            },
+            {
+              "title": "Jul",
+              "type": "numbers",
+              "text": "0"
+            },
+            {
+              "title": "Aug",
+              "type": "numbers",
+              "text": "0"
+            },
+            {
+              "title": "Sep",
+              "type": "numbers",
+              "text": "0"
+            },
+            {
+              "title": "Q4",
+              "type": "formula",
+              "text": ""
+            },
+            {
+              "title": "Oct",
+              "type": "numbers",
+              "text": "0"
+            },
+            {
+              "title": "Nov",
+              "type": "numbers",
+              "text": "0"
+            },
+            {
+              "title": "Dec",
+              "type": "numbers",
+              "text": "0"
+            },
+            {
+              "title": "How to Calculate",
+              "type": "text",
+              "text": "SLA Met ÷ Total SLA Tasks"
+            }
+          ]
+        },
+        {
+          "id": "10971732104",
+          "name": "SLA Success Rate – % of Tickets Resolved within 3 days",
+          "group": "Department_KPIs_1765411829.xlsx",
+          "columns": [
+            {
+              "title": "Subitems",
+              "type": "subtasks",
+              "text": null
+            },
+            {
+              "title": "Departments",
+              "type": "board_relation",
+              "text": null
+            },
+            {
+              "title": "Category",
+              "type": "dropdown",
+              "text": "Quality"
+            },
+            {
+              "title": "Accountable",
+              "type": "people",
+              "text": "Jay Kahlon"
+            },
+            {
+              "title": "Who Updates",
+              "type": "people",
+              "text": "Jay Kahlon"
+            },
+            {
+              "title": "Year",
+              "type": "text",
+              "text": "2025"
+            },
+            {
+              "title": "Type",
+              "type": "dropdown",
+              "text": "Percentage"
+            },
+            {
+              "title": "Target",
+              "type": "numbers",
+              "text": "95"
+            },
+            {
+              "title": "Exceed Level",
+              "type": "dropdown",
+              "text": "High"
+            },
+            {
+              "title": "Year to Date",
+              "type": "formula",
+              "text": ""
+            },
+            {
+              "title": "KPI Score (Out of 5)",
+              "type": "formula",
+              "text": ""
+            },
+            {
+              "title": "Q1",
+              "type": "formula",
+              "text": ""
+            },
+            {
+              "title": "Jan",
+              "type": "numbers",
+              "text": ""
+            },
+            {
+              "title": "Feb",
+              "type": "numbers",
+              "text": ""
+            },
+            {
+              "title": "Mar",
+              "type": "numbers",
+              "text": ""
+            },
+            {
+              "title": "Q2",
+              "type": "formula",
+              "text": ""
+            },
+            {
+              "title": "Apr",
+              "type": "numbers",
+              "text": "0"
+            },
+            {
+              "title": "May",
+              "type": "numbers",
+              "text": "0"
+            },
+            {
+              "title": "Jun",
+              "type": "numbers",
+              "text": ""
+            },
+            {
+              "title": "Q3",
+              "type": "formula",
+              "text": ""
+            },
+            {
+              "title": "Jul",
+              "type": "numbers",
+              "text": "0"
+            },
+            {
+              "title": "Aug",
+              "type": "numbers",
+              "text": "0"
+            },
+            {
+              "title": "Sep",
+              "type": "numbers",
+              "text": "0"
+            },
+            {
+              "title": "Q4",
+              "type": "formula",
+              "text": ""
+            },
+            {
+              "title": "Oct",
+              "type": "numbers",
+              "text": "0"
+            },
+            {
+              "title": "Nov",
+              "type": "numbers",
+              "text": "0"
+            },
+            {
+              "title": "Dec",
+              "type": "numbers",
+              "text": "0"
+            },
+            {
+              "title": "How to Calculate",
+              "type": "text",
+              "text": "SLA Met ÷ Total SLA Tasks"
+            }
+          ]
+        }
+      ]
+    },
+    "rgContracts": {
+      "id": "18270346166",
+      "name": "Remote Guarding Contracts (RMR)",
+      "domain": "rg_contracts",
+      "structure": {
+        "id": "18270346166",
+        "name": "(1) Remote Guarding Contracts (RMR)",
+        "workspace_id": "13015347",
+        "columns": [
+          {
+            "id": "name",
+            "title": "Name",
+            "type": "name"
+          },
+          {
+            "id": "subtasks_mm4nyq3n",
+            "title": "Subitems",
+            "type": "subtasks"
+          },
+          {
+            "id": "status",
+            "title": "Status",
+            "type": "status"
+          },
+          {
+            "id": "text_mm452801",
+            "title": "Project ID",
+            "type": "text"
+          },
+          {
+            "id": "board_relation_mm45gxwq",
+            "title": "Site",
+            "type": "board_relation"
+          },
+          {
+            "id": "lookup_mm45hyyd",
+            "title": "Account",
+            "type": "mirror"
+          },
+          {
+            "id": "lookup_mm45zcqf",
+            "title": "Site Type",
+            "type": "mirror"
+          },
+          {
+            "id": "lookup_mm45qyf1",
+            "title": "Site Tier",
+            "type": "mirror"
+          },
+          {
+            "id": "board_relation_mkx2ngzm",
+            "title": "RG Service Scope",
+            "type": "board_relation"
+          },
+          {
+            "id": "lookup_mm45ea6d",
+            "title": "MSU/Client Systems",
+            "type": "mirror"
+          },
+          {
+            "id": "color_mkyhbg0h",
+            "title": "Standard SLA",
+            "type": "status"
+          },
+          {
+            "id": "long_text_mkyh1yqv",
+            "title": "What to do when system is offline",
+            "type": "long_text"
+          },
+          {
+            "id": "color_mm44rd71",
+            "title": "In Alarm Report (Jun 1–2)",
+            "type": "status"
+          },
+          {
+            "id": "color_mm44kqq9",
+            "title": "MSU",
+            "type": "status"
+          },
+          {
+            "id": "dropdown_mkyhvnn8",
+            "title": "SMS Preferred by Client",
+            "type": "dropdown"
+          },
+          {
+            "id": "date_mkx2krf2",
+            "title": "Contract Start Date",
+            "type": "date"
+          },
+          {
+            "id": "date_mkx219ma",
+            "title": "Contract End Date",
+            "type": "date"
+          },
+          {
+            "id": "file_mkx27z8r",
+            "title": "Contract Files",
+            "type": "file"
+          },
+          {
+            "id": "numeric_mkx26a6g",
+            "title": "One-time Setup Fee",
+            "type": "numbers"
+          },
+          {
+            "id": "numeric_mkx2m3zt",
+            "title": "Monthly Bill Amount",
+            "type": "numbers"
+          },
+          {
+            "id": "date_mkzh5c3b",
+            "title": "Last Billing Date",
+            "type": "date"
+          },
+          {
+            "id": "long_text_mkx243qw",
+            "title": "Billing Notes (Special Instructions)",
+            "type": "long_text"
+          },
+          {
+            "id": "board_relation_mkx21520",
+            "title": "Billing Contact",
+            "type": "board_relation"
+          },
+          {
+            "id": "board_relation_mkx2sda5",
+            "title": "Client Contract Owner",
+            "type": "board_relation"
+          },
+          {
+            "id": "board_relation_mkyhqa0p",
+            "title": "MSU Assets",
+            "type": "board_relation"
+          },
+          {
+            "id": "date_mkzawdnp",
+            "title": "Next Health Check",
+            "type": "date"
+          },
+          {
+            "id": "date_mm1hwqwv",
+            "title": "Date",
+            "type": "date"
+          },
+          {
+            "id": "pulse_log_mm2yhk7t",
+            "title": "Creation log",
+            "type": "creation_log"
+          },
+          {
+            "id": "board_relation_mm4n408y",
+            "title": "Client Check-In Log",
+            "type": "board_relation"
+          }
+        ],
+        "groups": [
+          {
+            "id": "group_mkyh2fxv",
+            "title": "All RG Contracts"
+          }
+        ]
+      },
+      "sampleItemCount": 5,
+      "sampleItems": [
+        {
+          "id": "12398985494",
+          "name": "New rg contract name",
+          "group": "All RG Contracts",
+          "columns": [
+            {
+              "title": "Subitems",
+              "type": "subtasks",
+              "text": null
+            },
+            {
+              "title": "Status",
+              "type": "status",
+              "text": "Undefined"
+            },
+            {
+              "title": "Project ID",
+              "type": "text",
+              "text": ""
+            },
+            {
+              "title": "Site",
+              "type": "board_relation",
+              "text": null
+            },
+            {
+              "title": "Account",
+              "type": "mirror",
+              "text": null
+            },
+            {
+              "title": "Site Type",
+              "type": "mirror",
+              "text": null
+            },
+            {
+              "title": "Site Tier",
+              "type": "mirror",
+              "text": null
+            },
+            {
+              "title": "RG Service Scope",
+              "type": "board_relation",
+              "text": null
+            },
+            {
+              "title": "MSU/Client Systems",
+              "type": "mirror",
+              "text": null
+            },
+            {
+              "title": "Standard SLA",
+              "type": "status",
+              "text": "Undefined"
+            },
+            {
+              "title": "What to do when system is offline",
+              "type": "long_text",
+              "text": ""
+            },
+            {
+              "title": "In Alarm Report (Jun 1–2)",
+              "type": "status",
+              "text": null
+            },
+            {
+              "title": "MSU",
+              "type": "status",
+              "text": null
+            },
+            {
+              "title": "SMS Preferred by Client",
+              "type": "dropdown",
+              "text": null
+            },
+            {
+              "title": "Contract Start Date",
+              "type": "date",
+              "text": ""
+            },
+            {
+              "title": "Contract End Date",
+              "type": "date",
+              "text": ""
+            },
+            {
+              "title": "Contract Files",
+              "type": "file",
+              "text": ""
+            },
+            {
+              "title": "One-time Setup Fee",
+              "type": "numbers",
+              "text": ""
+            },
+            {
+              "title": "Monthly Bill Amount",
+              "type": "numbers",
+              "text": ""
+            },
+            {
+              "title": "Last Billing Date",
+              "type": "date",
+              "text": ""
+            },
+            {
+              "title": "Billing Notes (Special Instructions)",
+              "type": "long_text",
+              "text": ""
+            },
+            {
+              "title": "Billing Contact",
+              "type": "board_relation",
+              "text": null
+            },
+            {
+              "title": "Client Contract Owner",
+              "type": "board_relation",
+              "text": null
+            },
+            {
+              "title": "MSU Assets",
+              "type": "board_relation",
+              "text": null
+            },
+            {
+              "title": "Next Health Check",
+              "type": "date",
+              "text": ""
+            },
+            {
+              "title": "Date",
+              "type": "date",
+              "text": ""
+            },
+            {
+              "title": "Creation log",
+              "type": "creation_log",
+              "text": "2026-06-29 17:21:15 UTC"
+            },
+            {
+              "title": "Client Check-In Log",
+              "type": "board_relation",
+              "text": null
+            }
+          ]
+        },
+        {
+          "id": "12226982676",
+          "name": "Stub Hub Residence",
+          "group": "All RG Contracts",
+          "columns": [
+            {
+              "title": "Subitems",
+              "type": "subtasks",
+              "text": null
+            },
+            {
+              "title": "Status",
+              "type": "status",
+              "text": "Active"
+            },
+            {
+              "title": "Project ID",
+              "type": "text",
+              "text": "332"
+            },
+            {
+              "title": "Site",
+              "type": "board_relation",
+              "text": null
+            },
+            {
+              "title": "Account",
+              "type": "mirror",
+              "text": null
+            },
+            {
+              "title": "Site Type",
+              "type": "mirror",
+              "text": null
+            },
+            {
+              "title": "Site Tier",
+              "type": "mirror",
+              "text": null
+            },
+            {
+              "title": "RG Service Scope",
+              "type": "board_relation",
+              "text": null
+            },
+            {
+              "title": "MSU/Client Systems",
+              "type": "mirror",
+              "text": null
+            },
+            {
+              "title": "Standard SLA",
+              "type": "status",
+              "text": "Undefined"
+            },
+            {
+              "title": "What to do when system is offline",
+              "type": "long_text",
+              "text": ""
+            },
+            {
+              "title": "In Alarm Report (Jun 1–2)",
+              "type": "status",
+              "text": null
+            },
+            {
+              "title": "MSU",
+              "type": "status",
+              "text": null
+            },
+            {
+              "title": "SMS Preferred by Client",
+              "type": "dropdown",
+              "text": null
+            },
+            {
+              "title": "Contract Start Date",
+              "type": "date",
+              "text": ""
+            },
+            {
+              "title": "Contract End Date",
+              "type": "date",
+              "text": ""
+            },
+            {
+              "title": "Contract Files",
+              "type": "file",
+              "text": "https://blakesmallie.monday.com/protected_static/10689200/resources/3068619665/332_Christian%20West%20003%20LA_06-25-26.pdf"
+            },
+            {
+              "title": "One-time Setup Fee",
+              "type": "numbers",
+              "text": "1250"
+            },
+            {
+              "title": "Monthly Bill Amount",
+              "type": "numbers",
+              "text": "3000"
+            },
+            {
+              "title": "Last Billing Date",
+              "type": "date",
+              "text": ""
+            },
+            {
+              "title": "Billing Notes (Special Instructions)",
+              "type": "long_text",
+              "text": ""
+            },
+            {
+              "title": "Billing Contact",
+              "type": "board_relation",
+              "text": null
+            },
+            {
+              "title": "Client Contract Owner",
+              "type": "board_relation",
+              "text": null
+            },
+            {
+              "title": "MSU Assets",
+              "type": "board_relation",
+              "text": null
+            },
+            {
+              "title": "Next Health Check",
+              "type": "date",
+              "text": ""
+            },
+            {
+              "title": "Date",
+              "type": "date",
+              "text": ""
+            },
+            {
+              "title": "Creation log",
+              "type": "creation_log",
+              "text": "2026-06-09 02:56:47 UTC"
+            },
+            {
+              "title": "Client Check-In Log",
+              "type": "board_relation",
+              "text": null
+            }
+          ]
+        },
+        {
+          "id": "12226941834",
+          "name": "Stockton Loan & Jewelry",
+          "group": "All RG Contracts",
+          "columns": [
+            {
+              "title": "Subitems",
+              "type": "subtasks",
+              "text": null
+            },
+            {
+              "title": "Status",
+              "type": "status",
+              "text": "Stuck"
+            },
+            {
+              "title": "Project ID",
+              "type": "text",
+              "text": ""
+            },
+            {
+              "title": "Site",
+              "type": "board_relation",
+              "text": null
+            },
+            {
+              "title": "Account",
+              "type": "mirror",
+              "text": null
+            },
+            {
+              "title": "Site Type",
+              "type": "mirror",
+              "text": null
+            },
+            {
+              "title": "Site Tier",
+              "type": "mirror",
+              "text": null
+            },
+            {
+              "title": "RG Service Scope",
+              "type": "board_relation",
+              "text": null
+            },
+            {
+              "title": "MSU/Client Systems",
+              "type": "mirror",
+              "text": null
+            },
+            {
+              "title": "Standard SLA",
+              "type": "status",
+              "text": "Undefined"
+            },
+            {
+              "title": "What to do when system is offline",
+              "type": "long_text",
+              "text": ""
+            },
+            {
+              "title": "In Alarm Report (Jun 1–2)",
+              "type": "status",
+              "text": null
+            },
+            {
+              "title": "MSU",
+              "type": "status",
+              "text": null
+            },
+            {
+              "title": "SMS Preferred by Client",
+              "type": "dropdown",
+              "text": null
+            },
+            {
+              "title": "Contract Start Date",
+              "type": "date",
+              "text": ""
+            },
+            {
+              "title": "Contract End Date",
+              "type": "date",
+              "text": ""
+            },
+            {
+              "title": "Contract Files",
+              "type": "file",
+              "text": ""
+            },
+            {
+              "title": "One-time Setup Fee",
+              "type": "numbers",
+              "text": ""
+            },
+            {
+              "title": "Monthly Bill Amount",
+              "type": "numbers",
+              "text": ""
+            },
+            {
+              "title": "Last Billing Date",
+              "type": "date",
+              "text": ""
+            },
+            {
+              "title": "Billing Notes (Special Instructions)",
+              "type": "long_text",
+              "text": ""
+            },
+            {
+              "title": "Billing Contact",
+              "type": "board_relation",
+              "text": null
+            },
+            {
+              "title": "Client Contract Owner",
+              "type": "board_relation",
+              "text": null
+            },
+            {
+              "title": "MSU Assets",
+              "type": "board_relation",
+              "text": null
+            },
+            {
+              "title": "Next Health Check",
+              "type": "date",
+              "text": ""
+            },
+            {
+              "title": "Date",
+              "type": "date",
+              "text": ""
+            },
+            {
+              "title": "Creation log",
+              "type": "creation_log",
+              "text": "2026-06-09 02:55:04 UTC"
+            },
+            {
+              "title": "Client Check-In Log",
+              "type": "board_relation",
+              "text": null
+            }
+          ]
+        },
+        {
+          "id": "12226937121",
+          "name": "Aire Apartments",
+          "group": "All RG Contracts",
+          "columns": [
+            {
+              "title": "Subitems",
+              "type": "subtasks",
+              "text": null
+            },
+            {
+              "title": "Status",
+              "type": "status",
+              "text": "Active"
+            },
+            {
+              "title": "Project ID",
+              "type": "text",
+              "text": "571"
+            },
+            {
+              "title": "Site",
+              "type": "board_relation",
+              "text": null
+            },
+            {
+              "title": "Account",
+              "type": "mirror",
+              "text": null
+            },
+            {
+              "title": "Site Type",
+              "type": "mirror",
+              "text": null
+            },
+            {
+              "title": "Site Tier",
+              "type": "mirror",
+              "text": null
+            },
+            {
+              "title": "RG Service Scope",
+              "type": "board_relation",
+              "text": null
+            },
+            {
+              "title": "MSU/Client Systems",
+              "type": "mirror",
+              "text": null
+            },
+            {
+              "title": "Standard SLA",
+              "type": "status",
+              "text": "Undefined"
+            },
+            {
+              "title": "What to do when system is offline",
+              "type": "long_text",
+              "text": ""
+            },
+            {
+              "title": "In Alarm Report (Jun 1–2)",
+              "type": "status",
+              "text": null
+            },
+            {
+              "title": "MSU",
+              "type": "status",
+              "text": null
+            },
+            {
+              "title": "SMS Preferred by Client",
+              "type": "dropdown",
+              "text": null
+            },
+            {
+              "title": "Contract Start Date",
+              "type": "date",
+              "text": ""
+            },
+            {
+              "title": "Contract End Date",
+              "type": "date",
+              "text": ""
+            },
+            {
+              "title": "Contract Files",
+              "type": "file",
+              "text": ""
+            },
+            {
+              "title": "One-time Setup Fee",
+              "type": "numbers",
+              "text": ""
+            },
+            {
+              "title": "Monthly Bill Amount",
+              "type": "numbers",
+              "text": ""
+            },
+            {
+              "title": "Last Billing Date",
+              "type": "date",
+              "text": ""
+            },
+            {
+              "title": "Billing Notes (Special Instructions)",
+              "type": "long_text",
+              "text": ""
+            },
+            {
+              "title": "Billing Contact",
+              "type": "board_relation",
+              "text": null
+            },
+            {
+              "title": "Client Contract Owner",
+              "type": "board_relation",
+              "text": null
+            },
+            {
+              "title": "MSU Assets",
+              "type": "board_relation",
+              "text": null
+            },
+            {
+              "title": "Next Health Check",
+              "type": "date",
+              "text": ""
+            },
+            {
+              "title": "Date",
+              "type": "date",
+              "text": ""
+            },
+            {
+              "title": "Creation log",
+              "type": "creation_log",
+              "text": "2026-06-09 02:57:49 UTC"
+            },
+            {
+              "title": "Client Check-In Log",
+              "type": "board_relation",
+              "text": null
+            }
+          ]
+        },
+        {
+          "id": "12226982124",
+          "name": "Sisler & Sisler Construction - Ace Hardware",
+          "group": "All RG Contracts",
+          "columns": [
+            {
+              "title": "Subitems",
+              "type": "subtasks",
+              "text": null
+            },
+            {
+              "title": "Status",
+              "type": "status",
+              "text": "Active"
+            },
+            {
+              "title": "Project ID",
+              "type": "text",
+              "text": "728"
+            },
+            {
+              "title": "Site",
+              "type": "board_relation",
+              "text": null
+            },
+            {
+              "title": "Account",
+              "type": "mirror",
+              "text": null
+            },
+            {
+              "title": "Site Type",
+              "type": "mirror",
+              "text": null
+            },
+            {
+              "title": "Site Tier",
+              "type": "mirror",
+              "text": null
+            },
+            {
+              "title": "RG Service Scope",
+              "type": "board_relation",
+              "text": null
+            },
+            {
+              "title": "MSU/Client Systems",
+              "type": "mirror",
+              "text": null
+            },
+            {
+              "title": "Standard SLA",
+              "type": "status",
+              "text": "Undefined"
+            },
+            {
+              "title": "What to do when system is offline",
+              "type": "long_text",
+              "text": ""
+            },
+            {
+              "title": "In Alarm Report (Jun 1–2)",
+              "type": "status",
+              "text": null
+            },
+            {
+              "title": "MSU",
+              "type": "status",
+              "text": null
+            },
+            {
+              "title": "SMS Preferred by Client",
+              "type": "dropdown",
+              "text": null
+            },
+            {
+              "title": "Contract Start Date",
+              "type": "date",
+              "text": ""
+            },
+            {
+              "title": "Contract End Date",
+              "type": "date",
+              "text": ""
+            },
+            {
+              "title": "Contract Files",
+              "type": "file",
+              "text": ""
+            },
+            {
+              "title": "One-time Setup Fee",
+              "type": "numbers",
+              "text": ""
+            },
+            {
+              "title": "Monthly Bill Amount",
+              "type": "numbers",
+              "text": ""
+            },
+            {
+              "title": "Last Billing Date",
+              "type": "date",
+              "text": ""
+            },
+            {
+              "title": "Billing Notes (Special Instructions)",
+              "type": "long_text",
+              "text": ""
+            },
+            {
+              "title": "Billing Contact",
+              "type": "board_relation",
+              "text": null
+            },
+            {
+              "title": "Client Contract Owner",
+              "type": "board_relation",
+              "text": null
+            },
+            {
+              "title": "MSU Assets",
+              "type": "board_relation",
+              "text": null
+            },
+            {
+              "title": "Next Health Check",
+              "type": "date",
+              "text": ""
+            },
+            {
+              "title": "Date",
+              "type": "date",
+              "text": ""
+            },
+            {
+              "title": "Creation log",
+              "type": "creation_log",
+              "text": "2026-06-09 02:54:21 UTC"
+            },
+            {
+              "title": "Client Check-In Log",
+              "type": "board_relation",
+              "text": null
+            }
+          ]
+        }
+      ]
+    },
+    "rgAreaScope": {
+      "id": "18270362307",
+      "name": "RG Area Service Scope",
+      "domain": "rg_area_scope",
+      "structure": {
+        "id": "18270362307",
+        "name": "(2) RG Area Service Scope",
+        "workspace_id": "13015347",
+        "columns": [
+          {
+            "id": "name",
+            "title": "Name",
+            "type": "name"
+          },
+          {
+            "id": "status",
+            "title": "Status",
+            "type": "status"
+          },
+          {
+            "id": "lookup_mm45ex7s",
+            "title": "Account",
+            "type": "mirror"
+          },
+          {
+            "id": "lookup_mm45f1e0",
+            "title": "Project ID",
+            "type": "mirror"
+          },
+          {
+            "id": "board_relation_mkx2vq9r",
+            "title": "Remote Guarding Contracts",
+            "type": "board_relation"
+          },
+          {
+            "id": "lookup_mm458a7",
+            "title": "Site",
+            "type": "mirror"
+          },
+          {
+            "id": "lookup_mm45zmp2",
+            "title": "Site Type",
+            "type": "mirror"
+          },
+          {
+            "id": "lookup_mm45pmkx",
+            "title": "Site Tier",
+            "type": "mirror"
+          },
+          {
+            "id": "dropdown_mm13k9yf",
+            "title": "Volume of Alarms",
+            "type": "dropdown"
+          },
+          {
+            "id": "text_mky192ep",
+            "title": "Service Type",
+            "type": "text"
+          },
+          {
+            "id": "text_mky17wm3",
+            "title": "Jurisdiction",
+            "type": "text"
+          },
+          {
+            "id": "text_mky11vc",
+            "title": "Codewords",
+            "type": "text"
+          },
+          {
+            "id": "text_mky1c1nv",
+            "title": "Gate Codes",
+            "type": "text"
+          },
+          {
+            "id": "text_mky1vg9y",
+            "title": "Lockbox Codes",
+            "type": "text"
+          },
+          {
+            "id": "text_mky13160",
+            "title": "CCTV (Yes/No)",
+            "type": "text"
+          },
+          {
+            "id": "text_mky1pxvw",
+            "title": "RG Weekday Hours",
+            "type": "text"
+          },
+          {
+            "id": "text_mky150e",
+            "title": "RG Weekend Hours",
+            "type": "text"
+          },
+          {
+            "id": "text_mky19hyb",
+            "title": "Security Guard Provider",
+            "type": "text"
+          },
+          {
+            "id": "text_mky1da78",
+            "title": "Security Guard Main POC",
+            "type": "text"
+          },
+          {
+            "id": "text_mky1wgae",
+            "title": "Security Guard POC Number & Email",
+            "type": "text"
+          },
+          {
+            "id": "text_mky13r3g",
+            "title": "Guard Phone Number (Onsite)",
+            "type": "text"
+          },
+          {
+            "id": "text_mky1bfg5",
+            "title": "Radio Channel (Onsite)",
+            "type": "text"
+          },
+          {
+            "id": "text_mky1wns1",
+            "title": "PS Patrol type",
+            "type": "text"
+          },
+          {
+            "id": "text_mky1s36v",
+            "title": "Armed PS Status",
+            "type": "text"
+          },
+          {
+            "id": "text_mky1yqpt",
+            "title": "PS Guard Schedule",
+            "type": "text"
+          },
+          {
+            "id": "text_mky1m781",
+            "title": "Security Alarm Provider",
+            "type": "text"
+          },
+          {
+            "id": "text_mky1tzx",
+            "title": "Security Alarm Verbal Code",
+            "type": "text"
+          },
+          {
+            "id": "text_mky1ewk1",
+            "title": "VMS Platform",
+            "type": "text"
+          },
+          {
+            "id": "text_mky14ca",
+            "title": "AI Platform",
+            "type": "text"
+          },
+          {
+            "id": "text_mky1a28w",
+            "title": "# of Cameras",
+            "type": "text"
+          },
+          {
+            "id": "text_mky1zvar",
+            "title": "PTZ's",
+            "type": "text"
+          },
+          {
+            "id": "text_mky1jz53",
+            "title": "AI Services",
+            "type": "text"
+          },
+          {
+            "id": "text_mky11atm",
+            "title": "Access Control as Service",
+            "type": "text"
+          },
+          {
+            "id": "text_mky1hm7z",
+            "title": "Flow&Fire Meters as Service",
+            "type": "text"
+          },
+          {
+            "id": "text_mky1bwnr",
+            "title": "Virtual Patrols",
+            "type": "text"
+          },
+          {
+            "id": "text_mky1x8ee",
+            "title": "Virtual Patrol Frequency",
+            "type": "text"
+          },
+          {
+            "id": "text_mky1j4z",
+            "title": "Virtual Patrol Schedule",
+            "type": "text"
+          },
+          {
+            "id": "text_mky1bptx",
+            "title": "SOP File",
+            "type": "text"
+          },
+          {
+            "id": "pulse_log_mkyh5n6y",
+            "title": "Creation log",
+            "type": "creation_log"
+          },
+          {
+            "id": "board_relation_mm45p6j8",
+            "title": "Client Systems",
+            "type": "board_relation"
+          },
+          {
+            "id": "dropdown_mm46t9m3",
+            "title": "Suspicious Activity",
+            "type": "dropdown"
+          },
+          {
+            "id": "text_mm4xwqck",
+            "title": "Project ID",
+            "type": "text"
+          }
+        ],
+        "groups": [
+          {
+            "id": "group_mky1zyvm",
+            "title": "Current RG SOP Sites"
+          },
+          {
+            "id": "topics",
+            "title": "Archived RG SOP Sites"
+          }
+        ]
+      },
+      "sampleItemCount": 5,
+      "sampleItems": [
+        {
+          "id": "10632286785",
+          "name": "4101 Beverly Dallas",
+          "group": "Current RG SOP Sites",
+          "columns": [
+            {
+              "title": "Status",
+              "type": "status",
+              "text": "Current Contract"
+            },
+            {
+              "title": "Account",
+              "type": "mirror",
+              "text": null
+            },
+            {
+              "title": "Project ID",
+              "type": "mirror",
+              "text": null
+            },
+            {
+              "title": "Remote Guarding Contracts",
+              "type": "board_relation",
+              "text": null
+            },
+            {
+              "title": "Site",
+              "type": "mirror",
+              "text": null
+            },
+            {
+              "title": "Site Type",
+              "type": "mirror",
+              "text": null
+            },
+            {
+              "title": "Site Tier",
+              "type": "mirror",
+              "text": null
+            },
+            {
+              "title": "Volume of Alarms",
+              "type": "dropdown",
+              "text": "Low"
+            },
+            {
+              "title": "Service Type",
+              "type": "text",
+              "text": "RG"
+            },
+            {
+              "title": "Jurisdiction",
+              "type": "text",
+              "text": "Highland Park PD"
+            },
+            {
+              "title": "Codewords",
+              "type": "text",
+              "text": "MOCKINGBIRD"
+            },
+            {
+              "title": "Gate Codes",
+              "type": "text",
+              "text": "Front Gate 1521"
+            },
+            {
+              "title": "Lockbox Codes",
+              "type": "text",
+              "text": "N/A"
+            },
+            {
+              "title": "CCTV (Yes/No)",
+              "type": "text",
+              "text": "No"
+            },
+            {
+              "title": "RG Weekday Hours",
+              "type": "text",
+              "text": "1845-0600"
+            },
+            {
+              "title": "RG Weekend Hours",
+              "type": "text",
+              "text": "All Day"
+            },
+            {
+              "title": "Security Guard Provider",
+              "type": "text",
+              "text": "N/A"
+            },
+            {
+              "title": "Security Guard Main POC",
+              "type": "text",
+              "text": "N/A"
+            },
+            {
+              "title": "Security Guard POC Number & Email",
+              "type": "text",
+              "text": "N/A"
+            },
+            {
+              "title": "Guard Phone Number (Onsite)",
+              "type": "text",
+              "text": "N/A"
+            },
+            {
+              "title": "Radio Channel (Onsite)",
+              "type": "text",
+              "text": "N/A"
+            },
+            {
+              "title": "PS Patrol type",
+              "type": "text",
+              "text": "N/A"
+            },
+            {
+              "title": "Armed PS Status",
+              "type": "text",
+              "text": "N/A"
+            },
+            {
+              "title": "PS Guard Schedule",
+              "type": "text",
+              "text": "N/A"
+            },
+            {
+              "title": "Security Alarm Provider",
+              "type": "text",
+              "text": "N/A"
+            },
+            {
+              "title": "Security Alarm Verbal Code",
+              "type": "text",
+              "text": "N/A"
+            },
+            {
+              "title": "VMS Platform",
+              "type": "text",
+              "text": "Yoursix"
+            },
+            {
+              "title": "AI Platform",
+              "type": "text",
+              "text": "Yoursix"
+            },
+            {
+              "title": "# of Cameras",
+              "type": "text",
+              "text": "6"
+            },
+            {
+              "title": "PTZ's",
+              "type": "text",
+              "text": "Yes"
+            },
+            {
+              "title": "AI Services",
+              "type": "text",
+              "text": ""
+            },
+            {
+              "title": "Access Control as Service",
+              "type": "text",
+              "text": "No"
+            },
+            {
+              "title": "Flow&Fire Meters as Service",
+              "type": "text",
+              "text": "No"
+            },
+            {
+              "title": "Virtual Patrols",
+              "type": "text",
+              "text": "No"
+            },
+            {
+              "title": "Virtual Patrol Frequency",
+              "type": "text",
+              "text": "N/A"
+            },
+            {
+              "title": "Virtual Patrol Schedule",
+              "type": "text",
+              "text": "N/A"
+            },
+            {
+              "title": "SOP File",
+              "type": "text",
+              "text": "https://monitoring.calidadservices.net/SiteDetails.aspx?groupid=163&EventId=5278039#/site-monitor-calendar?groupid=163"
+            },
+            {
+              "title": "Creation log",
+              "type": "creation_log",
+              "text": "2025-11-25 02:02:11 UTC"
+            },
+            {
+              "title": "Client Systems",
+              "type": "board_relation",
+              "text": null
+            },
+            {
+              "title": "Suspicious Activity",
+              "type": "dropdown",
+              "text": "Use Loudspeaker > Contact PD > Contact POC1"
+            },
+            {
+              "title": "Project ID",
+              "type": "text",
+              "text": ""
+            }
+          ]
+        },
+        {
+          "id": "10842986543",
+          "name": "777 Properties",
+          "group": "Current RG SOP Sites",
+          "columns": [
+            {
+              "title": "Status",
+              "type": "status",
+              "text": "Current Contract"
+            },
+            {
+              "title": "Account",
+              "type": "mirror",
+              "text": null
+            },
+            {
+              "title": "Project ID",
+              "type": "mirror",
+              "text": null
+            },
+            {
+              "title": "Remote Guarding Contracts",
+              "type": "board_relation",
+              "text": null
+            },
+            {
+              "title": "Site",
+              "type": "mirror",
+              "text": null
+            },
+            {
+              "title": "Site Type",
+              "type": "mirror",
+              "text": null
+            },
+            {
+              "title": "Site Tier",
+              "type": "mirror",
+              "text": null
+            },
+            {
+              "title": "Volume of Alarms",
+              "type": "dropdown",
+              "text": "Low"
+            },
+            {
+              "title": "Service Type",
+              "type": "text",
+              "text": ""
+            },
+            {
+              "title": "Jurisdiction",
+              "type": "text",
+              "text": ""
+            },
+            {
+              "title": "Codewords",
+              "type": "text",
+              "text": ""
+            },
+            {
+              "title": "Gate Codes",
+              "type": "text",
+              "text": ""
+            },
+            {
+              "title": "Lockbox Codes",
+              "type": "text",
+              "text": ""
+            },
+            {
+              "title": "CCTV (Yes/No)",
+              "type": "text",
+              "text": ""
+            },
+            {
+              "title": "RG Weekday Hours",
+              "type": "text",
+              "text": ""
+            },
+            {
+              "title": "RG Weekend Hours",
+              "type": "text",
+              "text": ""
+            },
+            {
+              "title": "Security Guard Provider",
+              "type": "text",
+              "text": ""
+            },
+            {
+              "title": "Security Guard Main POC",
+              "type": "text",
+              "text": ""
+            },
+            {
+              "title": "Security Guard POC Number & Email",
+              "type": "text",
+              "text": ""
+            },
+            {
+              "title": "Guard Phone Number (Onsite)",
+              "type": "text",
+              "text": ""
+            },
+            {
+              "title": "Radio Channel (Onsite)",
+              "type": "text",
+              "text": ""
+            },
+            {
+              "title": "PS Patrol type",
+              "type": "text",
+              "text": ""
+            },
+            {
+              "title": "Armed PS Status",
+              "type": "text",
+              "text": ""
+            },
+            {
+              "title": "PS Guard Schedule",
+              "type": "text",
+              "text": ""
+            },
+            {
+              "title": "Security Alarm Provider",
+              "type": "text",
+              "text": ""
+            },
+            {
+              "title": "Security Alarm Verbal Code",
+              "type": "text",
+              "text": ""
+            },
+            {
+              "title": "VMS Platform",
+              "type": "text",
+              "text": ""
+            },
+            {
+              "title": "AI Platform",
+              "type": "text",
+              "text": ""
+            },
+            {
+              "title": "# of Cameras",
+              "type": "text",
+              "text": ""
+            },
+            {
+              "title": "PTZ's",
+              "type": "text",
+              "text": ""
+            },
+            {
+              "title": "AI Services",
+              "type": "text",
+              "text": ""
+            },
+            {
+              "title": "Access Control as Service",
+              "type": "text",
+              "text": ""
+            },
+            {
+              "title": "Flow&Fire Meters as Service",
+              "type": "text",
+              "text": ""
+            },
+            {
+              "title": "Virtual Patrols",
+              "type": "text",
+              "text": ""
+            },
+            {
+              "title": "Virtual Patrol Frequency",
+              "type": "text",
+              "text": ""
+            },
+            {
+              "title": "Virtual Patrol Schedule",
+              "type": "text",
+              "text": ""
+            },
+            {
+              "title": "SOP File",
+              "type": "text",
+              "text": "https://monitoring.calidadservices.net/SiteDetails.aspx?groupid=250&EventId=5278135#/site-monitor-calendar?groupid=250"
+            },
+            {
+              "title": "Creation log",
+              "type": "creation_log",
+              "text": "2025-12-23 18:15:36 UTC"
+            },
+            {
+              "title": "Client Systems",
+              "type": "board_relation",
+              "text": null
+            },
+            {
+              "title": "Suspicious Activity",
+              "type": "dropdown",
+              "text": "Contact Security Officer > Contact PD > Contact POC1"
+            },
+            {
+              "title": "Project ID",
+              "type": "text",
+              "text": ""
+            }
+          ]
+        },
+        {
+          "id": "10632282841",
+          "name": "AGS Vegas",
+          "group": "Current RG SOP Sites",
+          "columns": [
+            {
+              "title": "Status",
+              "type": "status",
+              "text": "Current Contract"
+            },
+            {
+              "title": "Account",
+              "type": "mirror",
+              "text": null
+            },
+            {
+              "title": "Project ID",
+              "type": "mirror",
+              "text": null
+            },
+            {
+              "title": "Remote Guarding Contracts",
+              "type": "board_relation",
+              "text": null
+            },
+            {
+              "title": "Site",
+              "type": "mirror",
+              "text": null
+            },
+            {
+              "title": "Site Type",
+              "type": "mirror",
+              "text": null
+            },
+            {
+              "title": "Site Tier",
+              "type": "mirror",
+              "text": null
+            },
+            {
+              "title": "Volume of Alarms",
+              "type": "dropdown",
+              "text": null
+            },
+            {
+              "title": "Service Type",
+              "type": "text",
+              "text": "RG"
+            },
+            {
+              "title": "Jurisdiction",
+              "type": "text",
+              "text": "Henderson PD"
+            },
+            {
+              "title": "Codewords",
+              "type": "text",
+              "text": "None"
+            },
+            {
+              "title": "Gate Codes",
+              "type": "text",
+              "text": "Need to get"
+            },
+            {
+              "title": "Lockbox Codes",
+              "type": "text",
+              "text": "N/A"
+            },
+            {
+              "title": "CCTV (Yes/No)",
+              "type": "text",
+              "text": "No"
+            },
+            {
+              "title": "RG Weekday Hours",
+              "type": "text",
+              "text": "1700-0600"
+            },
+            {
+              "title": "RG Weekend Hours",
+              "type": "text",
+              "text": "All Day"
+            },
+            {
+              "title": "Security Guard Provider",
+              "type": "text",
+              "text": "Cadence Security"
+            },
+            {
+              "title": "Security Guard Main POC",
+              "type": "text",
+              "text": "N/A"
+            },
+            {
+              "title": "Security Guard POC Number & Email",
+              "type": "text",
+              "text": "N/A"
+            },
+            {
+              "title": "Guard Phone Number (Onsite)",
+              "type": "text",
+              "text": "(702) 929-9800"
+            },
+            {
+              "title": "Radio Channel (Onsite)",
+              "type": "text",
+              "text": "N/A"
+            },
+            {
+              "title": "PS Patrol type",
+              "type": "text",
+              "text": "On-Site"
+            },
+            {
+              "title": "Armed PS Status",
+              "type": "text",
+              "text": "No"
+            },
+            {
+              "title": "PS Guard Schedule",
+              "type": "text",
+              "text": "24/7"
+            },
+            {
+              "title": "Security Alarm Provider",
+              "type": "text",
+              "text": ""
+            },
+            {
+              "title": "Security Alarm Verbal Code",
+              "type": "text",
+              "text": ""
+            },
+            {
+              "title": "VMS Platform",
+              "type": "text",
+              "text": "Yoursix"
+            },
+            {
+              "title": "AI Platform",
+              "type": "text",
+              "text": "Actuate"
+            },
+            {
+              "title": "# of Cameras",
+              "type": "text",
+              "text": ""
+            },
+            {
+              "title": "PTZ's",
+              "type": "text",
+              "text": "Yes"
+            },
+            {
+              "title": "AI Services",
+              "type": "text",
+              "text": ""
+            },
+            {
+              "title": "Access Control as Service",
+              "type": "text",
+              "text": "No"
+            },
+            {
+              "title": "Flow&Fire Meters as Service",
+              "type": "text",
+              "text": ""
+            },
+            {
+              "title": "Virtual Patrols",
+              "type": "text",
+              "text": ""
+            },
+            {
+              "title": "Virtual Patrol Frequency",
+              "type": "text",
+              "text": ""
+            },
+            {
+              "title": "Virtual Patrol Schedule",
+              "type": "text",
+              "text": ""
+            },
+            {
+              "title": "SOP File",
+              "type": "text",
+              "text": "https://monitoring.calidadservices.net/SiteDetails.aspx?groupid=224&EventId=5278083#/site-monitor-calendar?groupid=224"
+            },
+            {
+              "title": "Creation log",
+              "type": "creation_log",
+              "text": "2025-11-25 02:02:13 UTC"
+            },
+            {
+              "title": "Client Systems",
+              "type": "board_relation",
+              "text": null
+            },
+            {
+              "title": "Suspicious Activity",
+              "type": "dropdown",
+              "text": null
+            },
+            {
+              "title": "Project ID",
+              "type": "text",
+              "text": ""
+            }
+          ]
+        },
+        {
+          "id": "10632280289",
+          "name": "633 San Juan",
+          "group": "Current RG SOP Sites",
+          "columns": [
+            {
+              "title": "Status",
+              "type": "status",
+              "text": "Current Contract"
+            },
+            {
+              "title": "Account",
+              "type": "mirror",
+              "text": null
+            },
+            {
+              "title": "Project ID",
+              "type": "mirror",
+              "text": null
+            },
+            {
+              "title": "Remote Guarding Contracts",
+              "type": "board_relation",
+              "text": null
+            },
+            {
+              "title": "Site",
+              "type": "mirror",
+              "text": null
+            },
+            {
+              "title": "Site Type",
+              "type": "mirror",
+              "text": null
+            },
+            {
+              "title": "Site Tier",
+              "type": "mirror",
+              "text": null
+            },
+            {
+              "title": "Volume of Alarms",
+              "type": "dropdown",
+              "text": null
+            },
+            {
+              "title": "Service Type",
+              "type": "text",
+              "text": "RG"
+            },
+            {
+              "title": "Jurisdiction",
+              "type": "text",
+              "text": "Stockton PD"
+            },
+            {
+              "title": "Codewords",
+              "type": "text",
+              "text": "BONGRIP"
+            },
+            {
+              "title": "Gate Codes",
+              "type": "text",
+              "text": "N/A"
+            },
+            {
+              "title": "Lockbox Codes",
+              "type": "text",
+              "text": "N/A"
+            },
+            {
+              "title": "CCTV (Yes/No)",
+              "type": "text",
+              "text": "Yes"
+            },
+            {
+              "title": "RG Weekday Hours",
+              "type": "text",
+              "text": "All Day"
+            },
+            {
+              "title": "RG Weekend Hours",
+              "type": "text",
+              "text": "All Day"
+            },
+            {
+              "title": "Security Guard Provider",
+              "type": "text",
+              "text": "N/A"
+            },
+            {
+              "title": "Security Guard Main POC",
+              "type": "text",
+              "text": "N/A"
+            },
+            {
+              "title": "Security Guard POC Number & Email",
+              "type": "text",
+              "text": "N/A"
+            },
+            {
+              "title": "Guard Phone Number (Onsite)",
+              "type": "text",
+              "text": "N/A"
+            },
+            {
+              "title": "Radio Channel (Onsite)",
+              "type": "text",
+              "text": "N/A"
+            },
+            {
+              "title": "PS Patrol type",
+              "type": "text",
+              "text": "N/A"
+            },
+            {
+              "title": "Armed PS Status",
+              "type": "text",
+              "text": "N/A"
+            },
+            {
+              "title": "PS Guard Schedule",
+              "type": "text",
+              "text": "N/A"
+            },
+            {
+              "title": "Security Alarm Provider",
+              "type": "text",
+              "text": "N/A"
+            },
+            {
+              "title": "Security Alarm Verbal Code",
+              "type": "text",
+              "text": "N/A"
+            },
+            {
+              "title": "VMS Platform",
+              "type": "text",
+              "text": "ExacqVision"
+            },
+            {
+              "title": "AI Platform",
+              "type": "text",
+              "text": "Actuate"
+            },
+            {
+              "title": "# of Cameras",
+              "type": "text",
+              "text": "25"
+            },
+            {
+              "title": "PTZ's",
+              "type": "text",
+              "text": "No"
+            },
+            {
+              "title": "AI Services",
+              "type": "text",
+              "text": ""
+            },
+            {
+              "title": "Access Control as Service",
+              "type": "text",
+              "text": "No"
+            },
+            {
+              "title": "Flow&Fire Meters as Service",
+              "type": "text",
+              "text": "No"
+            },
+            {
+              "title": "Virtual Patrols",
+              "type": "text",
+              "text": "No"
+            },
+            {
+              "title": "Virtual Patrol Frequency",
+              "type": "text",
+              "text": "N/A"
+            },
+            {
+              "title": "Virtual Patrol Schedule",
+              "type": "text",
+              "text": "N/A"
+            },
+            {
+              "title": "SOP File",
+              "type": "text",
+              "text": "https://monitoring.calidadservices.net/SiteDetails.aspx?groupid=174&EventId=5278043#/site-monitor-calendar?groupid=174"
+            },
+            {
+              "title": "Creation log",
+              "type": "creation_log",
+              "text": "2025-11-25 02:02:12 UTC"
+            },
+            {
+              "title": "Client Systems",
+              "type": "board_relation",
+              "text": null
+            },
+            {
+              "title": "Suspicious Activity",
+              "type": "dropdown",
+              "text": null
+            },
+            {
+              "title": "Project ID",
+              "type": "text",
+              "text": ""
+            }
+          ]
+        },
+        {
+          "id": "10632282793",
+          "name": "AGS 10100",
+          "group": "Current RG SOP Sites",
+          "columns": [
+            {
+              "title": "Status",
+              "type": "status",
+              "text": "Current Contract"
+            },
+            {
+              "title": "Account",
+              "type": "mirror",
+              "text": null
+            },
+            {
+              "title": "Project ID",
+              "type": "mirror",
+              "text": null
+            },
+            {
+              "title": "Remote Guarding Contracts",
+              "type": "board_relation",
+              "text": null
+            },
+            {
+              "title": "Site",
+              "type": "mirror",
+              "text": null
+            },
+            {
+              "title": "Site Type",
+              "type": "mirror",
+              "text": null
+            },
+            {
+              "title": "Site Tier",
+              "type": "mirror",
+              "text": null
+            },
+            {
+              "title": "Volume of Alarms",
+              "type": "dropdown",
+              "text": null
+            },
+            {
+              "title": "Service Type",
+              "type": "text",
+              "text": "RG + GS"
+            },
+            {
+              "title": "Jurisdiction",
+              "type": "text",
+              "text": "Stockton PD"
+            },
+            {
+              "title": "Codewords",
+              "type": "text",
+              "text": "None"
+            },
+            {
+              "title": "Gate Codes",
+              "type": "text",
+              "text": "N/A"
+            },
+            {
+              "title": "Lockbox Codes",
+              "type": "text",
+              "text": "Equipment Lockbox: 4704700#"
+            },
+            {
+              "title": "CCTV (Yes/No)",
+              "type": "text",
+              "text": "Yes"
+            },
+            {
+              "title": "RG Weekday Hours",
+              "type": "text",
+              "text": "All Day"
+            },
+            {
+              "title": "RG Weekend Hours",
+              "type": "text",
+              "text": "All Day"
+            },
+            {
+              "title": "Security Guard Provider",
+              "type": "text",
+              "text": "N/A"
+            },
+            {
+              "title": "Security Guard Main POC",
+              "type": "text",
+              "text": "N/A"
+            },
+            {
+              "title": "Security Guard POC Number & Email",
+              "type": "text",
+              "text": "N/A"
+            },
+            {
+              "title": "Guard Phone Number (Onsite)",
+              "type": "text",
+              "text": "N/A"
+            },
+            {
+              "title": "Radio Channel (Onsite)",
+              "type": "text",
+              "text": "N/A"
+            },
+            {
+              "title": "PS Patrol type",
+              "type": "text",
+              "text": "N/A"
+            },
+            {
+              "title": "Armed PS Status",
+              "type": "text",
+              "text": "N/A"
+            },
+            {
+              "title": "PS Guard Schedule",
+              "type": "text",
+              "text": "N/A"
+            },
+            {
+              "title": "Security Alarm Provider",
+              "type": "text",
+              "text": ""
+            },
+            {
+              "title": "Security Alarm Verbal Code",
+              "type": "text",
+              "text": ""
+            },
+            {
+              "title": "VMS Platform",
+              "type": "text",
+              "text": "Wave"
+            },
+            {
+              "title": "AI Platform",
+              "type": "text",
+              "text": "Actuate"
+            },
+            {
+              "title": "# of Cameras",
+              "type": "text",
+              "text": ""
+            },
+            {
+              "title": "PTZ's",
+              "type": "text",
+              "text": "Yes"
+            },
+            {
+              "title": "AI Services",
+              "type": "text",
+              "text": ""
+            },
+            {
+              "title": "Access Control as Service",
+              "type": "text",
+              "text": "No"
+            },
+            {
+              "title": "Flow&Fire Meters as Service",
+              "type": "text",
+              "text": ""
+            },
+            {
+              "title": "Virtual Patrols",
+              "type": "text",
+              "text": ""
+            },
+            {
+              "title": "Virtual Patrol Frequency",
+              "type": "text",
+              "text": ""
+            },
+            {
+              "title": "Virtual Patrol Schedule",
+              "type": "text",
+              "text": ""
+            },
+            {
+              "title": "SOP File",
+              "type": "text",
+              "text": "https://monitoring.calidadservices.net/SiteDetails.aspx?groupid=35&EventId=5278077#/site-monitor-calendar?groupid=35"
+            },
+            {
+              "title": "Creation log",
+              "type": "creation_log",
+              "text": "2025-11-25 02:02:12 UTC"
+            },
+            {
+              "title": "Client Systems",
+              "type": "board_relation",
+              "text": null
+            },
+            {
+              "title": "Suspicious Activity",
+              "type": "dropdown",
+              "text": null
+            },
+            {
+              "title": "Project ID",
+              "type": "text",
+              "text": ""
+            }
+          ]
+        }
+      ]
+    },
+    "psRmrContract": {
+      "id": "18415110274",
+      "name": "PS RMR Contract",
+      "domain": "ps_contracts",
+      "structure": {
+        "id": "18415110274",
+        "name": "(1) PS RMR Contract",
+        "workspace_id": "13015347",
+        "columns": [
+          {
+            "id": "name",
+            "title": "Name",
+            "type": "name"
+          },
+          {
+            "id": "color_mm46bqfn",
+            "title": "Lead",
+            "type": "status"
+          },
+          {
+            "id": "board_relation_mm44qs76",
+            "title": "Sites",
+            "type": "board_relation"
+          },
+          {
+            "id": "lookup_mm44nzpy",
+            "title": "Account",
+            "type": "mirror"
+          },
+          {
+            "id": "lookup_mm44p37x",
+            "title": "Site Type",
+            "type": "mirror"
+          },
+          {
+            "id": "lookup_mm445vw1",
+            "title": "Site Address",
+            "type": "mirror"
+          },
+          {
+            "id": "board_relation_mm45nfaq",
+            "title": "Site Contact",
+            "type": "board_relation"
+          },
+          {
+            "id": "lookup_mm45qkvr",
+            "title": "Contact Phone",
+            "type": "mirror"
+          },
+          {
+            "id": "color_mm3rqp0r",
+            "title": "Status",
+            "type": "status"
+          },
+          {
+            "id": "date_mm3rjna",
+            "title": "Start Date",
+            "type": "date"
+          },
+          {
+            "id": "date_mm3rryfn",
+            "title": "End Date",
+            "type": "date"
+          },
+          {
+            "id": "date_mm3rk4z5",
+            "title": "Renewal Date",
+            "type": "date"
+          },
+          {
+            "id": "long_text_mm3r3wxg",
+            "title": "Equipment Required",
+            "type": "long_text"
+          },
+          {
+            "id": "long_text_mm3rs8j1",
+            "title": "Special Instructions",
+            "type": "long_text"
+          },
+          {
+            "id": "multiple_person_mm3rgdd2",
+            "title": "Account Owner",
+            "type": "people"
+          },
+          {
+            "id": "multiple_person_mm3r4w12",
+            "title": "Field Supervisor",
+            "type": "people"
+          },
+          {
+            "id": "board_relation_mm3r7h90",
+            "title": "Posts",
+            "type": "board_relation"
+          },
+          {
+            "id": "lookup_mm3rffda",
+            "title": "Posts Status",
+            "type": "mirror"
+          },
+          {
+            "id": "lookup_mm3rpwxq",
+            "title": "Weekly Hours",
+            "type": "mirror"
+          },
+          {
+            "id": "lookup_mm3rwzgj",
+            "title": "Avg Pay Rate $/hr",
+            "type": "mirror"
+          },
+          {
+            "id": "formula_mm3r65ak",
+            "title": "Avg Margin %",
+            "type": "formula"
+          },
+          {
+            "id": "formula_mm3rtghj",
+            "title": "Monthly Value",
+            "type": "formula"
+          },
+          {
+            "id": "formula_mm3rg7aw",
+            "title": "Annual Value",
+            "type": "formula"
+          },
+          {
+            "id": "subtasks_mm44j5d3",
+            "title": "Subitems",
+            "type": "subtasks"
+          },
+          {
+            "id": "link_mm44660m",
+            "title": "Contract Link (SharePoint)",
+            "type": "link"
+          },
+          {
+            "id": "board_relation_mm44kkh3",
+            "title": "Project Hub (NEW)",
+            "type": "board_relation"
+          },
+          {
+            "id": "board_relation_mm4npz1a",
+            "title": "link to PS — Client Connects (Check-In Log)",
+            "type": "board_relation"
+          },
+          {
+            "id": "board_relation_mm4nvzxn",
+            "title": "link to RG — Client Connects (Check-In Log)",
+            "type": "board_relation"
+          },
+          {
+            "id": "text_mm50p0eh",
+            "title": "Project ID",
+            "type": "text"
+          },
+          {
+            "id": "file_mm505han",
+            "title": "Contract File",
+            "type": "file"
+          }
+        ],
+        "groups": [
+          {
+            "id": "topics",
+            "title": "Physical Security"
+          }
+        ]
+      },
+      "sampleItemCount": 5,
+      "sampleItems": [
+        {
+          "id": "12227631172",
+          "name": "Miracle Mile",
+          "group": "Physical Security",
+          "columns": [
+            {
+              "title": "Lead",
+              "type": "status",
+              "text": "3rd Party"
+            },
+            {
+              "title": "Sites",
+              "type": "board_relation",
+              "text": null
+            },
+            {
+              "title": "Account",
+              "type": "mirror",
+              "text": null
+            },
+            {
+              "title": "Site Type",
+              "type": "mirror",
+              "text": null
+            },
+            {
+              "title": "Site Address",
+              "type": "mirror",
+              "text": null
+            },
+            {
+              "title": "Site Contact",
+              "type": "board_relation",
+              "text": null
+            },
+            {
+              "title": "Contact Phone",
+              "type": "mirror",
+              "text": null
+            },
+            {
+              "title": "Status",
+              "type": "status",
+              "text": "Active"
+            },
+            {
+              "title": "Start Date",
+              "type": "date",
+              "text": ""
+            },
+            {
+              "title": "End Date",
+              "type": "date",
+              "text": ""
+            },
+            {
+              "title": "Renewal Date",
+              "type": "date",
+              "text": ""
+            },
+            {
+              "title": "Equipment Required",
+              "type": "long_text",
+              "text": ""
+            },
+            {
+              "title": "Special Instructions",
+              "type": "long_text",
+              "text": ""
+            },
+            {
+              "title": "Account Owner",
+              "type": "people",
+              "text": ""
+            },
+            {
+              "title": "Field Supervisor",
+              "type": "people",
+              "text": "Rob Young"
+            },
+            {
+              "title": "Posts",
+              "type": "board_relation",
+              "text": null
+            },
+            {
+              "title": "Posts Status",
+              "type": "mirror",
+              "text": null
+            },
+            {
+              "title": "Weekly Hours",
+              "type": "mirror",
+              "text": null
+            },
+            {
+              "title": "Avg Pay Rate $/hr",
+              "type": "mirror",
+              "text": null
+            },
+            {
+              "title": "Avg Margin %",
+              "type": "formula",
+              "text": ""
+            },
+            {
+              "title": "Monthly Value",
+              "type": "formula",
+              "text": ""
+            },
+            {
+              "title": "Annual Value",
+              "type": "formula",
+              "text": ""
+            },
+            {
+              "title": "Subitems",
+              "type": "subtasks",
+              "text": null
+            },
+            {
+              "title": "Contract Link (SharePoint)",
+              "type": "link",
+              "text": ""
+            },
+            {
+              "title": "Project Hub (NEW)",
+              "type": "board_relation",
+              "text": null
+            },
+            {
+              "title": "link to PS — Client Connects (Check-In Log)",
+              "type": "board_relation",
+              "text": null
+            },
+            {
+              "title": "link to RG — Client Connects (Check-In Log)",
+              "type": "board_relation",
+              "text": null
+            },
+            {
+              "title": "Project ID",
+              "type": "text",
+              "text": ""
+            },
+            {
+              "title": "Contract File",
+              "type": "file",
+              "text": ""
+            }
+          ]
+        },
+        {
+          "id": "12227509164",
+          "name": "Mills Ranch",
+          "group": "Physical Security",
+          "columns": [
+            {
+              "title": "Lead",
+              "type": "status",
+              "text": "3rd Party"
+            },
+            {
+              "title": "Sites",
+              "type": "board_relation",
+              "text": null
+            },
+            {
+              "title": "Account",
+              "type": "mirror",
+              "text": null
+            },
+            {
+              "title": "Site Type",
+              "type": "mirror",
+              "text": null
+            },
+            {
+              "title": "Site Address",
+              "type": "mirror",
+              "text": null
+            },
+            {
+              "title": "Site Contact",
+              "type": "board_relation",
+              "text": null
+            },
+            {
+              "title": "Contact Phone",
+              "type": "mirror",
+              "text": null
+            },
+            {
+              "title": "Status",
+              "type": "status",
+              "text": "Active"
+            },
+            {
+              "title": "Start Date",
+              "type": "date",
+              "text": ""
+            },
+            {
+              "title": "End Date",
+              "type": "date",
+              "text": ""
+            },
+            {
+              "title": "Renewal Date",
+              "type": "date",
+              "text": ""
+            },
+            {
+              "title": "Equipment Required",
+              "type": "long_text",
+              "text": ""
+            },
+            {
+              "title": "Special Instructions",
+              "type": "long_text",
+              "text": ""
+            },
+            {
+              "title": "Account Owner",
+              "type": "people",
+              "text": ""
+            },
+            {
+              "title": "Field Supervisor",
+              "type": "people",
+              "text": "Rob Young"
+            },
+            {
+              "title": "Posts",
+              "type": "board_relation",
+              "text": null
+            },
+            {
+              "title": "Posts Status",
+              "type": "mirror",
+              "text": null
+            },
+            {
+              "title": "Weekly Hours",
+              "type": "mirror",
+              "text": null
+            },
+            {
+              "title": "Avg Pay Rate $/hr",
+              "type": "mirror",
+              "text": null
+            },
+            {
+              "title": "Avg Margin %",
+              "type": "formula",
+              "text": ""
+            },
+            {
+              "title": "Monthly Value",
+              "type": "formula",
+              "text": ""
+            },
+            {
+              "title": "Annual Value",
+              "type": "formula",
+              "text": ""
+            },
+            {
+              "title": "Subitems",
+              "type": "subtasks",
+              "text": null
+            },
+            {
+              "title": "Contract Link (SharePoint)",
+              "type": "link",
+              "text": ""
+            },
+            {
+              "title": "Project Hub (NEW)",
+              "type": "board_relation",
+              "text": null
+            },
+            {
+              "title": "link to PS — Client Connects (Check-In Log)",
+              "type": "board_relation",
+              "text": null
+            },
+            {
+              "title": "link to RG — Client Connects (Check-In Log)",
+              "type": "board_relation",
+              "text": null
+            },
+            {
+              "title": "Project ID",
+              "type": "text",
+              "text": ""
+            },
+            {
+              "title": "Contract File",
+              "type": "file",
+              "text": ""
+            }
+          ]
+        },
+        {
+          "id": "12227008304",
+          "name": "VHB Bella Vista",
+          "group": "Physical Security",
+          "columns": [
+            {
+              "title": "Lead",
+              "type": "status",
+              "text": "Internal"
+            },
+            {
+              "title": "Sites",
+              "type": "board_relation",
+              "text": null
+            },
+            {
+              "title": "Account",
+              "type": "mirror",
+              "text": null
+            },
+            {
+              "title": "Site Type",
+              "type": "mirror",
+              "text": null
+            },
+            {
+              "title": "Site Address",
+              "type": "mirror",
+              "text": null
+            },
+            {
+              "title": "Site Contact",
+              "type": "board_relation",
+              "text": null
+            },
+            {
+              "title": "Contact Phone",
+              "type": "mirror",
+              "text": null
+            },
+            {
+              "title": "Status",
+              "type": "status",
+              "text": "Active"
+            },
+            {
+              "title": "Start Date",
+              "type": "date",
+              "text": ""
+            },
+            {
+              "title": "End Date",
+              "type": "date",
+              "text": ""
+            },
+            {
+              "title": "Renewal Date",
+              "type": "date",
+              "text": ""
+            },
+            {
+              "title": "Equipment Required",
+              "type": "long_text",
+              "text": ""
+            },
+            {
+              "title": "Special Instructions",
+              "type": "long_text",
+              "text": ""
+            },
+            {
+              "title": "Account Owner",
+              "type": "people",
+              "text": ""
+            },
+            {
+              "title": "Field Supervisor",
+              "type": "people",
+              "text": "Rob Young"
+            },
+            {
+              "title": "Posts",
+              "type": "board_relation",
+              "text": null
+            },
+            {
+              "title": "Posts Status",
+              "type": "mirror",
+              "text": null
+            },
+            {
+              "title": "Weekly Hours",
+              "type": "mirror",
+              "text": null
+            },
+            {
+              "title": "Avg Pay Rate $/hr",
+              "type": "mirror",
+              "text": null
+            },
+            {
+              "title": "Avg Margin %",
+              "type": "formula",
+              "text": ""
+            },
+            {
+              "title": "Monthly Value",
+              "type": "formula",
+              "text": ""
+            },
+            {
+              "title": "Annual Value",
+              "type": "formula",
+              "text": ""
+            },
+            {
+              "title": "Subitems",
+              "type": "subtasks",
+              "text": null
+            },
+            {
+              "title": "Contract Link (SharePoint)",
+              "type": "link",
+              "text": ""
+            },
+            {
+              "title": "Project Hub (NEW)",
+              "type": "board_relation",
+              "text": null
+            },
+            {
+              "title": "link to PS — Client Connects (Check-In Log)",
+              "type": "board_relation",
+              "text": null
+            },
+            {
+              "title": "link to RG — Client Connects (Check-In Log)",
+              "type": "board_relation",
+              "text": null
+            },
+            {
+              "title": "Project ID",
+              "type": "text",
+              "text": ""
+            },
+            {
+              "title": "Contract File",
+              "type": "file",
+              "text": ""
+            }
+          ]
+        },
+        {
+          "id": "18270347859",
+          "name": "Lytt",
+          "group": "Physical Security",
+          "columns": [
+            {
+              "title": "Lead",
+              "type": "status",
+              "text": "Internal"
+            },
+            {
+              "title": "Sites",
+              "type": "board_relation",
+              "text": null
+            },
+            {
+              "title": "Account",
+              "type": "mirror",
+              "text": null
+            },
+            {
+              "title": "Site Type",
+              "type": "mirror",
+              "text": null
+            },
+            {
+              "title": "Site Address",
+              "type": "mirror",
+              "text": null
+            },
+            {
+              "title": "Site Contact",
+              "type": "board_relation",
+              "text": null
+            },
+            {
+              "title": "Contact Phone",
+              "type": "mirror",
+              "text": null
+            },
+            {
+              "title": "Status",
+              "type": "status",
+              "text": "Active"
+            },
+            {
+              "title": "Start Date",
+              "type": "date",
+              "text": ""
+            },
+            {
+              "title": "End Date",
+              "type": "date",
+              "text": ""
+            },
+            {
+              "title": "Renewal Date",
+              "type": "date",
+              "text": ""
+            },
+            {
+              "title": "Equipment Required",
+              "type": "long_text",
+              "text": ""
+            },
+            {
+              "title": "Special Instructions",
+              "type": "long_text",
+              "text": ""
+            },
+            {
+              "title": "Account Owner",
+              "type": "people",
+              "text": ""
+            },
+            {
+              "title": "Field Supervisor",
+              "type": "people",
+              "text": ""
+            },
+            {
+              "title": "Posts",
+              "type": "board_relation",
+              "text": null
+            },
+            {
+              "title": "Posts Status",
+              "type": "mirror",
+              "text": null
+            },
+            {
+              "title": "Weekly Hours",
+              "type": "mirror",
+              "text": null
+            },
+            {
+              "title": "Avg Pay Rate $/hr",
+              "type": "mirror",
+              "text": null
+            },
+            {
+              "title": "Avg Margin %",
+              "type": "formula",
+              "text": ""
+            },
+            {
+              "title": "Monthly Value",
+              "type": "formula",
+              "text": ""
+            },
+            {
+              "title": "Annual Value",
+              "type": "formula",
+              "text": ""
+            },
+            {
+              "title": "Subitems",
+              "type": "subtasks",
+              "text": null
+            },
+            {
+              "title": "Contract Link (SharePoint)",
+              "type": "link",
+              "text": "Lytt contract.pdf - https://zgbcrdll1bpm6193r2za4a4jpon.sharepoint.com/sites/AdminTeam/Shared%20Documents/ADMIN%20MASTER%20FOLDER/CLIENTS%20Admin/CONTRACTS/Lytt%20Contract/Lytt%20contract.pdf"
+            },
+            {
+              "title": "Project Hub (NEW)",
+              "type": "board_relation",
+              "text": null
+            },
+            {
+              "title": "link to PS — Client Connects (Check-In Log)",
+              "type": "board_relation",
+              "text": null
+            },
+            {
+              "title": "link to RG — Client Connects (Check-In Log)",
+              "type": "board_relation",
+              "text": null
+            },
+            {
+              "title": "Project ID",
+              "type": "text",
+              "text": ""
+            },
+            {
+              "title": "Contract File",
+              "type": "file",
+              "text": ""
+            }
+          ]
+        },
+        {
+          "id": "18270347862",
+          "name": "Grand Marina Alameda",
+          "group": "Physical Security",
+          "columns": [
+            {
+              "title": "Lead",
+              "type": "status",
+              "text": "Internal"
+            },
+            {
+              "title": "Sites",
+              "type": "board_relation",
+              "text": null
+            },
+            {
+              "title": "Account",
+              "type": "mirror",
+              "text": null
+            },
+            {
+              "title": "Site Type",
+              "type": "mirror",
+              "text": null
+            },
+            {
+              "title": "Site Address",
+              "type": "mirror",
+              "text": null
+            },
+            {
+              "title": "Site Contact",
+              "type": "board_relation",
+              "text": null
+            },
+            {
+              "title": "Contact Phone",
+              "type": "mirror",
+              "text": null
+            },
+            {
+              "title": "Status",
+              "type": "status",
+              "text": "Active"
+            },
+            {
+              "title": "Start Date",
+              "type": "date",
+              "text": ""
+            },
+            {
+              "title": "End Date",
+              "type": "date",
+              "text": ""
+            },
+            {
+              "title": "Renewal Date",
+              "type": "date",
+              "text": ""
+            },
+            {
+              "title": "Equipment Required",
+              "type": "long_text",
+              "text": ""
+            },
+            {
+              "title": "Special Instructions",
+              "type": "long_text",
+              "text": ""
+            },
+            {
+              "title": "Account Owner",
+              "type": "people",
+              "text": ""
+            },
+            {
+              "title": "Field Supervisor",
+              "type": "people",
+              "text": ""
+            },
+            {
+              "title": "Posts",
+              "type": "board_relation",
+              "text": null
+            },
+            {
+              "title": "Posts Status",
+              "type": "mirror",
+              "text": null
+            },
+            {
+              "title": "Weekly Hours",
+              "type": "mirror",
+              "text": null
+            },
+            {
+              "title": "Avg Pay Rate $/hr",
+              "type": "mirror",
+              "text": null
+            },
+            {
+              "title": "Avg Margin %",
+              "type": "formula",
+              "text": ""
+            },
+            {
+              "title": "Monthly Value",
+              "type": "formula",
+              "text": ""
+            },
+            {
+              "title": "Annual Value",
+              "type": "formula",
+              "text": ""
+            },
+            {
+              "title": "Subitems",
+              "type": "subtasks",
+              "text": null
+            },
+            {
+              "title": "Contract Link (SharePoint)",
+              "type": "link",
+              "text": "Appendix A Grand Marina 2024.docx - https://zgbcrdll1bpm6193r2za4a4jpon.sharepoint.com/sites/AdminTeam/Shared%20Documents/ADMIN%20MASTER%20FOLDER/CLIENTS%20Admin/Grand%20Marina%20-%20Austin/Appendix%20A%20Grand%20Marina%202024.docx"
+            },
+            {
+              "title": "Project Hub (NEW)",
+              "type": "board_relation",
+              "text": null
+            },
+            {
+              "title": "link to PS — Client Connects (Check-In Log)",
+              "type": "board_relation",
+              "text": null
+            },
+            {
+              "title": "link to RG — Client Connects (Check-In Log)",
+              "type": "board_relation",
+              "text": null
+            },
+            {
+              "title": "Project ID",
+              "type": "text",
+              "text": ""
+            },
+            {
+              "title": "Contract File",
+              "type": "file",
+              "text": ""
+            }
+          ]
+        }
+      ]
+    },
+    "psGuardPosts": {
+      "id": "18415110284",
+      "name": "PS Guard Posts",
+      "domain": "ps_guard_posts",
+      "structure": {
+        "id": "18415110284",
+        "name": "(2) PS Guard Posts",
+        "workspace_id": "13015347",
+        "columns": [
+          {
+            "id": "name",
+            "title": "Name",
+            "type": "name"
+          },
+          {
+            "id": "board_relation_mm3rsf88",
+            "title": "PS Contract",
+            "type": "board_relation"
+          },
+          {
+            "id": "lookup_mm44a8s9",
+            "title": "Site",
+            "type": "mirror"
+          },
+          {
+            "id": "color_mm3rt19g",
+            "title": "Post Type",
+            "type": "status"
+          },
+          {
+            "id": "color_mm3rmrrn",
+            "title": "Armed / Unarmed",
+            "type": "status"
+          },
+          {
+            "id": "color_mm44b2g7",
+            "title": "Covered by",
+            "type": "status"
+          },
+          {
+            "id": "color_mm3r77xk",
+            "title": "Status",
+            "type": "status"
+          },
+          {
+            "id": "date_mm526dnm",
+            "title": "Date",
+            "type": "date"
+          },
+          {
+            "id": "dropdown_mm3rf9gw",
+            "title": "Days of Week",
+            "type": "dropdown"
+          },
+          {
+            "id": "text_mm3rvm9r",
+            "title": "Start Time",
+            "type": "text"
+          },
+          {
+            "id": "text_mm3rqqwt",
+            "title": "End Time",
+            "type": "text"
+          },
+          {
+            "id": "numeric_mm3rbhc7",
+            "title": "Hours / Shift (without Lunch)",
+            "type": "numbers"
+          },
+          {
+            "id": "numeric_mm3rrr2y",
+            "title": "Shifts / Week",
+            "type": "numbers"
+          },
+          {
+            "id": "board_relation_mm3rx3ry",
+            "title": "Assigned Guard",
+            "type": "board_relation"
+          },
+          {
+            "id": "numeric_mm4jhh5z",
+            "title": "Premium Hours per Week",
+            "type": "numbers"
+          },
+          {
+            "id": "numeric_mm3rqfzd",
+            "title": "Pay Rate $/hr",
+            "type": "numbers"
+          },
+          {
+            "id": "numeric_mm3rq9mp",
+            "title": "Bill Rate $/hr",
+            "type": "numbers"
+          },
+          {
+            "id": "long_text_mm3rt83s",
+            "title": "Notes",
+            "type": "long_text"
+          },
+          {
+            "id": "formula_mm3r5ba8",
+            "title": "Hours / Week",
+            "type": "formula"
+          },
+          {
+            "id": "formula_mm3rzsqh",
+            "title": "Gross Margin $/hr",
+            "type": "formula"
+          },
+          {
+            "id": "board_relation_mm445s86",
+            "title": "link to Hear Clear Radios",
+            "type": "board_relation"
+          }
+        ],
+        "groups": [
+          {
+            "id": "topics",
+            "title": "Group Title"
+          }
+        ]
+      },
+      "sampleItemCount": 5,
+      "sampleItems": [
+        {
+          "id": "12237732376",
+          "name": "10100 AGS: Mon - Fri (1530-0000)",
+          "group": "Group Title",
+          "columns": [
+            {
+              "title": "PS Contract",
+              "type": "board_relation",
+              "text": null
+            },
+            {
+              "title": "Site",
+              "type": "mirror",
+              "text": null
+            },
+            {
+              "title": "Post Type",
+              "type": "status",
+              "text": "Stationary"
+            },
+            {
+              "title": "Armed / Unarmed",
+              "type": "status",
+              "text": "Unarmed"
+            },
+            {
+              "title": "Covered by",
+              "type": "status",
+              "text": "Calidad Internal"
+            },
+            {
+              "title": "Status",
+              "type": "status",
+              "text": "Active"
+            },
+            {
+              "title": "Date",
+              "type": "date",
+              "text": ""
+            },
+            {
+              "title": "Days of Week",
+              "type": "dropdown",
+              "text": "Mon – Fri"
+            },
+            {
+              "title": "Start Time",
+              "type": "text",
+              "text": "1530"
+            },
+            {
+              "title": "End Time",
+              "type": "text",
+              "text": "0000"
+            },
+            {
+              "title": "Hours / Shift (without Lunch)",
+              "type": "numbers",
+              "text": "8.5"
+            },
+            {
+              "title": "Shifts / Week",
+              "type": "numbers",
+              "text": "5"
+            },
+            {
+              "title": "Assigned Guard",
+              "type": "board_relation",
+              "text": null
+            },
+            {
+              "title": "Premium Hours per Week",
+              "type": "numbers",
+              "text": ""
+            },
+            {
+              "title": "Pay Rate $/hr",
+              "type": "numbers",
+              "text": ""
+            },
+            {
+              "title": "Bill Rate $/hr",
+              "type": "numbers",
+              "text": ""
+            },
+            {
+              "title": "Notes",
+              "type": "long_text",
+              "text": ""
+            },
+            {
+              "title": "Hours / Week",
+              "type": "formula",
+              "text": ""
+            },
+            {
+              "title": "Gross Margin $/hr",
+              "type": "formula",
+              "text": ""
+            },
+            {
+              "title": "link to Hear Clear Radios",
+              "type": "board_relation",
+              "text": null
+            }
+          ]
+        },
+        {
+          "id": "12237655933",
+          "name": "Villa Angelica: Mon - Thu (0600-1100)",
+          "group": "Group Title",
+          "columns": [
+            {
+              "title": "PS Contract",
+              "type": "board_relation",
+              "text": null
+            },
+            {
+              "title": "Site",
+              "type": "mirror",
+              "text": null
+            },
+            {
+              "title": "Post Type",
+              "type": "status",
+              "text": "Stationary"
+            },
+            {
+              "title": "Armed / Unarmed",
+              "type": "status",
+              "text": "Unarmed"
+            },
+            {
+              "title": "Covered by",
+              "type": "status",
+              "text": "Calidad Internal"
+            },
+            {
+              "title": "Status",
+              "type": "status",
+              "text": "Active"
+            },
+            {
+              "title": "Date",
+              "type": "date",
+              "text": ""
+            },
+            {
+              "title": "Days of Week",
+              "type": "dropdown",
+              "text": "Mon – Thu"
+            },
+            {
+              "title": "Start Time",
+              "type": "text",
+              "text": "0600"
+            },
+            {
+              "title": "End Time",
+              "type": "text",
+              "text": "1100"
+            },
+            {
+              "title": "Hours / Shift (without Lunch)",
+              "type": "numbers",
+              "text": "5"
+            },
+            {
+              "title": "Shifts / Week",
+              "type": "numbers",
+              "text": "4"
+            },
+            {
+              "title": "Assigned Guard",
+              "type": "board_relation",
+              "text": null
+            },
+            {
+              "title": "Premium Hours per Week",
+              "type": "numbers",
+              "text": ""
+            },
+            {
+              "title": "Pay Rate $/hr",
+              "type": "numbers",
+              "text": ""
+            },
+            {
+              "title": "Bill Rate $/hr",
+              "type": "numbers",
+              "text": ""
+            },
+            {
+              "title": "Notes",
+              "type": "long_text",
+              "text": ""
+            },
+            {
+              "title": "Hours / Week",
+              "type": "formula",
+              "text": ""
+            },
+            {
+              "title": "Gross Margin $/hr",
+              "type": "formula",
+              "text": ""
+            },
+            {
+              "title": "link to Hear Clear Radios",
+              "type": "board_relation",
+              "text": null
+            }
+          ]
+        },
+        {
+          "id": "12237655756",
+          "name": "Villa Angelica: Mon - Thu (1600-2030)",
+          "group": "Group Title",
+          "columns": [
+            {
+              "title": "PS Contract",
+              "type": "board_relation",
+              "text": null
+            },
+            {
+              "title": "Site",
+              "type": "mirror",
+              "text": null
+            },
+            {
+              "title": "Post Type",
+              "type": "status",
+              "text": "Stationary"
+            },
+            {
+              "title": "Armed / Unarmed",
+              "type": "status",
+              "text": "Unarmed"
+            },
+            {
+              "title": "Covered by",
+              "type": "status",
+              "text": "Calidad Internal"
+            },
+            {
+              "title": "Status",
+              "type": "status",
+              "text": "Active"
+            },
+            {
+              "title": "Date",
+              "type": "date",
+              "text": ""
+            },
+            {
+              "title": "Days of Week",
+              "type": "dropdown",
+              "text": "Mon – Thu"
+            },
+            {
+              "title": "Start Time",
+              "type": "text",
+              "text": "1600"
+            },
+            {
+              "title": "End Time",
+              "type": "text",
+              "text": "2030"
+            },
+            {
+              "title": "Hours / Shift (without Lunch)",
+              "type": "numbers",
+              "text": "4.5"
+            },
+            {
+              "title": "Shifts / Week",
+              "type": "numbers",
+              "text": "4"
+            },
+            {
+              "title": "Assigned Guard",
+              "type": "board_relation",
+              "text": null
+            },
+            {
+              "title": "Premium Hours per Week",
+              "type": "numbers",
+              "text": ""
+            },
+            {
+              "title": "Pay Rate $/hr",
+              "type": "numbers",
+              "text": ""
+            },
+            {
+              "title": "Bill Rate $/hr",
+              "type": "numbers",
+              "text": ""
+            },
+            {
+              "title": "Notes",
+              "type": "long_text",
+              "text": ""
+            },
+            {
+              "title": "Hours / Week",
+              "type": "formula",
+              "text": ""
+            },
+            {
+              "title": "Gross Margin $/hr",
+              "type": "formula",
+              "text": ""
+            },
+            {
+              "title": "link to Hear Clear Radios",
+              "type": "board_relation",
+              "text": null
+            }
+          ]
+        },
+        {
+          "id": "12237665152",
+          "name": "Natomas 3: Mon - Sat (1700-2200)",
+          "group": "Group Title",
+          "columns": [
+            {
+              "title": "PS Contract",
+              "type": "board_relation",
+              "text": null
+            },
+            {
+              "title": "Site",
+              "type": "mirror",
+              "text": null
+            },
+            {
+              "title": "Post Type",
+              "type": "status",
+              "text": "Patrol"
+            },
+            {
+              "title": "Armed / Unarmed",
+              "type": "status",
+              "text": "Unarmed"
+            },
+            {
+              "title": "Covered by",
+              "type": "status",
+              "text": "Contractor"
+            },
+            {
+              "title": "Status",
+              "type": "status",
+              "text": "Active"
+            },
+            {
+              "title": "Date",
+              "type": "date",
+              "text": ""
+            },
+            {
+              "title": "Days of Week",
+              "type": "dropdown",
+              "text": "Mon - Sat"
+            },
+            {
+              "title": "Start Time",
+              "type": "text",
+              "text": "1700"
+            },
+            {
+              "title": "End Time",
+              "type": "text",
+              "text": "2200"
+            },
+            {
+              "title": "Hours / Shift (without Lunch)",
+              "type": "numbers",
+              "text": "5"
+            },
+            {
+              "title": "Shifts / Week",
+              "type": "numbers",
+              "text": "6"
+            },
+            {
+              "title": "Assigned Guard",
+              "type": "board_relation",
+              "text": null
+            },
+            {
+              "title": "Premium Hours per Week",
+              "type": "numbers",
+              "text": ""
+            },
+            {
+              "title": "Pay Rate $/hr",
+              "type": "numbers",
+              "text": ""
+            },
+            {
+              "title": "Bill Rate $/hr",
+              "type": "numbers",
+              "text": ""
+            },
+            {
+              "title": "Notes",
+              "type": "long_text",
+              "text": ""
+            },
+            {
+              "title": "Hours / Week",
+              "type": "formula",
+              "text": ""
+            },
+            {
+              "title": "Gross Margin $/hr",
+              "type": "formula",
+              "text": ""
+            },
+            {
+              "title": "link to Hear Clear Radios",
+              "type": "board_relation",
+              "text": null
+            }
+          ]
+        },
+        {
+          "id": "12237743572",
+          "name": "Natomas 3: Mon - Sat (2200-0600)",
+          "group": "Group Title",
+          "columns": [
+            {
+              "title": "PS Contract",
+              "type": "board_relation",
+              "text": null
+            },
+            {
+              "title": "Site",
+              "type": "mirror",
+              "text": null
+            },
+            {
+              "title": "Post Type",
+              "type": "status",
+              "text": "Patrol"
+            },
+            {
+              "title": "Armed / Unarmed",
+              "type": "status",
+              "text": "Unarmed"
+            },
+            {
+              "title": "Covered by",
+              "type": "status",
+              "text": "Calidad Internal"
+            },
+            {
+              "title": "Status",
+              "type": "status",
+              "text": "Active"
+            },
+            {
+              "title": "Date",
+              "type": "date",
+              "text": ""
+            },
+            {
+              "title": "Days of Week",
+              "type": "dropdown",
+              "text": "Mon - Sat"
+            },
+            {
+              "title": "Start Time",
+              "type": "text",
+              "text": "2200"
+            },
+            {
+              "title": "End Time",
+              "type": "text",
+              "text": "0600"
+            },
+            {
+              "title": "Hours / Shift (without Lunch)",
+              "type": "numbers",
+              "text": "8"
+            },
+            {
+              "title": "Shifts / Week",
+              "type": "numbers",
+              "text": "5"
+            },
+            {
+              "title": "Assigned Guard",
+              "type": "board_relation",
+              "text": null
+            },
+            {
+              "title": "Premium Hours per Week",
+              "type": "numbers",
+              "text": ""
+            },
+            {
+              "title": "Pay Rate $/hr",
+              "type": "numbers",
+              "text": ""
+            },
+            {
+              "title": "Bill Rate $/hr",
+              "type": "numbers",
+              "text": ""
+            },
+            {
+              "title": "Notes",
+              "type": "long_text",
+              "text": ""
+            },
+            {
+              "title": "Hours / Week",
+              "type": "formula",
+              "text": ""
+            },
+            {
+              "title": "Gross Margin $/hr",
+              "type": "formula",
+              "text": ""
+            },
+            {
+              "title": "link to Hear Clear Radios",
+              "type": "board_relation",
+              "text": null
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

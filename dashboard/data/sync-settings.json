@@ -1,0 +1,6 @@
+{
+  "autoSyncEnabled": true,
+  "intervalMinutes": 1440,
+  "clientTimezone": "America/Los_Angeles",
+  "syncTimeLocal": "06:00"
+}

@@ -1,0 +1,15 @@
+{
+  "name": "calidad-soc-stos-dashboard",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "inspect": "node src/scripts/inspect-boards.js",
+    "setup-hub": "node src/scripts/setup-hub.js",
+    "sync": "node src/scripts/sync-all.js",
+    "sync:kpis": "node src/scripts/sync-kpis.js"
+  },
+  "dependencies": {
+    "dotenv": "^16.4.7"
+  }
+}
