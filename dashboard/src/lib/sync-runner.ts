@@ -4,8 +4,9 @@ import {
   saveSession,
 } from './sync/sync-session';
 import {
+  clearSyncStepBatch,
   finishSyncRun,
-  prepareSyncStep,
+  pullSyncStep,
   runSync,
   runSyncStepWhole,
   writeSyncStepBatch,
@@ -79,7 +80,14 @@ export async function runChunkedSyncForCron(): Promise<void> {
     state.progress = step.label;
     try {
       if (step.batched) {
-        await prepareSyncStep(runId, step.id);
+        await pullSyncStep(runId, step.id);
+        let clearBatch = 0;
+        let clearing = true;
+        while (clearing) {
+          const result = await clearSyncStepBatch(runId, step.id, clearBatch);
+          clearing = result.hasMore;
+          clearBatch++;
+        }
         let batch = 0;
         let hasMore = true;
         while (hasMore) {
@@ -140,11 +148,20 @@ export async function executeSyncAction(body: {
   action?: 'start' | 'finish';
   runId?: string;
   step?: string;
+  phase?: 'pull' | 'clear' | 'write';
   batch?: number;
 }) {
   if (body.action === 'start') {
     const runId = startSyncSession();
-    return { runId, steps: SYNC_STEPS.map((s) => ({ id: s.id, label: s.label, batched: s.batched })) };
+    return {
+      runId,
+      steps: SYNC_STEPS.map((s) => ({
+        id: s.id,
+        label: s.label,
+        batched: s.batched,
+        appendOnly: 'appendOnly' in s && Boolean(s.appendOnly),
+      })),
+    };
   }
 
   if (!body.runId) throw new Error('runId is required');
@@ -167,17 +184,21 @@ export async function executeSyncAction(body: {
   state.currentStep = step.label;
   state.progress = step.label;
 
-  if (body.batch === undefined) {
-    if (step.batched) {
-      const prep = await prepareSyncStep(body.runId, stepId);
-      return { prepared: true, ...prep };
-    }
-    const result = await runSyncStepWhole(body.runId, stepId);
-    return { ...result, step: stepId, label: step.label };
+  const phase = body.phase ?? 'pull';
+  const batch = body.batch ?? 0;
+
+  if (phase === 'pull') {
+    const result = await pullSyncStep(body.runId, stepId);
+    return { ...result, step: stepId, label: step.label, phase };
   }
 
-  const result = await writeSyncStepBatch(body.runId, stepId, body.batch);
-  return { ...result, step: stepId, label: step.label };
+  if (phase === 'clear') {
+    const result = await clearSyncStepBatch(body.runId, stepId, batch);
+    return { ...result, step: stepId, label: step.label, phase };
+  }
+
+  const result = await writeSyncStepBatch(body.runId, stepId, batch);
+  return { ...result, step: stepId, label: step.label, phase: 'write' };
 }
 
 // Legacy full run for local CLI compatibility

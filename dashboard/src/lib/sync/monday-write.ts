@@ -115,14 +115,22 @@ export async function deleteItem(itemId: string): Promise<void> {
   );
 }
 
-export async function deleteBoardItems(boardId: string): Promise<number> {
+export async function getBoardItemIds(boardId: string): Promise<string[]> {
   const items = await getAllBoardItems(boardId);
-  if (!items.length) return 0;
+  return items.map((i) => i.id);
+}
+
+export async function deleteItemsById(itemIds: string[]): Promise<number> {
   let deleted = 0;
-  for (const item of items) {
-    await deleteItem(item.id);
+  for (const id of itemIds) {
+    await deleteItem(id);
     deleted++;
-    if (deleted % 10 === 0) await new Promise((r) => setTimeout(r, 500));
+    if (deleted % 5 === 0) await new Promise((r) => setTimeout(r, 40));
   }
   return deleted;
+}
+
+export async function deleteBoardItems(boardId: string): Promise<number> {
+  const ids = await getBoardItemIds(boardId);
+  return deleteItemsById(ids);
 }

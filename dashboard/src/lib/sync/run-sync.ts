@@ -1,4 +1,4 @@
-import { createItem, deleteBoardItems, getAllBoardItems } from './monday-write';
+import { createItem, deleteItemsById, getAllBoardItems, getBoardItemIds } from './monday-write';
 import { loadHubRegistry } from './hub-registry';
 import { SOURCE_BOARDS } from './source-boards';
 import {
@@ -10,10 +10,13 @@ import {
   todayDate,
 } from './sync-utils';
 import {
+  clearStagingIds,
   clearStagingRows,
   loadSession,
+  loadStagingIds,
   loadStagingRows,
   saveSession,
+  saveStagingIds,
   saveStagingRows,
   type SyncRow,
   type SyncSession,
@@ -84,9 +87,6 @@ async function buildActionItemRows(registry: ReturnType<typeof loadHubRegistry>)
     console.log(`  Pulled ${items.length} from ${src.name}`);
   }
 
-  const hubId = registry.boards.actionItems.id;
-  console.log('  Clearing hub board actionItems...');
-  await deleteBoardItems(hubId);
   return rows;
 }
 
@@ -223,39 +223,24 @@ async function prepareRows(stepId: SyncStepId, registry: ReturnType<typeof loadH
   switch (stepId) {
     case 'actionItems':
       return buildActionItemRows(registry);
-    case 'capa': {
-      const rows = await buildCapaRows();
-      await deleteBoardItems(registry.boards.capa.id);
-      return rows;
-    }
+    case 'capa':
+      return buildCapaRows();
     case 'kpiHistory':
       return buildKpiRows(registry);
-    case 'rgContracts': {
-      const rows = await buildRgContractRows();
-      await deleteBoardItems(registry.boards.rgContracts.id);
-      return rows;
-    }
-    case 'rgAreaScope': {
-      const rows = await buildRgAreaRows();
-      await deleteBoardItems(registry.boards.rgAreaScope.id);
-      return rows;
-    }
-    case 'psContracts': {
-      const rows = await buildPsContractRows();
-      await deleteBoardItems(registry.boards.psContracts.id);
-      return rows;
-    }
-    case 'psGuardPosts': {
-      const rows = await buildPsGuardRows();
-      await deleteBoardItems(registry.boards.psGuardPosts.id);
-      return rows;
-    }
+    case 'rgContracts':
+      return buildRgContractRows();
+    case 'rgAreaScope':
+      return buildRgAreaRows();
+    case 'psContracts':
+      return buildPsContractRows();
+    case 'psGuardPosts':
+      return buildPsGuardRows();
     default:
       throw new Error(`Unknown step: ${stepId}`);
   }
 }
 
-export async function prepareSyncStep(runId: string, stepId: SyncStepId) {
+export async function pullSyncStep(runId: string, stepId: SyncStepId) {
   const session = loadSession(runId);
   if (!session) throw new Error('Sync session not found');
 
@@ -263,11 +248,56 @@ export async function prepareSyncStep(runId: string, stepId: SyncStepId) {
   const meta = getSyncStep(stepId);
   if (!meta) throw new Error(`Unknown step: ${stepId}`);
 
-  console.log(`\n[${meta.label}] prepare`);
+  console.log(`\n[${meta.label}] pull`);
   const rows = await prepareRows(stepId, registry);
   saveStagingRows(runId, stepId, rows);
 
+  if (!('appendOnly' in meta && meta.appendOnly)) {
+    const hubId = registry.boards[stepId].id;
+    const ids = await getBoardItemIds(hubId);
+    saveStagingIds(runId, stepId, ids);
+    console.log(`  Hub has ${ids.length} existing items to clear`);
+  }
+
   return { rowCount: rows.length, batched: meta.batched, batchSize: meta.batchSize };
+}
+
+export async function clearSyncStepBatch(
+  runId: string,
+  stepId: SyncStepId,
+  batchIndex: number
+) {
+  const session = loadSession(runId);
+  if (!session) throw new Error('Sync session not found');
+
+  const meta = getSyncStep(stepId);
+  if (!meta) throw new Error(`Unknown step: ${stepId}`);
+
+  const ids = loadStagingIds(runId, stepId);
+  if (!ids.length) {
+    return { deleted: 0, hasMore: false, total: 0 };
+  }
+
+  const batchSize = meta.batched ? meta.clearBatchSize : ids.length;
+  const offset = batchIndex * batchSize;
+  const slice = ids.slice(offset, offset + batchSize);
+
+  if (!slice.length) {
+    clearStagingIds(runId, stepId);
+    return { deleted: 0, hasMore: false, total: ids.length };
+  }
+
+  console.log(`\n[${meta.label}] clear batch ${batchIndex + 1}`);
+  const deleted = await deleteItemsById(slice);
+  const hasMore = offset + batchSize < ids.length;
+
+  if (!hasMore) clearStagingIds(runId, stepId);
+
+  return { deleted, hasMore, total: ids.length };
+}
+
+export async function prepareSyncStep(runId: string, stepId: SyncStepId) {
+  return pullSyncStep(runId, stepId);
 }
 
 export async function writeSyncStepBatch(
@@ -303,14 +333,27 @@ export async function writeSyncStepBatch(
     session.completedSteps.push(stepId);
     saveSession(session);
     clearStagingRows(runId, stepId);
+    clearStagingIds(runId, stepId);
   }
 
   return { written, hasMore, total: rows.length, completed: !hasMore };
 }
 
 export async function runSyncStepWhole(runId: string, stepId: SyncStepId) {
-  const prep = await prepareSyncStep(runId, stepId);
-  if (prep.rowCount === 0) {
+  await pullSyncStep(runId, stepId);
+  const meta = getSyncStep(stepId);
+  if (meta && !('appendOnly' in meta && meta.appendOnly)) {
+    let clearBatch = 0;
+    let clearing = true;
+    while (clearing) {
+      const result = await clearSyncStepBatch(runId, stepId, clearBatch);
+      clearing = result.hasMore;
+      clearBatch++;
+    }
+  }
+
+  const rows = loadStagingRows(runId, stepId);
+  if (!rows.length) {
     const session = loadSession(runId);
     if (session) {
       session.completedSteps.push(stepId);
@@ -319,7 +362,7 @@ export async function runSyncStepWhole(runId: string, stepId: SyncStepId) {
     return { written: 0, hasMore: false, total: 0, completed: true };
   }
 
-  if (prep.batched) {
+  if (meta?.batched) {
     let batchIndex = 0;
     let hasMore = true;
     let totalWritten = 0;
@@ -329,22 +372,11 @@ export async function runSyncStepWhole(runId: string, stepId: SyncStepId) {
       hasMore = result.hasMore;
       batchIndex++;
     }
-    return { written: totalWritten, hasMore: false, total: prep.rowCount, completed: true };
+    return { written: totalWritten, hasMore: false, total: rows.length, completed: true };
   }
 
-  const registry = loadHubRegistry();
-  const rows = loadStagingRows(runId, stepId);
-  const colMap = hubColumnMap(registry, stepId);
-  const hubId = registry.boards[stepId].id;
-  const written = await writeRows(hubId, colMap, rows, stepId);
-  const session = loadSession(runId);
-  if (session) {
-    session.totalWritten += written;
-    session.completedSteps.push(stepId);
-    saveSession(session);
-  }
-  clearStagingRows(runId, stepId);
-  return { written, hasMore: false, total: rows.length, completed: true };
+  const result = await writeSyncStepBatch(runId, stepId, 0);
+  return { written: result.written, hasMore: false, total: rows.length, completed: true };
 }
 
 async function logSync(session: SyncSession) {

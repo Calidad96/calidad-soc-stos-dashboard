@@ -146,55 +146,130 @@ export function SettingsTab({
     setMessage(null);
     setSyncing(true);
 
-    async function safeJson(res: Response) {
-      const text = await res.text();
-      try {
-        return JSON.parse(text) as Record<string, unknown>;
-      } catch {
-        throw new Error(
-          text.startsWith('An error')
-            ? 'Server timed out — try again in a moment.'
-            : text.slice(0, 120) || `Request failed (${res.status})`
-        );
-      }
-    }
+    const MAX_RETRIES = 3;
+    const RETRY_BASE_MS = 5000;
 
-    async function post(body: Record<string, unknown>) {
-      const res = await fetch('/api/sync', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(body),
-      });
-      const json = await safeJson(res);
-      if (!res.ok) throw new Error(String(json.error ?? 'Sync step failed'));
-      return json;
-    }
+    const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));
 
-    try {
-      const start = await post({ action: 'start' });
-      const runId = String(start.runId);
-      const steps = (start.steps as { id: string; label: string; batched: boolean }[]) ?? [];
+    const isRetryable = (status: number, message: string) =>
+      [408, 502, 503, 504].includes(status) ||
+      /timed out|timeout|gateway|network|failed to fetch/i.test(message);
 
-      for (let i = 0; i < steps.length; i++) {
-        const step = steps[i];
-        setMessage(`Updating ${step.label} (${i + 1}/${steps.length})…`);
+    async function post(body: Record<string, unknown>, label: string) {
+      let lastError = 'Sync step failed';
 
-        if (step.batched) {
-          await post({ runId, step: step.id });
-          let batch = 0;
-          let hasMore = true;
-          while (hasMore) {
-            setMessage(`Updating ${step.label} — batch ${batch + 1}…`);
-            const result = await post({ runId, step: step.id, batch });
-            hasMore = Boolean(result.hasMore);
-            batch++;
+      for (let attempt = 1; attempt <= MAX_RETRIES; attempt++) {
+        try {
+          const res = await fetch('/api/sync', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(body),
+          });
+
+          const text = await res.text();
+          let json: Record<string, unknown>;
+          try {
+            json = JSON.parse(text) as Record<string, unknown>;
+          } catch {
+            const parseError =
+              res.status === 504
+                ? 'Server timed out'
+                : text.startsWith('An error')
+                  ? 'Server timed out'
+                  : text.slice(0, 120) || `Request failed (${res.status})`;
+            if (isRetryable(res.status, parseError) && attempt < MAX_RETRIES) {
+              lastError = parseError;
+              const wait = RETRY_BASE_MS * attempt;
+              setMessage(`${label} — retrying in ${wait / 1000}s (${attempt}/${MAX_RETRIES})…`);
+              await sleep(wait);
+              continue;
+            }
+            throw new Error(parseError);
           }
-        } else {
-          await post({ runId, step: step.id });
+
+          if (!res.ok) {
+            const errText = String(json.error ?? 'Sync step failed');
+            if (isRetryable(res.status, errText) && attempt < MAX_RETRIES) {
+              lastError = errText;
+              const wait = RETRY_BASE_MS * attempt;
+              setMessage(`${label} — retrying in ${wait / 1000}s (${attempt}/${MAX_RETRIES})…`);
+              await sleep(wait);
+              continue;
+            }
+            throw new Error(errText);
+          }
+
+          return json;
+        } catch (err) {
+          const message = err instanceof Error ? err.message : String(err);
+          if (isRetryable(0, message) && attempt < MAX_RETRIES) {
+            lastError = message;
+            const wait = RETRY_BASE_MS * attempt;
+            setMessage(`${label} — retrying in ${wait / 1000}s (${attempt}/${MAX_RETRIES})…`);
+            await sleep(wait);
+            continue;
+          }
+          throw err;
         }
       }
 
-      await post({ action: 'finish', runId });
+      throw new Error(lastError);
+    }
+
+    try {
+      const start = await post({ action: 'start' }, 'Starting sync');
+      const runId = String(start.runId);
+      const steps =
+        (start.steps as {
+          id: string;
+          label: string;
+          batched: boolean;
+          appendOnly?: boolean;
+        }[]) ?? [];
+
+      for (let i = 0; i < steps.length; i++) {
+        const step = steps[i];
+        setMessage(`Pulling ${step.label} (${i + 1}/${steps.length})…`);
+        await post({ runId, step: step.id, phase: 'pull' }, `Pulling ${step.label}`);
+
+        if (!step.appendOnly) {
+          let clearBatch = 0;
+          let clearing = true;
+          while (clearing) {
+            setMessage(`Clearing ${step.label} — batch ${clearBatch + 1}…`);
+            const clearResult = await post(
+              {
+                runId,
+                step: step.id,
+                phase: 'clear',
+                batch: clearBatch,
+              },
+              `Clearing ${step.label}`
+            );
+            clearing = Boolean(clearResult.hasMore);
+            clearBatch++;
+          }
+        }
+
+        let writeBatch = 0;
+        let writing = true;
+        while (writing) {
+          setMessage(`Writing ${step.label} — batch ${writeBatch + 1}…`);
+          const writeResult = await post(
+            {
+              runId,
+              step: step.id,
+              phase: 'write',
+              batch: writeBatch,
+            },
+            `Writing ${step.label}`
+          );
+          writing = Boolean(writeResult.hasMore);
+          writeBatch++;
+        }
+      }
+
+      await post({ action: 'finish', runId }, 'Finishing sync');
       setMessage('Update completed successfully.');
       await fetchStatus();
     } catch (e) {

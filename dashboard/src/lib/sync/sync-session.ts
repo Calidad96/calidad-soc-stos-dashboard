@@ -13,6 +13,7 @@ export interface SyncSession {
   totalWritten: number;
   errors: string[];
   completedSteps: string[];
+  clearOffsets?: Record<string, number>;
 }
 
 const ROOT = path.join(os.tmpdir(), 'calidad-sync');
@@ -29,6 +30,10 @@ function stagingPath(runId: string, stepId: string) {
   return path.join(ROOT, `${runId}-${stepId}.json`);
 }
 
+function idsPath(runId: string, stepId: string) {
+  return path.join(ROOT, `${runId}-${stepId}-ids.json`);
+}
+
 export function createSession(runId: string, started: string): SyncSession {
   ensureDir();
   const session: SyncSession = {
@@ -37,6 +42,7 @@ export function createSession(runId: string, started: string): SyncSession {
     totalWritten: 0,
     errors: [],
     completedSteps: [],
+    clearOffsets: {},
   };
   fs.writeFileSync(sessionPath(runId), JSON.stringify(session));
   return session;
@@ -66,5 +72,21 @@ export function loadStagingRows(runId: string, stepId: string): SyncRow[] {
 
 export function clearStagingRows(runId: string, stepId: string) {
   const file = stagingPath(runId, stepId);
+  if (fs.existsSync(file)) fs.unlinkSync(file);
+}
+
+export function saveStagingIds(runId: string, stepId: string, ids: string[]) {
+  ensureDir();
+  fs.writeFileSync(idsPath(runId, stepId), JSON.stringify(ids));
+}
+
+export function loadStagingIds(runId: string, stepId: string): string[] {
+  const file = idsPath(runId, stepId);
+  if (!fs.existsSync(file)) return [];
+  return JSON.parse(fs.readFileSync(file, 'utf8')) as string[];
+}
+
+export function clearStagingIds(runId: string, stepId: string) {
+  const file = idsPath(runId, stepId);
   if (fs.existsSync(file)) fs.unlinkSync(file);
 }
