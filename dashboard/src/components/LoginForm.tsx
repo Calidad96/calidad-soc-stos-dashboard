@@ -5,12 +5,10 @@ import { useRouter, useSearchParams } from 'next/navigation';
 import { Loader2, ShieldCheck } from 'lucide-react';
 import { BrandLogo } from './BrandLogo';
 
-const DEFAULT_EMAIL = 'integrations@calidads.net';
-
 export function LoginForm() {
   const router = useRouter();
   const searchParams = useSearchParams();
-  const [email, setEmail] = useState(DEFAULT_EMAIL);
+  const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
@@ -67,15 +65,16 @@ export function LoginForm() {
           <form className="login-form" onSubmit={handleSubmit}>
             <label className="login-field">
               <span className="login-label">Email</span>
-              <input
-                type="email"
-                name="email"
-                autoComplete="username"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                className="login-input"
-                required
-              />
+            <input
+              type="email"
+              name="email"
+              autoComplete="username"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              className="login-input"
+              placeholder="you@company.com"
+              required
+            />
             </label>
 
             <label className="login-field">
