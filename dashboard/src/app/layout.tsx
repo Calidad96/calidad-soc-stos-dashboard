@@ -18,8 +18,9 @@ export const metadata: Metadata = {
   title: 'Calidad Operations Dashboard',
   description: 'Executive command center for SOC, STOS, and security operations',
   icons: {
-    icon: '/calidad-logo.png',
-    apple: '/calidad-logo.png',
+    icon: [{ url: '/calidad-logo.png', type: 'image/png' }],
+    apple: [{ url: '/calidad-logo.png', type: 'image/png' }],
+    shortcut: ['/calidad-logo.png'],
   },
 };
 
