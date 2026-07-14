@@ -94,6 +94,7 @@ export function SettingsTab({
     clientTimezone: 'America/Los_Angeles',
     syncTimeLocal: '06:00',
   });
+  const [localLastRun, setLocalLastRun] = useState<string | null>(null);
   const [run, setRun] = useState<SyncRun | null>(null);
   const [scheduleLabel, setScheduleLabel] = useState('');
   const [clientTimeNow, setClientTimeNow] = useState('');
@@ -110,6 +111,9 @@ export function SettingsTab({
     setScheduleLabel(json.scheduleLabel ?? '');
     setClientTimeNow(json.clientTimeNow ?? '');
     setSyncing(json.run?.status === 'running');
+    if (json.lastRun?.finishedAt) {
+      setLocalLastRun(json.lastRun.finishedAt as string);
+    }
   }, []);
 
   useEffect(() => {
@@ -284,6 +288,7 @@ export function SettingsTab({
         'Finishing sync'
       );
       const finishErrors = (finishResult.errors as string[]) ?? errors;
+      setLocalLastRun(new Date().toISOString());
       if (finishErrors.length) {
         setMessage(
           `Partial update — ${finishErrors.length} step(s) failed after retries. Most boards were refreshed. See details below.`
@@ -339,7 +344,7 @@ export function SettingsTab({
           <MetricCell
             label="Last refresh run"
             value={formatDashboardTime(
-              run?.finishedAt ?? run?.startedAt ?? null,
+              run?.finishedAt ?? localLastRun ?? hubLastSync ?? null,
               settings.clientTimezone || clientTimezone
             )}
           />

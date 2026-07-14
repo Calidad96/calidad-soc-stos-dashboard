@@ -5,6 +5,7 @@ import {
   getSyncRunState,
   triggerSync,
 } from '@/lib/sync-runner';
+import { resolveLastSyncRun } from '@/lib/last-sync-run';
 import { readSyncSettings } from '@/lib/sync-settings';
 
 export const dynamic = 'force-dynamic';
@@ -13,11 +14,26 @@ export const maxDuration = 60;
 export async function GET() {
   const run = getSyncRunState();
   const settings = await readSyncSettings();
+  const lastRun = await resolveLastSyncRun();
+
+  const displayRun =
+    run.status === 'running'
+      ? run
+      : lastRun
+        ? {
+            ...run,
+            status: lastRun.status,
+            finishedAt: lastRun.finishedAt,
+            error: lastRun.errors.length ? lastRun.errors.join('; ') : null,
+          }
+        : run;
+
   return NextResponse.json({
-    run,
+    run: displayRun,
     settings,
     scheduleLabel: describeSyncSchedule(settings),
     clientTimeNow: formatClientDateTime(settings.clientTimezone),
+    lastRun,
   });
 }
 

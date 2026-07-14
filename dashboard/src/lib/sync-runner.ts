@@ -8,6 +8,7 @@ import {
 import type { SyncRow } from './sync/sync-session';
 import { SYNC_STEPS, type SyncStepId } from './sync/sync-steps';
 import { todayDate } from './sync/sync-utils';
+import { writeLastSyncRun } from './last-sync-run';
 
 export type SyncRunStatus = 'idle' | 'running' | 'success' | 'partial' | 'error';
 
@@ -147,6 +148,13 @@ export async function executeSyncAction(body: {
       ? `Partial — ${errors.length} step(s) had issues`
       : 'Complete';
     state.output = state.progress;
+    await writeLastSyncRun({
+      runId: body.runId,
+      finishedAt: state.finishedAt,
+      status: state.status,
+      totalWritten: body.totalWritten ?? 0,
+      errors,
+    });
     return {
       completed: true,
       totalWritten: body.totalWritten ?? 0,

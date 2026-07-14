@@ -9,6 +9,7 @@ import {
 import { getClientTimezoneLabel } from './client-time';
 import { periodLabel, resolvePeriodRange } from './period-range';
 import { readSyncSettings } from './sync-settings';
+import { newestSyncLogItem, syncLogItemToIso } from './sync-log';
 import { clampTimezone } from './sync-schedule';
 import type {
   ActionItem,
@@ -211,8 +212,9 @@ export async function aggregateDashboard(opts?: {
   const scores = kpis.map((k) => k.score).filter((s): s is number => s != null);
   const kpiAvg = scores.length ? scores.reduce((a, b) => a + b, 0) / scores.length : null;
 
-  const lastSyncItem = syncRaw[0];
+  const lastSyncItem = newestSyncLogItem(syncRaw);
   const syncFields = lastSyncItem ? parseItem(lastSyncItem) : null;
+  const lastSyncIso = lastSyncItem ? syncLogItemToIso(lastSyncItem) : null;
 
   const criticalCapa = capa.filter((c) => /critical|high/i.test(c.criticality)).length;
   const rgAtRisk = rgContracts.filter((c) =>
@@ -226,7 +228,7 @@ export async function aggregateDashboard(opts?: {
   return {
     meta: {
       asOf: new Date().toISOString(),
-      lastSync: syncFields ? String(syncFields.Finished ?? syncFields.Started ?? '') : null,
+      lastSync: lastSyncIso ?? (syncFields ? String(syncFields.Finished ?? syncFields.Started ?? '') : null),
       clientTimezone,
       clientTimezoneLabel: getClientTimezoneLabel(clientTimezone),
       syncStatus: syncFields ? String(syncFields.Status ?? '') : null,
