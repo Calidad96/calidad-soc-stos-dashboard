@@ -14,6 +14,7 @@ import { isJobActive, loadSyncJob } from './sync-job';
 import {
   createAndStartSyncJob,
   registerSyncStateMirror,
+  stopAutomaticSync,
 } from './sync-orchestrator';
 
 export type SyncRunStatus = 'idle' | 'running' | 'success' | 'partial' | 'error';
@@ -94,8 +95,13 @@ export async function triggerSync(opts?: {
   return result;
 }
 
+export async function stopSync(): Promise<{ stopped: boolean }> {
+  await stopAutomaticSync();
+  return { stopped: true };
+}
+
 export async function executeSyncAction(body: {
-  action?: 'start' | 'finish' | 'start-worker';
+  action?: 'start' | 'finish' | 'start-worker' | 'stop';
   step?: string;
   phase?: 'pull' | 'clear' | 'write';
   part?: 'rows' | 'ids';
@@ -108,6 +114,10 @@ export async function executeSyncAction(body: {
 }) {
   if (body.action === 'start-worker') {
     return startAutomaticSync();
+  }
+
+  if (body.action === 'stop') {
+    return stopSync();
   }
 
   if (body.action === 'start') {

@@ -471,6 +471,19 @@ export async function resumeSyncIfDue(): Promise<boolean> {
   return false;
 }
 
+export async function stopAutomaticSync(): Promise<void> {
+  await clearSyncJob();
+  mirror({
+    status: 'idle',
+    finishedAt: new Date().toISOString(),
+    error: null,
+    runId: null,
+    currentStep: null,
+    progress: 'Sync stopped',
+    output: 'Sync stopped',
+  });
+}
+
 export async function resetSyncJob(): Promise<void> {
   await clearSyncJob();
 }

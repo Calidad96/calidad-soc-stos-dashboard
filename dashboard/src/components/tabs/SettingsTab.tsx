@@ -10,6 +10,7 @@ import {
   Loader2,
   ArrowRight,
   Save,
+  Square,
 } from 'lucide-react';
 import { INSIGHT_TIPS } from '@/lib/dashboard-views';
 import {
@@ -183,6 +184,27 @@ export function SettingsTab({
     }
   };
 
+  const stopSyncNow = async () => {
+    setMessage(null);
+    try {
+      const res = await fetch('/api/sync', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ action: 'stop' }),
+      });
+      const json = await res.json();
+      if (!res.ok) {
+        throw new Error(String(json.error ?? 'Could not stop sync'));
+      }
+      setSyncing(false);
+      setSyncJobLabel(null);
+      setMessage('Sync stopped.');
+      await fetchStatus();
+    } catch (e) {
+      setMessage(e instanceof Error ? e.message : 'Could not stop sync');
+    }
+  };
+
   const runSyncNow = async () => {
     setMessage(null);
     setSyncing(true);
@@ -285,19 +307,31 @@ export function SettingsTab({
                   {syncJobLabel}
                 </p>
               )}
-              <button
-                type="button"
-                onClick={runSyncNow}
-                disabled={isRunning}
-                className="btn-gold mt-5 inline-flex items-center gap-2 rounded-xl px-5 py-2.5 text-xs font-extrabold shadow-sm transition hover:brightness-110 disabled:opacity-50"
-              >
-                {isRunning ? (
-                  <Loader2 size={14} className="animate-spin" />
-                ) : (
-                  <RefreshCw size={14} />
+              <div className="mt-5 flex flex-wrap items-center gap-3">
+                <button
+                  type="button"
+                  onClick={runSyncNow}
+                  disabled={isRunning}
+                  className="btn-gold inline-flex items-center gap-2 rounded-xl px-5 py-2.5 text-xs font-extrabold shadow-sm transition hover:brightness-110 disabled:opacity-50"
+                >
+                  {isRunning ? (
+                    <Loader2 size={14} className="animate-spin" />
+                  ) : (
+                    <RefreshCw size={14} />
+                  )}
+                  {isRunning ? 'Updating…' : 'Update data now'}
+                </button>
+                {isRunning && (
+                  <button
+                    type="button"
+                    onClick={stopSyncNow}
+                    className="inline-flex items-center gap-2 rounded-xl border border-[var(--border)] bg-[var(--bg-elevated)] px-4 py-2.5 text-xs font-bold text-[var(--ink)] transition hover:bg-[var(--hover)]"
+                  >
+                    <Square size={12} fill="currentColor" />
+                    Stop sync
+                  </button>
                 )}
-                {isRunning ? 'Updating…' : 'Update data now'}
-              </button>
+              </div>
             </section>
 
             {/* Auto schedule */}

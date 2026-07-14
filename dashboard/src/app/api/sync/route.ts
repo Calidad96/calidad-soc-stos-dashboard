@@ -67,6 +67,7 @@ export async function POST(request: NextRequest) {
     if (
       body.action === 'start' ||
       body.action === 'start-worker' ||
+      body.action === 'stop' ||
       body.action === 'finish' ||
       body.phase
     ) {
