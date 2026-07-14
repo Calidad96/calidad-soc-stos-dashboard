@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { runWorkerBurst } from '@/lib/sync-orchestrator';
+import { loadSyncJob } from '@/lib/sync-job';
 import { chainSyncWorker, workerAuthHeader } from '@/lib/sync-worker-client';
 
 export const dynamic = 'force-dynamic';
@@ -26,7 +27,20 @@ export async function POST(request: NextRequest) {
     if (result.shouldChain) {
       chainSyncWorker();
     }
-    return NextResponse.json({ ok: true, ...result });
+    const job = await loadSyncJob();
+    return NextResponse.json({
+      ok: true,
+      ...result,
+      job: job
+        ? {
+            operationLabel: job.operationLabel,
+            stepIndex: job.stepIndex,
+            phase: job.phase,
+            totalWritten: job.totalWritten,
+            status: job.status,
+          }
+        : null,
+    });
   } catch (err) {
     const message = err instanceof Error ? err.message : 'Worker failed';
     return NextResponse.json({ error: message }, { status: 500 });

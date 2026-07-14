@@ -97,6 +97,7 @@ export function SettingsTab({
   });
   const [localLastRun, setLocalLastRun] = useState<string | null>(null);
   const [syncJobLabel, setSyncJobLabel] = useState<string | null>(null);
+  const [githubRunning, setGithubRunning] = useState(false);
   const [run, setRun] = useState<SyncRun | null>(null);
   const [scheduleLabel, setScheduleLabel] = useState('');
   const [clientTimeNow, setClientTimeNow] = useState('');
@@ -116,41 +117,31 @@ export function SettingsTab({
       setLocalLastRun(json.lastRun.finishedAt as string);
     }
 
-    const job = json.syncJob as
-      | {
-          status?: string;
-          operationLabel?: string;
-          resumeDue?: boolean;
-        }
-      | null
-      | undefined;
+    const ghRunning = Boolean(json.githubRunning);
+    setGithubRunning(ghRunning);
+    const runActive = json.run?.status === 'running' || ghRunning;
+    setSyncing(runActive);
 
-    if (job?.resumeDue) {
-      void fetch('/api/sync/resume', { method: 'POST' });
-    }
-
-    if (job?.operationLabel) {
-      setSyncJobLabel(job.operationLabel);
-    }
-
-    const jobActive = job?.status === 'running' || job?.status === 'retry_wait';
-    const runActive = json.run?.status === 'running';
-    setSyncing(jobActive || runActive);
-
-    if (!jobActive && !runActive) {
+    if (runActive) {
+      const progress =
+        json.run?.output ||
+        json.run?.progress ||
+        'GitHub is syncing all 7 boards — usually 10–20 minutes.';
+      setSyncJobLabel(progress);
+      setMessage(progress);
+    } else {
+      setSyncJobLabel(null);
       if (json.run?.status === 'success') {
-        setMessage('Update completed successfully.');
-        setSyncJobLabel(null);
+        setMessage('Last sync completed successfully.');
       } else if (json.run?.status === 'partial') {
         setMessage(
           json.run?.error
             ? `Partial update — some boards failed: ${json.run.error}`
-            : 'Partial update — some boards failed after automatic retries.'
+            : 'Partial update — check Monday sync log for details.'
         );
-        setSyncJobLabel(null);
+      } else if (json.run?.status === 'error') {
+        setMessage(json.run?.error ?? 'Last sync failed — check GitHub Actions.');
       }
-    } else if (job?.status === 'running' && job.operationLabel) {
-      setMessage(job.operationLabel);
     }
   }, []);
 
@@ -198,7 +189,9 @@ export function SettingsTab({
       }
       setSyncing(false);
       setSyncJobLabel(null);
-      setMessage('Sync stopped.');
+      setMessage(
+        String(json.message ?? 'Dashboard status cleared.')
+      );
       await fetchStatus();
     } catch (e) {
       setMessage(e instanceof Error ? e.message : 'Could not stop sync');
@@ -219,7 +212,10 @@ export function SettingsTab({
         throw new Error(String(json.error ?? 'Could not start sync'));
       }
       setMessage(
-        'Automatic update started. Each board syncs in the background with auto-retries at 5, 10, 15, and 30 minutes if needed.'
+        String(
+          json.message ??
+            'Full sync started on GitHub. All boards update in 10–20 minutes — no Vercel timeout.'
+        )
       );
       await fetchStatus();
     } catch (e) {
@@ -299,10 +295,11 @@ export function SettingsTab({
                 </div>
               </div>
               <p className="mt-4 text-[13px] leading-relaxed text-[var(--muted)]">
-                Starts a background sync for every board. Timeouts auto-retry at
-                5, 10, 15, and 30 minutes — no need to keep this page open.
+                Runs the full sync on <strong>GitHub Actions</strong> (same as local{' '}
+                <code className="text-[12px]">npm run sync</code>) — all 7 boards, no
+                60-second Vercel timeout. Usually finishes in 10–20 minutes.
               </p>
-              {syncJobLabel && isRunning && (
+              {syncJobLabel && (isRunning || githubRunning) && (
                 <p className="mt-3 rounded-lg border border-[var(--border)] bg-[var(--bg-elevated)] px-3 py-2 text-[12px] font-semibold text-[var(--gold)]">
                   {syncJobLabel}
                 </p>

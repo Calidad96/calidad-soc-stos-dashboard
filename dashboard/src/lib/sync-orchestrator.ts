@@ -99,8 +99,9 @@ export async function createAndStartSyncJob(
       existing!.operationLabel = 'Resuming stalled sync…';
       await saveSyncJob(existing!);
     }
-    chainSyncWorker();
-    return existing!;
+    const result = await runWorkerBurst();
+    if (result.shouldChain) chainSyncWorker();
+    return (await loadSyncJob()) ?? existing!;
   }
 
   const job = newJob(stepIds ?? SYNC_STEPS.map((s) => s.id));
@@ -115,9 +116,13 @@ export async function createAndStartSyncJob(
     progress: job.operationLabel,
     output: job.operationLabel,
   });
-  chainSyncWorker();
-  void invokeSyncWorker().catch(() => undefined);
-  return job;
+
+  const result = await runWorkerBurst();
+  if (result.shouldChain) {
+    chainSyncWorker();
+    void invokeSyncWorker().catch(() => undefined);
+  }
+  return (await loadSyncJob()) ?? job;
 }
 
 function stepMeta(stepId: SyncStepId) {

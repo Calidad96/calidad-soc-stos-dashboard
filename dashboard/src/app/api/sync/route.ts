@@ -1,54 +1,43 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { describeSyncSchedule, formatClientDateTime } from '@/lib/sync-schedule';
 import {
-  executeSyncAction,
   getSyncRunState,
+  refreshSyncRunFromGithub,
   triggerSync,
+  executeSyncAction,
 } from '@/lib/sync-runner';
 import { resolveLastSyncRun } from '@/lib/last-sync-run';
 import { readSyncSettings } from '@/lib/sync-settings';
-import { loadSyncJob, toPublicJob } from '@/lib/sync-job';
-import { resumeSyncIfDue } from '@/lib/sync-orchestrator';
+import { getLatestGithubSyncRun, isGithubSyncRunning } from '@/lib/github-sync';
 
 export const dynamic = 'force-dynamic';
 export const maxDuration = 60;
 
 export async function GET() {
+  await refreshSyncRunFromGithub();
   const run = getSyncRunState();
   const settings = await readSyncSettings();
   const lastRun = await resolveLastSyncRun();
-  const job = await loadSyncJob();
-  const syncJob = toPublicJob(job);
-
-  if (syncJob?.resumeDue) {
-    void resumeSyncIfDue();
-  }
+  const githubRun = await getLatestGithubSyncRun();
+  const githubRunning = await isGithubSyncRunning();
 
   const displayRun =
-    run.status === 'running'
-      ? run
-      : job?.status === 'retry_wait'
+    githubRunning || run.status === 'running'
+      ? {
+          ...run,
+          status: 'running' as const,
+          progress:
+            run.progress ||
+            'GitHub is syncing all boards — usually 10–20 minutes.',
+        }
+      : lastRun
         ? {
             ...run,
-            status: 'running' as const,
-            progress: job.operationLabel,
-            currentStep: job.operationLabel,
+            status: lastRun.status,
+            finishedAt: lastRun.finishedAt,
+            error: lastRun.errors.length ? lastRun.errors.join('; ') : null,
           }
-        : job?.status === 'running'
-        ? {
-            ...run,
-            status: 'running' as const,
-            progress: job.operationLabel,
-            currentStep: job.operationLabel,
-          }
-        : lastRun
-          ? {
-              ...run,
-              status: lastRun.status,
-              finishedAt: lastRun.finishedAt,
-              error: lastRun.errors.length ? lastRun.errors.join('; ') : null,
-            }
-          : run;
+        : run;
 
   return NextResponse.json({
     run: displayRun,
@@ -56,7 +45,9 @@ export async function GET() {
     scheduleLabel: describeSyncSchedule(settings),
     clientTimeNow: formatClientDateTime(settings.clientTimezone),
     lastRun,
-    syncJob,
+    githubRun,
+    githubRunning,
+    syncEngine: 'github-actions',
   });
 }
 
@@ -79,7 +70,7 @@ export async function POST(request: NextRequest) {
     if (!result.started) {
       return NextResponse.json({ error: result.message }, { status: 409 });
     }
-    return NextResponse.json({ started: true, run: getSyncRunState() });
+    return NextResponse.json({ started: true, run: getSyncRunState(), message: result.message });
   } catch (err) {
     const message = err instanceof Error ? err.message : 'Sync failed';
     return NextResponse.json({ error: message, run: getSyncRunState() }, { status: 500 });

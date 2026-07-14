@@ -112,12 +112,18 @@ function readColumnText(
   if (!cv) return '';
   if (cv.text?.trim()) return cv.text.trim();
   if (!cv.value) return '';
+
+  const raw = cv.value.trim();
   try {
-    const parsed = JSON.parse(cv.value) as { text?: string };
-    return parsed.text?.trim() ?? '';
+    const parsed = JSON.parse(raw) as Record<string, unknown>;
+    // Monday long_text wrapper: {"text":"..."}
+    if (typeof parsed.text === 'string') return parsed.text.trim();
+    // Sync job JSON stored directly in the column
+    if (parsed.version === 1 && typeof parsed.runId === 'string') return raw;
   } catch {
-    return cv.value.trim();
+    // plain string value
   }
+  return raw;
 }
 
 async function fetchJobItem(): Promise<{

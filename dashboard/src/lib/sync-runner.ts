@@ -10,12 +10,12 @@ import type { SyncRow } from './sync/sync-session';
 import { SYNC_STEPS, type SyncStepId } from './sync/sync-steps';
 import { todayDate } from './sync/sync-utils';
 import { writeLastSyncRun } from './last-sync-run';
-import { isJobActive, loadSyncJob } from './sync-job';
 import {
-  createAndStartSyncJob,
-  registerSyncStateMirror,
-  stopAutomaticSync,
-} from './sync-orchestrator';
+  getLatestGithubSyncRun,
+  isGithubSyncRunning,
+  triggerGithubSync,
+} from './github-sync';
+import { stopAutomaticSync } from './sync-orchestrator';
 
 export type SyncRunStatus = 'idle' | 'running' | 'success' | 'partial' | 'error';
 
@@ -44,10 +44,7 @@ let state: SyncRunState = {
 };
 
 let lastScheduledSlot: string | null = null;
-
-registerSyncStateMirror((patch) => {
-  state = { ...state, ...patch };
-});
+let syncTriggeredAt: string | null = null;
 
 export function getSyncRunState(): SyncRunState {
   return { ...state };
@@ -57,37 +54,72 @@ export function getLastScheduledSlot(): string | null {
   return lastScheduledSlot;
 }
 
+export async function refreshSyncRunFromGithub(): Promise<SyncRunState> {
+  const running = await isGithubSyncRunning();
+  const latest = await getLatestGithubSyncRun();
+
+  if (running) {
+    state.status = 'running';
+    state.progress =
+      'GitHub is syncing all boards (no timeout) — usually 10–20 minutes.';
+    state.output = state.progress;
+    state.currentStep = latest?.status === 'in_progress' ? 'GitHub Actions' : null;
+    return { ...state };
+  }
+
+  if (state.status === 'running') {
+    state.status = 'idle';
+    state.progress = '';
+    state.currentStep = null;
+    if (latest?.conclusion === 'success') {
+      state.status = 'success';
+      state.progress = 'Last GitHub sync succeeded.';
+    } else if (latest?.conclusion === 'failure') {
+      state.status = 'error';
+      state.error = 'Last GitHub sync failed — check GitHub Actions logs.';
+      state.progress = state.error;
+    }
+  }
+
+  return { ...state };
+}
+
 export function isSyncRunning(): boolean {
   return state.status === 'running';
 }
 
 export async function isSyncJobActive(): Promise<boolean> {
-  if (state.status === 'running') return true;
-  const job = await loadSyncJob();
-  return isJobActive(job);
+  return isGithubSyncRunning();
 }
 
 export async function startAutomaticSync(): Promise<{
   started: boolean;
   message?: string;
-  runId?: string;
 }> {
-  if (await isSyncJobActive()) {
-    return { started: false, message: 'Sync is already running' };
+  if (await isGithubSyncRunning()) {
+    return { started: false, message: 'A GitHub sync is already running.' };
   }
 
-  const job = await createAndStartSyncJob();
-  return { started: true, runId: job.runId };
+  await stopAutomaticSync();
+
+  const result = await triggerGithubSync();
+  if (result.triggered) {
+    syncTriggeredAt = new Date().toISOString();
+    state.status = 'running';
+    state.startedAt = syncTriggeredAt;
+    state.finishedAt = null;
+    state.error = null;
+    state.progress = result.message;
+    state.output = result.message;
+    state.currentStep = 'GitHub Actions';
+  }
+
+  return { started: result.triggered, message: result.message };
 }
 
 export async function triggerSync(opts?: {
   scheduledSlot?: string;
-  wait?: boolean;
 }): Promise<{ started: boolean; message?: string }> {
-  if (await isSyncJobActive()) {
-    return { started: false, message: 'Sync is already running' };
-  }
-
   const result = await startAutomaticSync();
   if (result.started && opts?.scheduledSlot) {
     lastScheduledSlot = opts.scheduledSlot;
@@ -95,9 +127,17 @@ export async function triggerSync(opts?: {
   return result;
 }
 
-export async function stopSync(): Promise<{ stopped: boolean }> {
+export async function stopSync(): Promise<{ stopped: boolean; message: string }> {
   await stopAutomaticSync();
-  return { stopped: true };
+  state.status = 'idle';
+  state.progress = '';
+  state.currentStep = null;
+  state.output = '';
+  return {
+    stopped: true,
+    message:
+      'Dashboard cleared. If GitHub Actions is still running, let it finish or cancel the run in GitHub → Actions.',
+  };
 }
 
 export async function executeSyncAction(body: {
@@ -112,34 +152,12 @@ export async function executeSyncAction(body: {
   totalWritten?: number;
   errors?: string[];
 }) {
-  if (body.action === 'start-worker') {
+  if (body.action === 'start-worker' || body.action === 'start') {
     return startAutomaticSync();
   }
 
   if (body.action === 'stop') {
     return stopSync();
-  }
-
-  if (body.action === 'start') {
-    const runId = new Date().toISOString().replace(/[:.]/g, '-');
-    state.status = 'running';
-    state.startedAt = new Date().toISOString();
-    state.finishedAt = null;
-    state.error = null;
-    state.runId = runId;
-    state.progress = 'Starting…';
-    return {
-      runId,
-      started: todayDate(),
-      steps: SYNC_STEPS.map((s) => ({
-        id: s.id,
-        label: s.label,
-        batched: s.batched,
-        batchSize: s.batchSize,
-        clearBatchSize: s.clearBatchSize,
-        appendOnly: 'appendOnly' in s && Boolean(s.appendOnly),
-      })),
-    };
   }
 
   if (body.action === 'finish') {
@@ -211,4 +229,8 @@ export async function executeSyncAction(body: {
   }
 
   throw new Error('Invalid sync action');
+}
+
+export function getSyncTriggeredAt(): string | null {
+  return syncTriggeredAt;
 }

@@ -145,6 +145,8 @@ const DATE_COLUMNS = new Set([
   'Finished',
 ]);
 
+const LONG_TEXT_COLUMNS = new Set(['Errors', 'Boards Pulled']);
+
 export function buildColumnValues(
   colMap: Record<string, string>,
   values: Record<string, string | number | undefined | null>
@@ -158,6 +160,8 @@ export function buildColumnValues(
     } else if (NUMERIC_COLUMNS.has(title)) {
       const n = Number(value);
       if (!Number.isNaN(n)) out[colId] = String(n);
+    } else if (LONG_TEXT_COLUMNS.has(title)) {
+      out[colId] = JSON.stringify({ text: String(value) });
     } else {
       out[colId] = String(value);
     }
