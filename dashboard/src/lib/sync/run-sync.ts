@@ -1,4 +1,4 @@
-import { createItem, deleteItemsById, getAllBoardItems, getBoardItemIds } from './monday-write';
+import { createItem, deleteItemsById, getAllBoardItems, getBoardItemIdsLight, getBoardItemIds } from './monday-write';
 import { loadHubRegistry } from './hub-registry';
 import { SOURCE_BOARDS } from './source-boards';
 import {
@@ -240,31 +240,56 @@ async function prepareRows(stepId: SyncStepId, registry: ReturnType<typeof loadH
   }
 }
 
-export async function pullStepData(stepId: SyncStepId) {
+export async function pullStepRows(stepId: SyncStepId) {
   const registry = loadHubRegistry();
   const meta = getSyncStep(stepId);
   if (!meta) throw new Error(`Unknown step: ${stepId}`);
 
-  console.log(`\n[${meta.label}] pull`);
+  console.log(`\n[${meta.label}] pull rows`);
   const rows = await prepareRows(stepId, registry);
-  let hubIds: string[] = [];
+  return {
+    step: stepId,
+    label: meta.label,
+    rows,
+    rowCount: rows.length,
+    batched: meta.batched,
+    batchSize: meta.batchSize,
+    clearBatchSize: meta.clearBatchSize,
+    appendOnly: 'appendOnly' in meta && Boolean(meta.appendOnly),
+  };
+}
+
+export async function pullStepHubIds(stepId: SyncStepId) {
+  const registry = loadHubRegistry();
+  const meta = getSyncStep(stepId);
+  if (!meta) throw new Error(`Unknown step: ${stepId}`);
   const appendOnly = 'appendOnly' in meta && Boolean(meta.appendOnly);
 
+  console.log(`\n[${meta.label}] pull hub ids`);
+  let hubIds: string[] = [];
   if (!appendOnly) {
-    hubIds = await getBoardItemIds(registry.boards[stepId].id);
+    hubIds = await getBoardItemIdsLight(registry.boards[stepId].id);
     console.log(`  Hub has ${hubIds.length} existing items to clear`);
   }
 
   return {
     step: stepId,
     label: meta.label,
-    rows,
     hubIds,
-    rowCount: rows.length,
+    appendOnly,
     batched: meta.batched,
     batchSize: meta.batchSize,
     clearBatchSize: meta.clearBatchSize,
-    appendOnly,
+  };
+}
+
+export async function pullStepData(stepId: SyncStepId) {
+  const rowsResult = await pullStepRows(stepId);
+  const idsResult = await pullStepHubIds(stepId);
+  return {
+    ...rowsResult,
+    hubIds: idsResult.hubIds,
+    appendOnly: idsResult.appendOnly,
   };
 }
 

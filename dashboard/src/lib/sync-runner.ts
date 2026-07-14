@@ -2,13 +2,19 @@ import {
   clearHubItemIds,
   logSyncResult,
   pullStepData,
-  runSyncStateless,
+  pullStepHubIds,
+  pullStepRows,
   writeHubRows,
 } from './sync/run-sync';
 import type { SyncRow } from './sync/sync-session';
 import { SYNC_STEPS, type SyncStepId } from './sync/sync-steps';
 import { todayDate } from './sync/sync-utils';
 import { writeLastSyncRun } from './last-sync-run';
+import { isJobActive, loadSyncJob } from './sync-job';
+import {
+  createAndStartSyncJob,
+  registerSyncStateMirror,
+} from './sync-orchestrator';
 
 export type SyncRunStatus = 'idle' | 'running' | 'success' | 'partial' | 'error';
 
@@ -38,6 +44,10 @@ let state: SyncRunState = {
 
 let lastScheduledSlot: string | null = null;
 
+registerSyncStateMirror((patch) => {
+  state = { ...state, ...patch };
+});
+
 export function getSyncRunState(): SyncRunState {
   return { ...state };
 }
@@ -50,58 +60,45 @@ export function isSyncRunning(): boolean {
   return state.status === 'running';
 }
 
-export async function runChunkedSyncForCron(): Promise<void> {
-  state.status = 'running';
-  state.startedAt = new Date().toISOString();
-  state.finishedAt = null;
-  state.error = null;
-  state.progress = 'Running scheduled sync…';
+export async function isSyncJobActive(): Promise<boolean> {
+  if (state.status === 'running') return true;
+  const job = await loadSyncJob();
+  return isJobActive(job);
+}
 
-  try {
-    const result = await runSyncStateless();
-    state.finishedAt = new Date().toISOString();
-    state.status = 'success';
-    state.progress = `Complete — ${result.totalWritten} items written`;
-    state.output = state.progress;
-  } catch (err) {
-    state.status = 'error';
-    state.finishedAt = new Date().toISOString();
-    state.error = err instanceof Error ? err.message : 'Sync failed';
-    state.progress = state.error;
-    throw err;
+export async function startAutomaticSync(): Promise<{
+  started: boolean;
+  message?: string;
+  runId?: string;
+}> {
+  if (await isSyncJobActive()) {
+    return { started: false, message: 'Sync is already running' };
   }
+
+  const job = await createAndStartSyncJob();
+  return { started: true, runId: job.runId };
 }
 
 export async function triggerSync(opts?: {
   scheduledSlot?: string;
   wait?: boolean;
 }): Promise<{ started: boolean; message?: string }> {
-  if (state.status === 'running') {
+  if (await isSyncJobActive()) {
     return { started: false, message: 'Sync is already running' };
   }
 
-  const runPromise = (async () => {
-    try {
-      await runChunkedSyncForCron();
-      if (opts?.scheduledSlot) lastScheduledSlot = opts.scheduledSlot;
-    } catch (err) {
-      state.status = 'error';
-      state.finishedAt = new Date().toISOString();
-      state.error = err instanceof Error ? err.message : 'Sync failed';
-      throw err;
-    }
-  })();
-
-  if (opts?.wait) await runPromise;
-  else runPromise.catch(() => undefined);
-
-  return { started: true };
+  const result = await startAutomaticSync();
+  if (result.started && opts?.scheduledSlot) {
+    lastScheduledSlot = opts.scheduledSlot;
+  }
+  return result;
 }
 
 export async function executeSyncAction(body: {
-  action?: 'start' | 'finish';
+  action?: 'start' | 'finish' | 'start-worker';
   step?: string;
   phase?: 'pull' | 'clear' | 'write';
+  part?: 'rows' | 'ids';
   ids?: string[];
   rows?: SyncRow[];
   runId?: string;
@@ -109,6 +106,10 @@ export async function executeSyncAction(body: {
   totalWritten?: number;
   errors?: string[];
 }) {
+  if (body.action === 'start-worker') {
+    return startAutomaticSync();
+  }
+
   if (body.action === 'start') {
     const runId = new Date().toISOString().replace(/[:.]/g, '-');
     state.status = 'running';
@@ -167,6 +168,16 @@ export async function executeSyncAction(body: {
     const stepId = body.step as SyncStepId;
     const step = SYNC_STEPS.find((s) => s.id === stepId);
     state.currentStep = step?.label ?? stepId;
+    if (body.part === 'rows') {
+      state.progress = `Pulling ${state.currentStep} rows`;
+      const result = await pullStepRows(stepId);
+      return { ...result, phase: 'pull' as const, part: 'rows' as const };
+    }
+    if (body.part === 'ids') {
+      state.progress = `Pulling ${state.currentStep} hub IDs`;
+      const result = await pullStepHubIds(stepId);
+      return { ...result, phase: 'pull' as const, part: 'ids' as const };
+    }
     state.progress = `Pulling ${state.currentStep}`;
     const result = await pullStepData(stepId);
     return { ...result, phase: 'pull' as const };
@@ -190,9 +201,4 @@ export async function executeSyncAction(body: {
   }
 
   throw new Error('Invalid sync action');
-}
-
-export async function executeSyncBundle(): Promise<string> {
-  const result = await runSyncStateless();
-  return `Items written: ${result.totalWritten}\nErrors: ${result.errors.length}`;
 }

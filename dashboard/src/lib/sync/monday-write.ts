@@ -120,6 +120,68 @@ export async function getBoardItemIds(boardId: string): Promise<string[]> {
   return items.map((i) => i.id);
 }
 
+/** Lightweight ID-only fetch — much faster than loading all column values. */
+export async function getBoardItemIdsLight(boardId: string): Promise<string[]> {
+  const ids: string[] = [];
+
+  const first = await mondayQuery<{ boards: { items_page: ItemsPage }[] }>(
+    `query ($boardId: [ID!]) {
+      boards(ids: $boardId) {
+        items_page(limit: 500) {
+          cursor
+          items { id }
+        }
+      }
+    }`,
+    { boardId: [String(boardId)] }
+  );
+
+  let cursor: string | null = first.boards?.[0]?.items_page?.cursor ?? null;
+  for (const item of first.boards?.[0]?.items_page?.items ?? []) {
+    ids.push(item.id);
+  }
+
+  while (cursor) {
+    const nextPage = await mondayQuery<{ next_items_page: ItemsPage }>(
+      `query ($cursor: String!) {
+        next_items_page(limit: 500, cursor: $cursor) {
+          cursor
+          items { id }
+        }
+      }`,
+      { cursor }
+    );
+    const page: ItemsPage = nextPage.next_items_page;
+    for (const item of page.items ?? []) {
+      ids.push(item.id);
+    }
+    cursor = page.cursor;
+  }
+
+  return ids;
+}
+
+export async function updateItemColumns(
+  boardId: string,
+  itemId: string,
+  columnValues: Record<string, unknown>
+): Promise<void> {
+  await mondayQuery(
+    `mutation ($boardId: ID!, $itemId: ID!, $columnValues: JSON!) {
+      change_multiple_column_values(
+        board_id: $boardId
+        item_id: $itemId
+        column_values: $columnValues
+      ) { id }
+    }`,
+    {
+      boardId: String(boardId),
+      itemId: String(itemId),
+      columnValues: JSON.stringify(columnValues),
+    }
+  );
+}
+
 export async function deleteItemsById(itemIds: string[]): Promise<number> {
   let deleted = 0;
   for (const id of itemIds) {

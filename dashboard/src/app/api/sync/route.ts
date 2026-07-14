@@ -7,6 +7,8 @@ import {
 } from '@/lib/sync-runner';
 import { resolveLastSyncRun } from '@/lib/last-sync-run';
 import { readSyncSettings } from '@/lib/sync-settings';
+import { loadSyncJob, toPublicJob } from '@/lib/sync-job';
+import { resumeSyncIfDue } from '@/lib/sync-orchestrator';
 
 export const dynamic = 'force-dynamic';
 export const maxDuration = 60;
@@ -15,18 +17,38 @@ export async function GET() {
   const run = getSyncRunState();
   const settings = await readSyncSettings();
   const lastRun = await resolveLastSyncRun();
+  const job = await loadSyncJob();
+  const syncJob = toPublicJob(job);
+
+  if (syncJob?.resumeDue) {
+    void resumeSyncIfDue();
+  }
 
   const displayRun =
     run.status === 'running'
       ? run
-      : lastRun
+      : job?.status === 'retry_wait'
         ? {
             ...run,
-            status: lastRun.status,
-            finishedAt: lastRun.finishedAt,
-            error: lastRun.errors.length ? lastRun.errors.join('; ') : null,
+            status: 'running' as const,
+            progress: job.operationLabel,
+            currentStep: job.operationLabel,
           }
-        : run;
+        : job?.status === 'running'
+        ? {
+            ...run,
+            status: 'running' as const,
+            progress: job.operationLabel,
+            currentStep: job.operationLabel,
+          }
+        : lastRun
+          ? {
+              ...run,
+              status: lastRun.status,
+              finishedAt: lastRun.finishedAt,
+              error: lastRun.errors.length ? lastRun.errors.join('; ') : null,
+            }
+          : run;
 
   return NextResponse.json({
     run: displayRun,
@@ -34,6 +56,7 @@ export async function GET() {
     scheduleLabel: describeSyncSchedule(settings),
     clientTimeNow: formatClientDateTime(settings.clientTimezone),
     lastRun,
+    syncJob,
   });
 }
 
@@ -41,12 +64,17 @@ export async function POST(request: NextRequest) {
   try {
     const body = await request.json().catch(() => ({}));
 
-    if (body.action === 'start' || body.action === 'finish' || body.phase) {
+    if (
+      body.action === 'start' ||
+      body.action === 'start-worker' ||
+      body.action === 'finish' ||
+      body.phase
+    ) {
       const result = await executeSyncAction(body);
       return NextResponse.json({ ok: true, ...result, run: getSyncRunState() });
     }
 
-    const result = await triggerSync({ wait: true });
+    const result = await triggerSync();
     if (!result.started) {
       return NextResponse.json({ error: result.message }, { status: 409 });
     }

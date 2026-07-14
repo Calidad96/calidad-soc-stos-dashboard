@@ -2,10 +2,9 @@ import { readSyncSettings } from './sync-settings';
 import { getSyncWindow } from './sync-schedule';
 import {
   getLastScheduledSlot,
-  isSyncRunning,
+  isSyncJobActive,
   triggerSync,
 } from './sync-runner';
-
 const CHECK_MS = 60 * 1000; // check every minute for US-time window
 
 let timer: ReturnType<typeof setInterval> | null = null;
@@ -34,7 +33,7 @@ export async function applySchedule(): Promise<void> {
 }
 
 async function maybeRunScheduledSync(): Promise<void> {
-  if (isSyncRunning()) return;
+  if (await isSyncJobActive()) return;
 
   const settings = await readSyncSettings();
   if (!settings.autoSyncEnabled) return;

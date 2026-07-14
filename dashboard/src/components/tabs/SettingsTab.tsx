@@ -95,6 +95,7 @@ export function SettingsTab({
     syncTimeLocal: '06:00',
   });
   const [localLastRun, setLocalLastRun] = useState<string | null>(null);
+  const [syncJobLabel, setSyncJobLabel] = useState<string | null>(null);
   const [run, setRun] = useState<SyncRun | null>(null);
   const [scheduleLabel, setScheduleLabel] = useState('');
   const [clientTimeNow, setClientTimeNow] = useState('');
@@ -110,15 +111,51 @@ export function SettingsTab({
     setRun(json.run);
     setScheduleLabel(json.scheduleLabel ?? '');
     setClientTimeNow(json.clientTimeNow ?? '');
-    setSyncing(json.run?.status === 'running');
     if (json.lastRun?.finishedAt) {
       setLocalLastRun(json.lastRun.finishedAt as string);
+    }
+
+    const job = json.syncJob as
+      | {
+          status?: string;
+          operationLabel?: string;
+          resumeDue?: boolean;
+        }
+      | null
+      | undefined;
+
+    if (job?.resumeDue) {
+      void fetch('/api/sync/resume', { method: 'POST' });
+    }
+
+    if (job?.operationLabel) {
+      setSyncJobLabel(job.operationLabel);
+    }
+
+    const jobActive = job?.status === 'running' || job?.status === 'retry_wait';
+    const runActive = json.run?.status === 'running';
+    setSyncing(jobActive || runActive);
+
+    if (!jobActive && !runActive) {
+      if (json.run?.status === 'success') {
+        setMessage('Update completed successfully.');
+        setSyncJobLabel(null);
+      } else if (json.run?.status === 'partial') {
+        setMessage(
+          json.run?.error
+            ? `Partial update — some boards failed: ${json.run.error}`
+            : 'Partial update — some boards failed after automatic retries.'
+        );
+        setSyncJobLabel(null);
+      }
+    } else if (job?.status === 'running' && job.operationLabel) {
+      setMessage(job.operationLabel);
     }
   }, []);
 
   useEffect(() => {
     fetchStatus();
-    const id = setInterval(fetchStatus, syncing ? 3000 : 15000);
+    const id = setInterval(fetchStatus, syncing ? 5000 : 15000);
     return () => clearInterval(id);
   }, [fetchStatus, syncing]);
 
@@ -149,164 +186,28 @@ export function SettingsTab({
   const runSyncNow = async () => {
     setMessage(null);
     setSyncing(true);
-
-    const MAX_RETRIES = 3;
-    const RETRY_WAIT_MINUTES = [5, 10, 15];
-
-    const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));
-
-    const retryWaitMs = (attempt: number) => RETRY_WAIT_MINUTES[attempt - 1] * 60 * 1000;
-
-    const retryMessage = (label: string, attempt: number) => {
-      const minutes = RETRY_WAIT_MINUTES[attempt - 1];
-      return `${label} — retrying in ${minutes} min (${attempt}/${MAX_RETRIES})…`;
-    };
-
-    const isRetryable = (status: number, message: string) =>
-      [408, 502, 503, 504].includes(status) ||
-      /timed out|timeout|gateway|network|failed to fetch/i.test(message);
-
-    async function post(body: Record<string, unknown>, label: string) {
-      let lastError = 'Sync step failed';
-
-      for (let attempt = 1; attempt <= MAX_RETRIES; attempt++) {
-        try {
-          const res = await fetch('/api/sync', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(body),
-          });
-
-          const text = await res.text();
-          let json: Record<string, unknown>;
-          try {
-            json = JSON.parse(text) as Record<string, unknown>;
-          } catch {
-            const parseError =
-              res.status === 504
-                ? 'Server timed out'
-                : text.startsWith('An error')
-                  ? 'Server timed out'
-                  : text.slice(0, 120) || `Request failed (${res.status})`;
-            if (isRetryable(res.status, parseError) && attempt < MAX_RETRIES) {
-              lastError = parseError;
-              const wait = retryWaitMs(attempt);
-              setMessage(retryMessage(label, attempt));
-              await sleep(wait);
-              continue;
-            }
-            throw new Error(parseError);
-          }
-
-          if (!res.ok) {
-            const errText = String(json.error ?? 'Sync step failed');
-            if (isRetryable(res.status, errText) && attempt < MAX_RETRIES) {
-              lastError = errText;
-              const wait = retryWaitMs(attempt);
-              setMessage(retryMessage(label, attempt));
-              await sleep(wait);
-              continue;
-            }
-            throw new Error(errText);
-          }
-
-          return json;
-        } catch (err) {
-          const message = err instanceof Error ? err.message : String(err);
-          if (isRetryable(0, message) && attempt < MAX_RETRIES) {
-            lastError = message;
-            const wait = retryWaitMs(attempt);
-            setMessage(retryMessage(label, attempt));
-            await sleep(wait);
-            continue;
-          }
-          throw err;
-        }
-      }
-
-      throw new Error(lastError);
-    }
-
     try {
-      const start = await post({ action: 'start' }, 'Starting sync');
-      const runId = String(start.runId);
-      const started = String(start.started);
-      const steps =
-        (start.steps as {
-          id: string;
-          label: string;
-          batched: boolean;
-          batchSize: number;
-          clearBatchSize: number;
-          appendOnly?: boolean;
-        }[]) ?? [];
-
-      let totalWritten = 0;
-      const errors: string[] = [];
-
-      for (let i = 0; i < steps.length; i++) {
-        const step = steps[i];
-        try {
-          setMessage(`Pulling ${step.label} (${i + 1}/${steps.length})…`);
-          const pulled = await post(
-            { step: step.id, phase: 'pull' },
-            `Pulling ${step.label}`
-          );
-
-          const rows =
-            (pulled.rows as { itemName: string; values: Record<string, unknown> }[]) ?? [];
-          const hubIds = (pulled.hubIds as string[]) ?? [];
-          const writeBatchSize = step.batched ? step.batchSize : rows.length || 1;
-          const clearBatchSize = step.batched ? step.clearBatchSize : hubIds.length || 1;
-
-          if (!step.appendOnly && hubIds.length) {
-            for (let c = 0; c < hubIds.length; c += clearBatchSize) {
-              const batch = hubIds.slice(c, c + clearBatchSize);
-              setMessage(`Clearing ${step.label} — ${c + 1}/${hubIds.length}…`);
-              await post({ phase: 'clear', ids: batch }, `Clearing ${step.label}`);
-            }
-          }
-
-          for (let w = 0; w < rows.length; w += writeBatchSize) {
-            const batch = rows.slice(w, w + writeBatchSize);
-            setMessage(`Writing ${step.label} — ${w + batch.length}/${rows.length}…`);
-            const writeResult = await post(
-              { step: step.id, phase: 'write', rows: batch },
-              `Writing ${step.label}`
-            );
-            totalWritten += Number(writeResult.written ?? 0);
-          }
-        } catch (stepErr) {
-          errors.push(
-            `${step.label}: ${stepErr instanceof Error ? stepErr.message : String(stepErr)}`
-          );
-        }
+      const res = await fetch('/api/sync', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ action: 'start-worker' }),
+      });
+      const json = await res.json();
+      if (!res.ok) {
+        throw new Error(String(json.error ?? 'Could not start sync'));
       }
-
-      const finishResult = await post(
-        { action: 'finish', runId, started, totalWritten, errors },
-        'Finishing sync'
+      setMessage(
+        'Automatic update started. Each board syncs in the background with auto-retries at 5, 10, 15, and 30 minutes if needed.'
       );
-      const finishErrors = (finishResult.errors as string[]) ?? errors;
-      setLocalLastRun(new Date().toISOString());
-      if (finishErrors.length) {
-        setMessage(
-          `Partial update — ${finishErrors.length} step(s) failed after retries. Most boards were refreshed. See details below.`
-        );
-      } else {
-        setMessage('Update completed successfully.');
-      }
       await fetchStatus();
     } catch (e) {
       setMessage(e instanceof Error ? e.message : 'Sync failed');
-      await fetchStatus();
-    } finally {
       setSyncing(false);
     }
   };
 
   const runStatus = run?.status ?? 'idle';
-  const isRunning = runStatus === 'running';
+  const isRunning = runStatus === 'running' || syncing;
 
   useEffect(() => {
     if (!syncing) return;
@@ -376,9 +277,14 @@ export function SettingsTab({
                 </div>
               </div>
               <p className="mt-4 text-[13px] leading-relaxed text-[var(--muted)]">
-                Refreshes KPIs, actions, CAPA, and contract data. Takes a few
-                minutes — use when teams have made important updates.
+                Starts a background sync for every board. Timeouts auto-retry at
+                5, 10, 15, and 30 minutes — no need to keep this page open.
               </p>
+              {syncJobLabel && isRunning && (
+                <p className="mt-3 rounded-lg border border-[var(--border)] bg-[var(--bg-elevated)] px-3 py-2 text-[12px] font-semibold text-[var(--gold)]">
+                  {syncJobLabel}
+                </p>
+              )}
               <button
                 type="button"
                 onClick={runSyncNow}

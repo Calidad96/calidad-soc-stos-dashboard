@@ -1,10 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { readSyncSettings } from '@/lib/sync-settings';
-import {
-  getSyncRunState,
-  isSyncRunning,
-  triggerSync,
-} from '@/lib/sync-runner';
+import { getSyncRunState, isSyncJobActive, triggerSync } from '@/lib/sync-runner';
+import { chainSyncWorker } from '@/lib/sync-worker-client';
+import { isJobActive, loadSyncJob } from '@/lib/sync-job';
 
 export const dynamic = 'force-dynamic';
 export const maxDuration = 60;
@@ -22,20 +20,30 @@ export async function GET(request: NextRequest) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
   }
 
-  if (isSyncRunning()) {
-    return NextResponse.json({ skipped: true, reason: 'Sync already running' });
-  }
-
   const settings = await readSyncSettings();
   if (!settings.autoSyncEnabled) {
     return NextResponse.json({ skipped: true, reason: 'Auto sync disabled' });
   }
 
+  const existing = await loadSyncJob();
+  if (isJobActive(existing)) {
+    chainSyncWorker();
+    return NextResponse.json({
+      resumed: true,
+      reason: 'Existing job in progress — worker chained',
+      run: getSyncRunState(),
+    });
+  }
+
+  if (await isSyncJobActive()) {
+    return NextResponse.json({ skipped: true, reason: 'Sync already running' });
+  }
+
   const slot = new Date().toISOString().slice(0, 10);
-  const result = await triggerSync({ scheduledSlot: slot, wait: true });
+  const result = await triggerSync({ scheduledSlot: slot });
   return NextResponse.json({
     started: result.started,
-    message: result.message ?? null,
+    message: result.message ?? 'Automatic sync started in background',
     slot,
     run: getSyncRunState(),
   });
