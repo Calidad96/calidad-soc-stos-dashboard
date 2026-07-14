@@ -1,5 +1,3 @@
-import { colText } from './monday';
-import { fetchBoardItems } from './monday';
 import { loadHubRegistry } from './sync/hub-registry';
 import {
   createItem,
@@ -31,6 +29,9 @@ export interface SyncJobState {
   errors: string[];
   failedStepIds: SyncStepId[];
   retryPass: number;
+  /** For multi-source pulls (e.g. action items = 2 boards). */
+  pullSourceIndex: number;
+  lastUpdatedAt: string;
 }
 
 export interface SyncJobPublic {
@@ -65,6 +66,8 @@ function emptyJob(): SyncJobState {
     errors: [],
     failedStepIds: [],
     retryPass: 0,
+    pullSourceIndex: 0,
+    lastUpdatedAt: new Date().toISOString(),
   };
 }
 
@@ -101,22 +104,80 @@ function parseJobPayload(raw: string | null | undefined): SyncJobState | null {
   }
 }
 
-export async function loadSyncJob(): Promise<SyncJobState | null> {
+function readColumnText(
+  columnValues: { column?: { title?: string }; text?: string; value?: string }[] | undefined,
+  title: string
+): string {
+  const cv = columnValues?.find((c) => c.column?.title === title);
+  if (!cv) return '';
+  if (cv.text?.trim()) return cv.text.trim();
+  if (!cv.value) return '';
+  try {
+    const parsed = JSON.parse(cv.value) as { text?: string };
+    return parsed.text?.trim() ?? '';
+  } catch {
+    return cv.value.trim();
+  }
+}
+
+async function fetchJobItem(): Promise<{
+  id: string;
+  name: string;
+  column_values?: { column?: { title?: string }; text?: string; value?: string }[];
+} | null> {
+  const token = process.env.MONDAY_API_TOKEN;
+  if (!token) return null;
   const { boardId } = registryCols();
-  const items = await fetchBoardItems(boardId);
-  const jobItem = items.find((i) => i.name === JOB_ITEM_NAME);
+
+  const res = await fetch('https://api.monday.com/v2', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: token,
+      'API-Version': '2024-10',
+    },
+    body: JSON.stringify({
+      query: `query ($boardId: [ID!]) {
+        boards(ids: $boardId) {
+          items_page(limit: 50) {
+            items {
+              id name
+              column_values { text value column { title } }
+            }
+          }
+        }
+      }`,
+      variables: { boardId: [boardId] },
+    }),
+    cache: 'no-store',
+  });
+
+  const json = await res.json();
+  const items = json.data?.boards?.[0]?.items_page?.items ?? [];
+  return items.find((i: { name: string }) => i.name === JOB_ITEM_NAME) ?? null;
+}
+
+export async function loadSyncJob(): Promise<SyncJobState | null> {
+  const jobItem = await fetchJobItem();
   if (!jobItem) return null;
   cachedJobItemId = jobItem.id;
-  const raw = colText(jobItem, 'Errors');
+  const raw = readColumnText(jobItem.column_values, 'Errors');
   const job = parseJobPayload(raw);
   if (!job || job.status === 'idle') return job?.status === 'idle' ? job : null;
-  return job;
+  return {
+    ...job,
+    pullSourceIndex: job.pullSourceIndex ?? 0,
+    lastUpdatedAt: job.lastUpdatedAt ?? job.started,
+  };
 }
 
 export async function saveSyncJob(job: SyncJobState): Promise<void> {
   const { boardId, colMap } = registryCols();
   const itemId = await ensureJobItem();
-  const payload = JSON.stringify(job);
+  const payload = JSON.stringify({
+    ...job,
+    lastUpdatedAt: new Date().toISOString(),
+  });
   const statusLabel =
     job.status === 'running'
       ? 'Running'
@@ -139,6 +200,16 @@ export async function saveSyncJob(job: SyncJobState): Promise<void> {
       Errors: payload,
     })
   );
+}
+
+const STALE_JOB_MS = 3 * 60 * 1000;
+
+/** Running job with no progress for several minutes — worker likely timed out. */
+export function isStaleRunningJob(job: SyncJobState | null): boolean {
+  if (!job || job.status !== 'running') return false;
+  const updated = Date.parse(job.lastUpdatedAt || '');
+  if (Number.isNaN(updated)) return true;
+  return Date.now() - updated > STALE_JOB_MS;
 }
 
 export async function clearSyncJob(): Promise<void> {

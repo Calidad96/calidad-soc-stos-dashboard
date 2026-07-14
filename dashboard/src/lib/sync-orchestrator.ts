@@ -22,16 +22,18 @@ import {
 import {
   clearSyncJob,
   isJobActive,
+  isStaleRunningJob,
   loadSyncJob,
   saveSyncJob,
   type SyncJobState,
 } from './sync-job';
-import { chainSyncWorker } from './sync-worker-client';
+import { chainSyncWorker, invokeSyncWorker } from './sync-worker-client';
 import { writeLastSyncRun } from './last-sync-run';
 import type { SyncRunStatus } from './sync-runner';
 
-const BURST_MS = 52_000;
+const BURST_MS = 45_000;
 const MAX_FAILED_PASSES = 4;
+const ACTION_ITEM_SOURCES = 2;
 
 interface TickResult {
   job: SyncJobState;
@@ -83,6 +85,8 @@ function newJob(stepQueue: SyncStepId[], retryPass = 0): SyncJobState {
     errors: [],
     failedStepIds: [],
     retryPass,
+    pullSourceIndex: 0,
+    lastUpdatedAt: new Date().toISOString(),
   };
 }
 
@@ -91,6 +95,10 @@ export async function createAndStartSyncJob(
 ): Promise<SyncJobState> {
   const existing = await loadSyncJob();
   if (isJobActive(existing)) {
+    if (isStaleRunningJob(existing)) {
+      existing!.operationLabel = 'Resuming stalled sync…';
+      await saveSyncJob(existing!);
+    }
     chainSyncWorker();
     return existing!;
   }
@@ -108,6 +116,7 @@ export async function createAndStartSyncJob(
     output: job.operationLabel,
   });
   chainSyncWorker();
+  void invokeSyncWorker().catch(() => undefined);
   return job;
 }
 
@@ -240,15 +249,37 @@ async function executeOneTick(job: SyncJobState): Promise<TickResult> {
   try {
     if (job.phase === 'pull-rows') {
       job.operationLabel = `Pulling ${step.label} — source data`;
+      job.lastUpdatedAt = new Date().toISOString();
       mirror({ currentStep: step.label, progress: job.operationLabel });
-      const { rows } = await pullStepRows(stepId);
+      await saveSyncJob(job);
+
+      const partial =
+        stepId === 'actionItems'
+          ? await pullStepRows(stepId, job.pullSourceIndex)
+          : await pullStepRows(stepId);
+
       const stash = (await loadStepStash(job.runId, stepId)) ?? {
         rows: [],
         hubIds: [],
       };
-      stash.rows = rows;
+      stash.rows = [...stash.rows, ...partial.rows];
+
+      if (stepId === 'actionItems' && partial.hasMoreSources) {
+        job.pullSourceIndex += 1;
+        await stashStepData(job.runId, stepId, stash);
+        job.operationLabel = `Pulling ${step.label} — board ${job.pullSourceIndex + 1}/${ACTION_ITEM_SOURCES}`;
+        return {
+          job,
+          chain: true,
+          done: false,
+          waitRetry: false,
+          message: job.operationLabel,
+        };
+      }
+
       await stashStepData(job.runId, stepId, stash);
       job.phase = 'pull-ids';
+      job.pullSourceIndex = 0;
       job.retryAttempt = 0;
       return {
         job,
@@ -392,11 +423,16 @@ export async function runWorkerBurst(): Promise<{
     job.operationLabel = job.operationLabel.replace(/auto-retry in.*/, 'resuming…');
     await saveSyncJob(job);
     mirror({ status: 'running', progress: job.operationLabel });
+  } else if (isStaleRunningJob(job)) {
+    job.operationLabel = `${job.operationLabel || 'Sync'} — resuming after timeout`;
+    await saveSyncJob(job);
   }
 
   const deadline = Date.now() + BURST_MS;
+  let ticks = 0;
 
-  while (Date.now() < deadline) {
+  while (Date.now() < deadline && ticks < 1) {
+    ticks += 1;
     const tick = await executeOneTick(job);
     job = tick.job;
     await saveSyncJob(job);
@@ -419,10 +455,20 @@ export async function runWorkerBurst(): Promise<{
 
 export async function resumeSyncIfDue(): Promise<boolean> {
   const job = await loadSyncJob();
-  if (!job || job.status !== 'retry_wait') return false;
-  if (!job.nextRetryAt || Date.parse(job.nextRetryAt) > Date.now()) return false;
-  chainSyncWorker();
-  return true;
+  if (!job) return false;
+
+  if (job.status === 'retry_wait') {
+    if (!job.nextRetryAt || Date.parse(job.nextRetryAt) > Date.now()) return false;
+    chainSyncWorker();
+    return true;
+  }
+
+  if (isStaleRunningJob(job)) {
+    chainSyncWorker();
+    return true;
+  }
+
+  return false;
 }
 
 export async function resetSyncJob(): Promise<void> {

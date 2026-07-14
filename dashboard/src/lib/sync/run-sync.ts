@@ -58,36 +58,44 @@ async function writeRows(
   return written;
 }
 
-async function buildActionItemRows(registry: ReturnType<typeof loadHubRegistry>) {
+async function buildActionItemRowsPartial(sourceIndex: number) {
   const sources = [SOURCE_BOARDS.socActionItems, SOURCE_BOARDS.physecActionItems];
+  const src = sources[sourceIndex];
+  if (!src) return { rows: [] as SyncRow[], hasMoreSources: false };
+
   const rows: SyncRow[] = [];
-
-  for (const src of sources) {
-    const items = await getAllBoardItems(src.id);
-    for (const item of items) {
-      const due = colText(item, 'Due Date');
-      rows.push({
-        itemName: item.name.slice(0, 120),
-        values: {
-          'Source Item ID': item.id,
-          'Source Board ID': src.id,
-          Department: src.department,
-          Accountable: colText(item, 'Accountable'),
-          Priority: colText(item, 'Priority'),
-          Status: colText(item, 'Status'),
-          'Due Date': due || undefined,
-          'Next Action Date': colText(item, 'Next Action Date') || undefined,
-          'Due Bucket': dueBucket(due),
-          Client: colText(item, 'Client'),
-          'Task Description': colText(item, 'Task Description'),
-          'Snapshot At': TODAY,
-        },
-      });
-    }
-    console.log(`  Pulled ${items.length} from ${src.name}`);
+  const items = await getAllBoardItems(src.id);
+  for (const item of items) {
+    const due = colText(item, 'Due Date');
+    rows.push({
+      itemName: item.name.slice(0, 120),
+      values: {
+        'Source Item ID': item.id,
+        'Source Board ID': src.id,
+        Department: src.department,
+        Accountable: colText(item, 'Accountable'),
+        Priority: colText(item, 'Priority'),
+        Status: colText(item, 'Status'),
+        'Due Date': due || undefined,
+        'Next Action Date': colText(item, 'Next Action Date') || undefined,
+        'Due Bucket': dueBucket(due),
+        Client: colText(item, 'Client'),
+        'Task Description': colText(item, 'Task Description'),
+        'Snapshot At': TODAY,
+      },
+    });
   }
+  console.log(`  Pulled ${items.length} from ${src.name}`);
+  return { rows, hasMoreSources: sourceIndex + 1 < sources.length };
+}
 
-  return rows;
+async function buildActionItemRows(registry: ReturnType<typeof loadHubRegistry>) {
+  const all: SyncRow[] = [];
+  for (let i = 0; i < 2; i++) {
+    const part = await buildActionItemRowsPartial(i);
+    all.push(...part.rows);
+  }
+  return all;
 }
 
 async function buildCapaRows() {
@@ -240,18 +248,29 @@ async function prepareRows(stepId: SyncStepId, registry: ReturnType<typeof loadH
   }
 }
 
-export async function pullStepRows(stepId: SyncStepId) {
+export async function pullStepRows(stepId: SyncStepId, sourceIndex = 0) {
   const registry = loadHubRegistry();
   const meta = getSyncStep(stepId);
   if (!meta) throw new Error(`Unknown step: ${stepId}`);
 
   console.log(`\n[${meta.label}] pull rows`);
-  const rows = await prepareRows(stepId, registry);
+  let rows: SyncRow[];
+  let hasMoreSources = false;
+
+  if (stepId === 'actionItems') {
+    const partial = await buildActionItemRowsPartial(sourceIndex);
+    rows = partial.rows;
+    hasMoreSources = partial.hasMoreSources;
+  } else {
+    rows = await prepareRows(stepId, registry);
+  }
+
   return {
     step: stepId,
     label: meta.label,
     rows,
     rowCount: rows.length,
+    hasMoreSources,
     batched: meta.batched,
     batchSize: meta.batchSize,
     clearBatchSize: meta.clearBatchSize,
