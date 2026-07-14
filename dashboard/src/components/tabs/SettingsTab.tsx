@@ -279,11 +279,18 @@ export function SettingsTab({
         }
       }
 
-      await post(
+      const finishResult = await post(
         { action: 'finish', runId, started, totalWritten, errors },
         'Finishing sync'
       );
-      setMessage('Update completed successfully.');
+      const finishErrors = (finishResult.errors as string[]) ?? errors;
+      if (finishErrors.length) {
+        setMessage(
+          `Partial update — ${finishErrors.length} step(s) failed after retries. Most boards were refreshed. See details below.`
+        );
+      } else {
+        setMessage('Update completed successfully.');
+      }
       await fetchStatus();
     } catch (e) {
       setMessage(e instanceof Error ? e.message : 'Sync failed');
@@ -298,14 +305,21 @@ export function SettingsTab({
 
   useEffect(() => {
     if (!syncing) return;
-    if (runStatus === 'success' || runStatus === 'partial') {
+    if (runStatus === 'success') {
       setMessage('Update completed successfully.');
       setSyncing(false);
+    } else if (runStatus === 'partial') {
+      setMessage(
+        run?.error
+          ? `Partial update — some steps failed: ${run.error}`
+          : 'Partial update — some steps failed after retries.'
+      );
+      setSyncing(false);
     } else if (runStatus === 'error') {
-      setMessage(null);
+      setMessage(run?.error ?? 'Sync failed');
       setSyncing(false);
     }
-  }, [syncing, runStatus]);
+  }, [syncing, runStatus, run?.error]);
 
   return (
     <div className="animate-fade-in mx-auto max-w-4xl space-y-5">
@@ -526,7 +540,9 @@ export function SettingsTab({
             <div
               className={`mt-5 rounded-xl px-4 py-3 text-[13px] ${
                 run?.error
-                  ? 'bg-[var(--status-bad-bg)] text-[var(--red)]'
+                  ? runStatus === 'partial'
+                    ? 'bg-[var(--status-warn-bg)] text-[var(--amber)]'
+                    : 'bg-[var(--status-bad-bg)] text-[var(--red)]'
                   : 'bg-[var(--hover-row)] text-[var(--muted)]'
               }`}
             >

@@ -132,20 +132,25 @@ export async function executeSyncAction(body: {
 
   if (body.action === 'finish') {
     if (!body.runId || !body.started) throw new Error('runId and started are required');
+    const errors = body.errors ?? [];
     await logSyncResult({
       runId: body.runId,
       started: body.started,
       totalWritten: body.totalWritten ?? 0,
-      errors: body.errors ?? [],
+      errors,
     });
     state.finishedAt = new Date().toISOString();
-    state.status = body.errors?.length ? 'partial' : 'success';
+    state.status = errors.length ? 'partial' : 'success';
+    state.error = errors.length ? errors.join('; ') : null;
     state.currentStep = null;
-    state.progress = 'Complete';
+    state.progress = errors.length
+      ? `Partial — ${errors.length} step(s) had issues`
+      : 'Complete';
+    state.output = state.progress;
     return {
       completed: true,
       totalWritten: body.totalWritten ?? 0,
-      errors: body.errors ?? [],
+      errors,
     };
   }
 
