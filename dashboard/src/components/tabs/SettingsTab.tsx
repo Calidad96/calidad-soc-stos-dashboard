@@ -226,57 +226,63 @@ export function SettingsTab({
     try {
       const start = await post({ action: 'start' }, 'Starting sync');
       const runId = String(start.runId);
+      const started = String(start.started);
       const steps =
         (start.steps as {
           id: string;
           label: string;
           batched: boolean;
+          batchSize: number;
+          clearBatchSize: number;
           appendOnly?: boolean;
         }[]) ?? [];
 
+      let totalWritten = 0;
+      const errors: string[] = [];
+
       for (let i = 0; i < steps.length; i++) {
         const step = steps[i];
-        setMessage(`Pulling ${step.label} (${i + 1}/${steps.length})…`);
-        await post({ runId, step: step.id, phase: 'pull' }, `Pulling ${step.label}`);
-
-        if (!step.appendOnly) {
-          let clearBatch = 0;
-          let clearing = true;
-          while (clearing) {
-            setMessage(`Clearing ${step.label} — batch ${clearBatch + 1}…`);
-            const clearResult = await post(
-              {
-                runId,
-                step: step.id,
-                phase: 'clear',
-                batch: clearBatch,
-              },
-              `Clearing ${step.label}`
-            );
-            clearing = Boolean(clearResult.hasMore);
-            clearBatch++;
-          }
-        }
-
-        let writeBatch = 0;
-        let writing = true;
-        while (writing) {
-          setMessage(`Writing ${step.label} — batch ${writeBatch + 1}…`);
-          const writeResult = await post(
-            {
-              runId,
-              step: step.id,
-              phase: 'write',
-              batch: writeBatch,
-            },
-            `Writing ${step.label}`
+        try {
+          setMessage(`Pulling ${step.label} (${i + 1}/${steps.length})…`);
+          const pulled = await post(
+            { step: step.id, phase: 'pull' },
+            `Pulling ${step.label}`
           );
-          writing = Boolean(writeResult.hasMore);
-          writeBatch++;
+
+          const rows =
+            (pulled.rows as { itemName: string; values: Record<string, unknown> }[]) ?? [];
+          const hubIds = (pulled.hubIds as string[]) ?? [];
+          const writeBatchSize = step.batched ? step.batchSize : rows.length || 1;
+          const clearBatchSize = step.batched ? step.clearBatchSize : hubIds.length || 1;
+
+          if (!step.appendOnly && hubIds.length) {
+            for (let c = 0; c < hubIds.length; c += clearBatchSize) {
+              const batch = hubIds.slice(c, c + clearBatchSize);
+              setMessage(`Clearing ${step.label} — ${c + 1}/${hubIds.length}…`);
+              await post({ phase: 'clear', ids: batch }, `Clearing ${step.label}`);
+            }
+          }
+
+          for (let w = 0; w < rows.length; w += writeBatchSize) {
+            const batch = rows.slice(w, w + writeBatchSize);
+            setMessage(`Writing ${step.label} — ${w + batch.length}/${rows.length}…`);
+            const writeResult = await post(
+              { step: step.id, phase: 'write', rows: batch },
+              `Writing ${step.label}`
+            );
+            totalWritten += Number(writeResult.written ?? 0);
+          }
+        } catch (stepErr) {
+          errors.push(
+            `${step.label}: ${stepErr instanceof Error ? stepErr.message : String(stepErr)}`
+          );
         }
       }
 
-      await post({ action: 'finish', runId }, 'Finishing sync');
+      await post(
+        { action: 'finish', runId, started, totalWritten, errors },
+        'Finishing sync'
+      );
       setMessage('Update completed successfully.');
       await fetchStatus();
     } catch (e) {

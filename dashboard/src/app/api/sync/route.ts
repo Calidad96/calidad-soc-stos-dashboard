@@ -25,7 +25,7 @@ export async function POST(request: NextRequest) {
   try {
     const body = await request.json().catch(() => ({}));
 
-    if (body.action === 'start' || body.step) {
+    if (body.action === 'start' || body.action === 'finish' || body.phase) {
       const result = await executeSyncAction(body);
       return NextResponse.json({ ok: true, ...result, run: getSyncRunState() });
     }

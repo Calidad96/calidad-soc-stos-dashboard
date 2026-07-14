@@ -1,16 +1,11 @@
 import {
-  createSession,
-  loadSession,
-  saveSession,
-} from './sync/sync-session';
-import {
-  clearSyncStepBatch,
-  finishSyncRun,
-  pullSyncStep,
-  runSync,
-  runSyncStepWhole,
-  writeSyncStepBatch,
+  clearHubItemIds,
+  logSyncResult,
+  pullStepData,
+  runSyncStateless,
+  writeHubRows,
 } from './sync/run-sync';
+import type { SyncRow } from './sync/sync-session';
 import { SYNC_STEPS, type SyncStepId } from './sync/sync-steps';
 import { todayDate } from './sync/sync-utils';
 
@@ -54,68 +49,26 @@ export function isSyncRunning(): boolean {
   return state.status === 'running';
 }
 
-export function startSyncSession(): string {
-  const runId = new Date().toISOString().replace(/[:.]/g, '-');
-  createSession(runId, todayDate());
-  state = {
-    status: 'running',
-    startedAt: new Date().toISOString(),
-    finishedAt: null,
-    output: '',
-    error: null,
-    scheduledSlot: null,
-    runId,
-    currentStep: null,
-    progress: null,
-  };
-  return runId;
-}
-
 export async function runChunkedSyncForCron(): Promise<void> {
-  const runId = startSyncSession();
-  const errors: string[] = [];
+  state.status = 'running';
+  state.startedAt = new Date().toISOString();
+  state.finishedAt = null;
+  state.error = null;
+  state.progress = 'Running scheduled sync…';
 
-  for (const step of SYNC_STEPS) {
-    state.currentStep = step.label;
-    state.progress = step.label;
-    try {
-      if (step.batched) {
-        await pullSyncStep(runId, step.id);
-        let clearBatch = 0;
-        let clearing = true;
-        while (clearing) {
-          const result = await clearSyncStepBatch(runId, step.id, clearBatch);
-          clearing = result.hasMore;
-          clearBatch++;
-        }
-        let batch = 0;
-        let hasMore = true;
-        while (hasMore) {
-          const result = await writeSyncStepBatch(runId, step.id, batch);
-          hasMore = result.hasMore;
-          batch++;
-        }
-      } else {
-        await runSyncStepWhole(runId, step.id);
-      }
-    } catch (err) {
-      errors.push(`${step.label}: ${err instanceof Error ? err.message : String(err)}`);
-    }
+  try {
+    const result = await runSyncStateless();
+    state.finishedAt = new Date().toISOString();
+    state.status = 'success';
+    state.progress = `Complete — ${result.totalWritten} items written`;
+    state.output = state.progress;
+  } catch (err) {
+    state.status = 'error';
+    state.finishedAt = new Date().toISOString();
+    state.error = err instanceof Error ? err.message : 'Sync failed';
+    state.progress = state.error;
+    throw err;
   }
-
-  const session = loadSession(runId);
-  if (session && errors.length) {
-    session.errors.push(...errors);
-    saveSession(session);
-  }
-
-  await finishSyncRun(runId);
-  state.finishedAt = new Date().toISOString();
-  state.status = errors.length ? 'partial' : 'success';
-  state.currentStep = null;
-  state.progress = errors.length ? errors.join('; ') : 'Complete';
-  state.output = state.progress;
-  if (errors.length) state.error = errors.join('; ');
 }
 
 export async function triggerSync(opts?: {
@@ -146,79 +99,87 @@ export async function triggerSync(opts?: {
 
 export async function executeSyncAction(body: {
   action?: 'start' | 'finish';
-  runId?: string;
   step?: string;
   phase?: 'pull' | 'clear' | 'write';
-  batch?: number;
+  ids?: string[];
+  rows?: SyncRow[];
+  runId?: string;
+  started?: string;
+  totalWritten?: number;
+  errors?: string[];
 }) {
   if (body.action === 'start') {
-    const runId = startSyncSession();
+    const runId = new Date().toISOString().replace(/[:.]/g, '-');
+    state.status = 'running';
+    state.startedAt = new Date().toISOString();
+    state.finishedAt = null;
+    state.error = null;
+    state.runId = runId;
+    state.progress = 'Starting…';
     return {
       runId,
+      started: todayDate(),
       steps: SYNC_STEPS.map((s) => ({
         id: s.id,
         label: s.label,
         batched: s.batched,
+        batchSize: s.batchSize,
+        clearBatchSize: s.clearBatchSize,
         appendOnly: 'appendOnly' in s && Boolean(s.appendOnly),
       })),
     };
   }
 
-  if (!body.runId) throw new Error('runId is required');
-
   if (body.action === 'finish') {
-    const session = await finishSyncRun(body.runId);
+    if (!body.runId || !body.started) throw new Error('runId and started are required');
+    await logSyncResult({
+      runId: body.runId,
+      started: body.started,
+      totalWritten: body.totalWritten ?? 0,
+      errors: body.errors ?? [],
+    });
     state.finishedAt = new Date().toISOString();
-    state.status = session.errors.length ? 'partial' : 'success';
+    state.status = body.errors?.length ? 'partial' : 'success';
     state.currentStep = null;
     state.progress = 'Complete';
-    return { completed: true, totalWritten: session.totalWritten, errors: session.errors };
+    return {
+      completed: true,
+      totalWritten: body.totalWritten ?? 0,
+      errors: body.errors ?? [],
+    };
   }
 
-  if (!body.step) throw new Error('step is required');
-  const stepId = body.step as SyncStepId;
-  const step = SYNC_STEPS.find((s) => s.id === stepId);
-  if (!step) throw new Error(`Unknown step: ${body.step}`);
-
-  state.status = 'running';
-  state.currentStep = step.label;
-  state.progress = step.label;
-
-  const phase = body.phase ?? 'pull';
-  const batch = body.batch ?? 0;
-
-  if (phase === 'pull') {
-    const result = await pullSyncStep(body.runId, stepId);
-    return { ...result, step: stepId, label: step.label, phase };
+  if (body.phase === 'pull') {
+    if (!body.step) throw new Error('step is required');
+    const stepId = body.step as SyncStepId;
+    const step = SYNC_STEPS.find((s) => s.id === stepId);
+    state.currentStep = step?.label ?? stepId;
+    state.progress = `Pulling ${state.currentStep}`;
+    const result = await pullStepData(stepId);
+    return { ...result, phase: 'pull' as const };
   }
 
-  if (phase === 'clear') {
-    const result = await clearSyncStepBatch(body.runId, stepId, batch);
-    return { ...result, step: stepId, label: step.label, phase };
+  if (body.phase === 'clear') {
+    if (!body.ids?.length) return { deleted: 0, phase: 'clear' as const };
+    state.progress = `Clearing ${body.ids.length} items`;
+    const result = await clearHubItemIds(body.ids);
+    return { ...result, phase: 'clear' as const };
   }
 
-  const result = await writeSyncStepBatch(body.runId, stepId, batch);
-  return { ...result, step: stepId, label: step.label, phase: 'write' };
+  if (body.phase === 'write') {
+    if (!body.step) throw new Error('step is required');
+    const stepId = body.step as SyncStepId;
+    const step = SYNC_STEPS.find((s) => s.id === stepId);
+    state.currentStep = step?.label ?? stepId;
+    state.progress = `Writing ${body.rows?.length ?? 0} rows`;
+    const result = await writeHubRows(stepId, body.rows ?? []);
+    return { ...result, phase: 'write' as const };
+  }
+
+  throw new Error('Invalid sync action');
 }
 
-// Legacy full run for local CLI compatibility
 export async function executeSyncBundle(): Promise<string> {
-  const logs: string[] = [];
-  const origLog = console.log;
-  const origErr = console.error;
-  const capture =
-    (write: typeof console.log) =>
-    (...args: unknown[]) => {
-      logs.push(args.map((a) => String(a)).join(' '));
-      write(...args);
-    };
-  console.log = capture(origLog);
-  console.error = capture(origErr);
-  try {
-    await runSync();
-    return logs.join('\n');
-  } finally {
-    console.log = origLog;
-    console.error = origErr;
-  }
+  const result = await runSyncStateless();
+  return `Items written: ${result.totalWritten}\nErrors: ${result.errors.length}`;
 }

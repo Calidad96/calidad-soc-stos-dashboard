@@ -240,6 +240,108 @@ async function prepareRows(stepId: SyncStepId, registry: ReturnType<typeof loadH
   }
 }
 
+export async function pullStepData(stepId: SyncStepId) {
+  const registry = loadHubRegistry();
+  const meta = getSyncStep(stepId);
+  if (!meta) throw new Error(`Unknown step: ${stepId}`);
+
+  console.log(`\n[${meta.label}] pull`);
+  const rows = await prepareRows(stepId, registry);
+  let hubIds: string[] = [];
+  const appendOnly = 'appendOnly' in meta && Boolean(meta.appendOnly);
+
+  if (!appendOnly) {
+    hubIds = await getBoardItemIds(registry.boards[stepId].id);
+    console.log(`  Hub has ${hubIds.length} existing items to clear`);
+  }
+
+  return {
+    step: stepId,
+    label: meta.label,
+    rows,
+    hubIds,
+    rowCount: rows.length,
+    batched: meta.batched,
+    batchSize: meta.batchSize,
+    clearBatchSize: meta.clearBatchSize,
+    appendOnly,
+  };
+}
+
+export async function clearHubItemIds(itemIds: string[]) {
+  if (!itemIds.length) return { deleted: 0 };
+  console.log(`  Clearing ${itemIds.length} hub items`);
+  const deleted = await deleteItemsById(itemIds);
+  return { deleted };
+}
+
+export async function writeHubRows(stepId: SyncStepId, rows: SyncRow[]) {
+  if (!rows.length) return { written: 0 };
+  const registry = loadHubRegistry();
+  const meta = getSyncStep(stepId);
+  const colMap = hubColumnMap(registry, stepId);
+  const hubId = registry.boards[stepId].id;
+  console.log(`\n[${meta?.label ?? stepId}] write ${rows.length} rows`);
+  const written = await writeRows(hubId, colMap, rows, stepId);
+  return { written };
+}
+
+export async function logSyncResult(opts: {
+  runId: string;
+  started: string;
+  totalWritten: number;
+  errors: string[];
+}) {
+  const registry = loadHubRegistry();
+  const boardKey = 'syncLog' as const;
+  const hubId = registry.boards[boardKey].id;
+  const colMap = hubColumnMap(registry, boardKey);
+  await createItem(
+    hubId,
+    `Sync ${opts.runId}`,
+    buildColumnValues(colMap, {
+      'Run ID': opts.runId,
+      Started: opts.started,
+      Finished: TODAY,
+      Status: opts.errors.length ? 'Partial' : 'Success',
+      'Boards Pulled': Object.values(SOURCE_BOARDS).map((b) => b.name).join(', '),
+      'Items Written': opts.totalWritten,
+      Errors: opts.errors.length ? opts.errors.join('\n') : '',
+    })
+  );
+}
+
+export async function runSyncStateless(): Promise<{ totalWritten: number; errors: string[] }> {
+  const runId = new Date().toISOString().replace(/[:.]/g, '-');
+  const started = TODAY;
+  let totalWritten = 0;
+  const errors: string[] = [];
+  const { SYNC_STEPS } = await import('./sync-steps');
+
+  for (const step of SYNC_STEPS) {
+    try {
+      const pulled = await pullStepData(step.id);
+      if (!pulled.appendOnly) {
+        const clearSize = step.batched ? step.clearBatchSize : pulled.hubIds.length;
+        for (let i = 0; i < pulled.hubIds.length; i += clearSize) {
+          await clearHubItemIds(pulled.hubIds.slice(i, i + clearSize));
+        }
+      }
+      const writeSize = step.batched ? step.batchSize : pulled.rows.length;
+      for (let i = 0; i < pulled.rows.length; i += writeSize) {
+        const result = await writeHubRows(step.id, pulled.rows.slice(i, i + writeSize));
+        totalWritten += result.written;
+      }
+    } catch (err) {
+      errors.push(`${step.label}: ${err instanceof Error ? err.message : String(err)}`);
+    }
+  }
+
+  await logSyncResult({ runId, started, totalWritten, errors });
+  if (errors.length) throw new Error(errors.join('; '));
+  return { totalWritten, errors };
+}
+
 export async function pullSyncStep(runId: string, stepId: SyncStepId) {
   const session = loadSession(runId);
   if (!session) throw new Error('Sync session not found');
@@ -409,28 +511,5 @@ export async function finishSyncRun(runId: string) {
 }
 
 export async function runSync(): Promise<{ totalWritten: number; errors: string[] }> {
-  const runId = new Date().toISOString().replace(/[:.]/g, '-');
-  const { createSession } = await import('./sync-session');
-  createSession(runId, TODAY);
-
-  const errors: string[] = [];
-  const { SYNC_STEPS } = await import('./sync-steps');
-
-  for (const step of SYNC_STEPS) {
-    try {
-      await runSyncStepWhole(runId, step.id);
-    } catch (err) {
-      const msg = `${step.label}: ${err instanceof Error ? err.message : String(err)}`;
-      errors.push(msg);
-      const session = loadSession(runId);
-      if (session) {
-        session.errors.push(msg);
-        saveSession(session);
-      }
-    }
-  }
-
-  const session = await finishSyncRun(runId);
-  if (errors.length) throw new Error(errors.join('; '));
-  return { totalWritten: session.totalWritten, errors };
+  return runSyncStateless();
 }
